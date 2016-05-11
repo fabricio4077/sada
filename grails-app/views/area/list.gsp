@@ -35,7 +35,7 @@
                     
                     <g:sortableColumn property="nombre" title="Nombre" />
                     
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
+                    <g:sortableColumn property="descripcion" title="Descripción" />
                     
                     %{--<g:sortableColumn property="codigo" title="Codigo" />--}%
                     
