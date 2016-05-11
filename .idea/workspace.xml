@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="06b9ae49-2838-41a0-afb3-579bd48ee7f4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/domain/complemento/Actividad.groovy" afterPath="$PROJECT_DIR$/grails-app/domain/complemento/Actividad.groovy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/unit/complemento/ActividadSpec.groovy" afterPath="$PROJECT_DIR$/test/unit/complemento/ActividadSpec.groovy" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/grails-app/domain/estacion/Area.groovy" afterPath="$PROJECT_DIR$/grails-app/domain/estacion/Area.groovy" />
@@ -177,6 +175,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/work/plugins/asset-pipeline-1.9.9/src/groovy/uglifyjs/test/unit/compress/test/var.js" afterPath="$PROJECT_DIR$/target/work/plugins/asset-pipeline-1.9.9/src/groovy/uglifyjs/test/unit/compress/test/var.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web-app/css/varios.css" afterPath="$PROJECT_DIR$/web-app/css/varios.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="sada.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -333,8 +332,8 @@
       <file leaf-file-name="list.gsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/grails-app/views/area/list.gsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="780" max-vertical-offset="3525">
-              <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.6630824" vertical-offset="780" max-vertical-offset="3525">
+              <caret line="89" column="146" selection-start-line="89" selection-start-column="146" selection-end-line="89" selection-end-column="146" />
               <folding />
             </state>
           </provider>
@@ -853,7 +852,7 @@
       <workItem from="1462891770851" duration="16802000" />
       <workItem from="1462924249188" duration="6566000" />
       <workItem from="1462979584045" duration="4130000" />
-      <workItem from="1462988450130" duration="1540000" />
+      <workItem from="1462988450130" duration="2306000" />
     </task>
     <task id="LOCAL-00001" summary="primer commit">
       <created>1462993021696</created>
@@ -873,11 +872,17 @@
       <option name="project" value="LOCAL" />
       <updated>1462993088864</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="primer commit">
+      <created>1462993102514</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1462993102514</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="493365000" />
+    <option name="totallyTimeSpent" value="494131000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -905,7 +910,7 @@
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32930845" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14643237" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1358,8 +1363,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/grails-app/views/area/list.gsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="780" max-vertical-offset="3525">
-          <caret line="52" column="24" selection-start-line="52" selection-start-column="24" selection-end-line="52" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.6630824" vertical-offset="780" max-vertical-offset="3525">
+          <caret line="89" column="146" selection-start-line="89" selection-start-column="146" selection-end-line="89" selection-end-column="146" />
           <folding />
         </state>
       </provider>
