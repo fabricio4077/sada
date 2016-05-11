@@ -361,6 +361,7 @@
     </FindUsagesManager>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="MERGE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
@@ -852,7 +853,7 @@
       <workItem from="1462891770851" duration="16802000" />
       <workItem from="1462924249188" duration="6566000" />
       <workItem from="1462979584045" duration="4130000" />
-      <workItem from="1462988450130" duration="2306000" />
+      <workItem from="1462988450130" duration="2749000" />
     </task>
     <task id="LOCAL-00001" summary="primer commit">
       <created>1462993021696</created>
@@ -878,11 +879,17 @@
       <option name="project" value="LOCAL" />
       <updated>1462993102514</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="primer commit">
+      <created>1462994321083</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1462994321083</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="494131000" />
+    <option name="totallyTimeSpent" value="494574000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
