@@ -98,12 +98,22 @@
                     </li>
                     <li class="margen">
                         <g:link controller="objetivo" class="over" action="list">
-                            <i class="fa fa-file-text"> Objetivos de la auditoría</i>
+                            <i class="fa fa-check-circle-o"> Objetivos de la auditoría</i>
                         </g:link>
                         <div class="descripcion hidden">
                             <h4>Objetivos </h4>
 
                             <p>Administración de los objetivos a cumplirse en una auditoría ambiental.</p>
+                        </div>
+                    </li>
+                    <li class="margen">
+                        <g:link controller="area" class="over" action="list">
+                            <i class="fa fa-automobile"> Instalaciones de la estación de servicio</i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4>Instalaciones </h4>
+
+                            <p>Administración de las instalaciones pertenecientes a las estaciones de servicio</p>
                         </div>
                     </li>
                 </ul>

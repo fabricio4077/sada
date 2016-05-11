@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="mainSada">
-        <title>Lista de Areas de la estación de servicio</title>
+        <title>Lista de Áreas de la estación de servicio</title>
     </head>
     <body>
 
@@ -14,7 +14,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="form" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nueva Área
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -32,10 +32,11 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    
-                    <g:sortableColumn property="nombre" title="Nombre" />
-                    
-                    <g:sortableColumn property="descripcion" title="Descripción" />
+
+                    <th style="width: 300px; text-align: center"> Nombre
+                    </th>
+
+                    <th style="text-align: center">Descripción</th>
                     
                     %{--<g:sortableColumn property="codigo" title="Codigo" />--}%
                     
@@ -45,7 +46,7 @@
                 <g:each in="${areaInstanceList}" status="i" var="areaInstance">
                     <tr data-id="${areaInstance.id}">
                         
-                        <td>${fieldValue(bean: areaInstance, field: "nombre")}</td>
+                        <td >${fieldValue(bean: areaInstance, field: "nombre")}</td>
                         
                         <td>${fieldValue(bean: areaInstance, field: "descripcion")}</td>
                         
@@ -128,7 +129,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Area",
+                            title   : title + " Área",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -161,67 +162,69 @@
                     return false;
                 });
 
-                context.settings({
-                    onShow : function (e) {
-                        $("tr.success").removeClass("success");
-                        var $tr = $(e.target).parent();
-                        $tr.addClass("success");
-                        id = $tr.data("id");
-                    }
-                });
-                context.attach('tbody>tr', [
-                    {
-                        header : 'Acciones'
-                    },
-                    {
-                        text   : 'Ver',
-                        icon   : "<i class='fa fa-search'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'show_ajax')}",
-                                data    : {
-                                    id : id
-                                },
-                                success : function (msg) {
-                                    bootbox.dialog({
-                                        title   : "Ver Area",
-                                        message : msg,
-                                        buttons : {
-                                            ok : {
-                                                label     : "Aceptar",
-                                                className : "btn-primary",
-                                                callback  : function () {
+
+                $("tbody tr").contextMenu({
+                    items  : {
+                        header   : {
+                            label  : "Acciones",
+                            header : true
+                        },
+                        ver      : {
+                            label  : "Ver",
+                            icon   : "fa fa-search",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action:'show_ajax')}",
+                                    data    : {
+                                        id : id
+                                    },
+                                    success : function (msg) {
+                                        bootbox.dialog({
+                                            title   : "Ver",
+                                            message : msg,
+                                            buttons : {
+                                                ok : {
+                                                    label     : "Aceptar",
+                                                    className : "btn-primary",
+                                                    callback  : function () {
+                                                    }
                                                 }
                                             }
-                                        }
-                                    });
-                                }
-                            });
+                                        });
+                                    }
+                                });
+                            }
+                        },
+                        editar   : {
+                            label  : "Editar",
+                            icon   : "fa fa-pencil",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                createEditRow(id);
+                            }
+                        },
+                        eliminar : {
+                            label            : "Eliminar",
+                            icon             : "fa fa-trash-o",
+                            separator_before : true,
+                            action           : function ($element) {
+                                var id = $element.data("id");
+                                deleteRow(id);
+                            }
                         }
                     },
-                    {
-                        text   : 'Editar',
-                        icon   : "<i class='fa fa-pencil'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            createEditRow(id);
-                        }
+                    onShow : function ($element) {
+                        $element.addClass("trHighlight");
                     },
-                    {divider : true},
-                    {
-                        text   : 'Eliminar',
-                        icon   : "<i class='fa fa-trash-o'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            deleteRow(id);
-                        }
+                    onHide : function ($element) {
+                        $(".trHighlight").removeClass("trHighlight");
                     }
-                ]);
+                });
+
+
+
             });
         </script>
 

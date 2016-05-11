@@ -24,8 +24,9 @@ class Area {
 
     static constraints = {
 
-        nombre(nullable: false, blank: false, size: 1..31)
+        nombre(nullable: false, blank: false, size: 1..63)
         descripcion(nullable: false, blank: false, size: 1..255)
+        codigo(nullable: true, blank: true)
 
     }
 }

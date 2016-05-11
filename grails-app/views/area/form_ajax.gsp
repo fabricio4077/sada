@@ -13,8 +13,8 @@
                 <label for="nombre" class="col-md-2 control-label text-info">
                     Nombre
                 </label>
-                <div class="col-md-6">
-                    <g:textField name="nombre" maxlength="31" required="" class="allCaps form-control required" value="${areaInstance?.nombre}"/>
+                <div class="col-md-8">
+                    <g:textField name="nombre" maxlength="63" required="" class="form-control required" value="${areaInstance?.nombre}"/>
                 </div>
                 
             </span>
@@ -23,26 +23,26 @@
         <div class="form-group ${hasErrors(bean: areaInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label text-info">
-                    Descripcion
+                    Descripción
                 </label>
-                <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" required="" class="allCaps form-control required" value="${areaInstance?.descripcion}"/>
+                <div class="col-md-8">
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" required="" style="resize: none" class="form-control required" value="${areaInstance?.descripcion}"/>
                 </div>
                 
             </span>
         </div>
         
-        <div class="form-group ${hasErrors(bean: areaInstance, field: 'codigo', 'error')} ">
-            <span class="grupo">
-                <label for="codigo" class="col-md-2 control-label text-info">
-                    Codigo
-                </label>
-                <div class="col-md-6">
-                    <g:textField name="codigo" class="allCaps form-control" value="${areaInstance?.codigo}"/>
-                </div>
-                
-            </span>
-        </div>
+        %{--<div class="form-group ${hasErrors(bean: areaInstance, field: 'codigo', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label for="codigo" class="col-md-2 control-label text-info">--}%
+                    %{--Codigo--}%
+                %{--</label>--}%
+                %{--<div class="col-md-6">--}%
+                    %{--<g:textField name="codigo" class="allCaps form-control" value="${areaInstance?.codigo}"/>--}%
+                %{--</div>--}%
+                %{----}%
+            %{--</span>--}%
+        %{--</div>--}%
         
     </g:form>
 
