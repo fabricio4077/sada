@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="sada dev" uuid="8037a94a-0cbd-46c6-91a7-47d870863160">
+      <user-name>postgres</user-name>
+      <user-password>dfdadfc5dfd9dfdedfcddfd8dfcfdfd9</user-password>
+      <schema-pattern>sada_prba.pg_catalog sada_prba.public</schema-pattern>
+      <default-schemas>sada_prba.pg_catalog sada_prba.public</default-schemas>
+    </data-source>
+  </component>
+</project>
