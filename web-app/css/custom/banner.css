@@ -11,7 +11,8 @@
     z-index    : 1030;
     /*background : url("../../images/inicio/banner_verde.png") repeat-x;*/
     /*background : url("../../images/inicio/banner-azul.png") repeat-x;*/
-    background : url("../../images/inicio/banner-medio-ambiente.jpg") repeat-x;
+    /*background : url("../../images/inicio/banner-medio-ambiente.jpg") repeat-x;*/
+    background : url("../../images/inicio/linea-degradada_1.jpg") repeat-x;
 }
 
 .banner-top div {
@@ -74,7 +75,9 @@
 
 .banner-top-lg {
     height     : 75px;
-    background : url("../../images/inicio/banner-medio-ambiente.jpg") repeat-x;
+    /*background : url("../../images/inicio/banner-medio-ambiente.jpg") repeat-x;*/
+    background : url("../../images/inicio/linea-degradada_1.jpg") repeat-x;
+
 }
 
 .banner-top-lg div {

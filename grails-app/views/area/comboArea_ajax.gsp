@@ -5,4 +5,8 @@
   Time: 21:08
 --%>
 
-<g:select name="" id="" from=""/>
+<g:select name="areas_name" id="areas" from="${diferentes}" optionKey="id" optionValue="nombre" class="form-control"/>
+
+<script type="text/javascript">
+
+</script>

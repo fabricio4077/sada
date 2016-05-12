@@ -1,6 +1,7 @@
 package estacion
 
 import auditoria.Preauditoria
+//import static org.apache.commons.collections.CollectionUtils.*
 
 
 class AreaController extends Seguridad.Shield {
@@ -123,9 +124,40 @@ class AreaController extends Seguridad.Shield {
 
         def estacion = Preauditoria.get(params.id).estacion
         def listaAreas = Area.list([sort: 'nombre', order: 'asc'])
+        def areasEstacion = Ares.findAllByEstacion(estacion).area
+
+        def comunes = listaAreas.intersect(areasEstacion)
+        def diferentes = listaAreas.plus(areasEstacion)
+        diferentes.removeAll(comunes)
+
+//        println("diferentes " + diferentes)
+
+        return [diferentes: diferentes]
+    }
 
 
+    def acordeonAreas_ajax () {
 
+    }
+
+    def asignarArea_ajax () {
+
+        println("params asign area " + params)
+
+        def estacion = Preauditoria.get(params.id).estacion
+        def area = Area.get(params.area)
+
+        def ares = new Ares()
+        ares.estacion = estacion
+        ares.area = area
+
+        try{
+            ares.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al asignar area " + ares.errors)
+            render "no"
+        }
     }
 
 }

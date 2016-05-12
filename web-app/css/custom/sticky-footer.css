@@ -30,7 +30,8 @@ body {
 .footer3 {
     /* Set the fixed height of the footer here */
     height      : 30px;
-    background : url("../../images/inicio/banner-medio-ambiente.jpg");
+    /*background : url("../../images/inicio/banner-medio-ambiente.jpg");*/
+    background : url("../../images/inicio/linea-degradada_1.jpg");
     padding-top : 5px;
     position : fixed;
     bottom   : 0;

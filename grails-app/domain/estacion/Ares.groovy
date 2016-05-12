@@ -37,6 +37,9 @@ class Ares {
     static constraints = {
 
         descripcion (nullable: false, blank: false)
-
+        foto1(nullable: true, blank: true)
+        foto2(nullable: true, blank: true)
+        foto3(nullable: true, blank: true)
+        extintor(nullable: true, blank: true)
     }
 }
