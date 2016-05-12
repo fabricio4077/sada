@@ -1,5 +1,7 @@
 package estacion
 
+import auditoria.Preauditoria
+
 
 class AreaController extends Seguridad.Shield {
 
@@ -107,5 +109,23 @@ class AreaController extends Seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró Area."
     } //notFound para ajax
+
+    def areas () {
+
+        def pre = Preauditoria.get(params.id)
+
+        return [pre:pre]
+
+    }
+
+
+    def comboArea_ajax () {
+
+        def estacion = Preauditoria.get(params.id).estacion
+        def listaAreas = Area.list([sort: 'nombre', order: 'asc'])
+
+
+
+    }
 
 }

@@ -72,11 +72,15 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+//                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log("Nueva área agregada correctamente","success")
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1500);
                         } else {
                             spinner.replaceWith($btn);
+                            log("Error al agregar una nueva área","error");
                             return false;
                         }
                     }
