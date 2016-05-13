@@ -145,7 +145,7 @@ class AreaController extends Seguridad.Shield {
     }
 
     def asignarArea_ajax () {
-        println("params asign area " + params)
+//        println("params asign area " + params)
         def estacion = Preauditoria.get(params.id).estacion
         def area = Area.get(params.area)
 
@@ -160,13 +160,11 @@ class AreaController extends Seguridad.Shield {
             println("error al asignar area " + aresInstance.errors + e)
             render "no"
         }
+    }
 
-//        if(!aresInstance.save(flush: true)){
-//            render "ok"
-//        }else{
-//            println("error al asignar area " + aresInstance.errors)
-//            render "no"
-//        }
+    def eliminarArea_ajax () {
+        println("params eliminar area " + params)
+
     }
 
 }

@@ -8,7 +8,7 @@ class Ares {
     String foto2
     String foto3
     String descripcion
-    int capacidad
+    int capacidad = 0
     String extintor
 
     static mapping = {
@@ -35,5 +35,6 @@ class Ares {
         foto2(nullable: true, blank: true)
         foto3(nullable: true, blank: true)
         extintor(nullable: true, blank: true)
+
     }
 }

@@ -16,7 +16,7 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-bank"></i> Instalaciones </h3>
+        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-bank"></i> Áreas</h3>
     </div>
 
     <div style="margin-top: 40px; width: 750px; height: 50px; margin-left: 150px" class="vertical-container">
