@@ -137,27 +137,36 @@ class AreaController extends Seguridad.Shield {
 
 
     def acordeonAreas_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def estacion = pre.estacion
+        def areasEstacion = Ares.findAllByEstacion(estacion)
 
+        return [areas: areasEstacion, pre: pre]
     }
 
     def asignarArea_ajax () {
-
         println("params asign area " + params)
-
         def estacion = Preauditoria.get(params.id).estacion
         def area = Area.get(params.area)
 
-        def ares = new Ares()
-        ares.estacion = estacion
-        ares.area = area
+        def aresInstance = new Ares()
+        aresInstance.estacion = estacion
+        aresInstance.area = area
 
         try{
-            ares.save(flush: true)
+            aresInstance.save(flush: true)
             render "ok"
         }catch (e){
-            println("error al asignar area " + ares.errors)
+            println("error al asignar area " + aresInstance.errors + e)
             render "no"
         }
+
+//        if(!aresInstance.save(flush: true)){
+//            render "ok"
+//        }else{
+//            println("error al asignar area " + aresInstance.errors)
+//            render "no"
+//        }
     }
 
 }

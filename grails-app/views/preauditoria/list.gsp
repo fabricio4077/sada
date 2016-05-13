@@ -282,16 +282,19 @@
                             label: "Configuración 2",
                             icon: "fa fa-pencil-square",
                             submenu:{
-                                1: {
-                                    label: "1",
-                                    icon: "fa fa-file",
-                                    disabled: true
+                                objetivos: {
+                                    label: "Objetivos",
+                                    icon: "fa fa-check-circle-o",
+                                    action: function ($element) {
+                                        var id = $element.data("id")
+                                        location.href = "${createLink(controller: 'auditoria', action: 'objetivos')}/" + id
+                                    }
                                 }
                             }
                         },
                         configuración3:{
-                            label: "Configuración 3",
-                            icon: "fa fa-pencil-square",
+                            label: "Imprimir",
+                            icon: "fa fa-print",
                             submenu:{
                                 1: {
                                     label: "1",

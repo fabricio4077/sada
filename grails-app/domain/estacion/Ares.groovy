@@ -1,8 +1,6 @@
 package estacion
 
 class Ares {
-
-
     static auditable = true
     Estacion estacion
     Area area
@@ -28,15 +26,11 @@ class Ares {
             foto3 column: 'aresfto3'
             capacidad column: 'aresexcp'
             extintor column: 'aresextr'
-
-
-
         }
     }
 
     static constraints = {
-
-        descripcion (nullable: false, blank: false)
+        descripcion (nullable: true, blank: true)
         foto1(nullable: true, blank: true)
         foto2(nullable: true, blank: true)
         foto3(nullable: true, blank: true)

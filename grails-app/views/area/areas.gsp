@@ -16,7 +16,7 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-bank"></i> Instalaciones de la estación de servicio </h3>
+        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-bank"></i> Instalaciones </h3>
     </div>
 
     <div style="margin-top: 40px; width: 750px; height: 50px; margin-left: 150px" class="vertical-container">
@@ -33,11 +33,13 @@
             </div>
         </div>
     </div>
+</div>
+
+
 
     <div id="divAcordeon"></div>
 
 
-</div>
 
 <script type="text/javascript">
 
@@ -47,7 +49,7 @@
 
     function cargarComboArea () {
         $.ajax({
-           type:'POST',
+            type:'POST',
             url: '${createLink(controller: 'area', action: 'comboArea_ajax')}',
             data:{
                 id: ${pre?.id}
@@ -70,7 +72,7 @@
                 id: ${pre?.id}
             },
             success: function (msg){
-            $("#divAcordeon").html(msg)
+                $("#divAcordeon").html(msg)
             }
         })
     }
@@ -88,11 +90,11 @@
             },
             success: function (msg) {
                 if(msg == 'ok'){
-                log("Área asignada correctamente","success");
-                 cargarAcordeon();
+                    log("Área asignada correctamente","success");
+                    cargarAcordeon();
                     cargarComboArea();
                 }else{
-                log("Error al asignar el área","error")
+                    log("Error al asignar el área","error")
                 }
             }
         })
