@@ -19,7 +19,7 @@ class MarcoLegal {
     }
 
     static constraints = {
-        descripcion(nullable: true, blank: true, size: 1..63)
+        descripcion(nullable: false, blank: false, size: 1..63)
         codigo(nullable: true, blank: true, size: 1..4)
     }
 }

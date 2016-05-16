@@ -111,6 +111,37 @@
         }); //ajax
     } //createEdit
 
+    function submitForm() {
+        var $form = $("#frmMarcoLegal");
+        var $btn = $("#dlgCreateEdit").find("#btnSave");
+        if ($form.valid()) {
+            $btn.replaceWith(spinner);
+            $.ajax({
+                type    : "POST",
+                url     : '${createLink(controller: 'marcoLegal', action:'save_ajax')}',
+                data    : $form.serialize(),
+                success : function (msg) {
+                    var parts = msg.split("_");
+                    log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+                    if (parts[0] == "OK") {
+                        location.reload(true);
+                    } else {
+                        spinner.replaceWith($btn);
+                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        } //else
+    }
+
+
+
+
+
+
+
 
     function createContextMenu(node){
         var nodeStrId = node.id;

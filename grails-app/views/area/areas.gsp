@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="layout" content="mainSada">
-    <title>Instalaciones de la estación de servicio</title>
+    <title>Instalaciones de la estación de servicio: '${pre?.estacion?.nombre}'</title>
 </head>
 
 <body>
@@ -37,7 +37,7 @@
 
 
 
-    <div id="divAcordeon"></div>
+<div id="divAcordeon"></div>
 
 
 

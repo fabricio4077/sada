@@ -1,7 +1,6 @@
 <%@ page import="objetivo.Objetivo" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
-
 <script src="${resource(dir: 'js/plugins/jQuery-File-Upload-9.5.6/js/vendor', file: 'jquery.ui.widget.js')}"></script>
 <script src="${resource(dir: 'js/plugins/jQuery-File-Upload-9.5.6/js/imgResize', file: 'load-image.min.js')}"></script>
 <script src="${resource(dir: 'js/plugins/jQuery-File-Upload-9.5.6/js/imgResize', file: 'canvas-to-blob.min.js')}"></script>
@@ -70,10 +69,6 @@
                         <g:else>
                             <i class='fa fa-exclamation-triangle fa-2x text-danger text-shadow'></i> Sin imagen
                         </g:else>
-
-
-                    %{--<img class="img-responsive pull-right"--}%
-                    %{--src="${resource(dir: 'images/inicio', file: 'login_temp.jpg')}" style="width: 100px; height: 100px"/>--}%
                     </div>
                 </span>
             </div>
@@ -190,7 +185,7 @@
         </g:if>
 
 
-        //funcion para cargar la imagen desde webapp
+        //funcion para cargar la imagen desde la carpeta webapp
 
         function cargarImagen (idO) {
             $.ajax({
@@ -210,8 +205,6 @@
         //subir imagen
 
         $(function () {
-
-
             $('#file').fileupload({
                 url              : '${createLink(action:'uploadFile')}',
                 dataType         : 'json',

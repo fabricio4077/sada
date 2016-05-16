@@ -35,7 +35,7 @@
                     
                     <g:sortableColumn property="descripcion" title="Descripcion" />
                     
-                    <g:sortableColumn property="codigo" title="Codigo" />
+                    %{--<g:sortableColumn property="codigo" title="Codigo" />--}%
                     
                 </tr>
             </thead>
@@ -45,7 +45,7 @@
                         
                         <td>${fieldValue(bean: marcoLegalInstance, field: "descripcion")}</td>
                         
-                        <td>${fieldValue(bean: marcoLegalInstance, field: "codigo")}</td>
+                        %{--<td>${fieldValue(bean: marcoLegalInstance, field: "codigo")}</td>--}%
                         
                     </tr>
                 </g:each>

@@ -29,18 +29,15 @@
                         <i class="fa fa-exclamation"></i>
                     </a>
                     <div class="media-left media-middle">
-
-
-
                         <a href="#">
                             <img class="img-responsive pull-left"
                                  src="${resource(dir: 'images/objetivos', file: s?.objetivo?.imagen)}" style="width: 100px; height: 100px"/>
                         </a>
                     </div>
                     <div class="media-body">
-                        <a href="#" class="list-group-item active">
-                        ${s?.objetivo?.descripcion}
-                        </a>
+                        <g:link controller="${s?.objetivo?.controlador}" action="${s?.objetivo?.accion}" id="${s?.auditoria?.preauditoria?.id}" class="list-group-item active">
+                            ${s?.objetivo?.descripcion}
+                        </g:link>
                     </div>
                 </div>
             </g:each>

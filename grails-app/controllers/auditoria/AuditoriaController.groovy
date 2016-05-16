@@ -200,6 +200,8 @@ class AuditoriaController extends Seguridad.Shield {
              objetivo{
                  eq("tipo","Específico")
              }
+
+             order("objetivo","asc")
          }
 
          return [auditoria: auditoria, general: objetivoGeneral, especificos: especificos]

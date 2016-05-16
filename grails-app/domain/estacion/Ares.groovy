@@ -8,8 +8,6 @@ class Ares {
     String foto2
     String foto3
     String descripcion
-    int capacidad = 0
-    String extintor
 
     static mapping = {
         table 'ares'
@@ -24,8 +22,7 @@ class Ares {
             foto1 column: 'aresfto1'
             foto2 column: 'aresfto2'
             foto3 column: 'aresfto3'
-            capacidad column: 'aresexcp'
-            extintor column: 'aresextr'
+
         }
     }
 
@@ -34,7 +31,5 @@ class Ares {
         foto1(nullable: true, blank: true)
         foto2(nullable: true, blank: true)
         foto3(nullable: true, blank: true)
-        extintor(nullable: true, blank: true)
-
     }
 }

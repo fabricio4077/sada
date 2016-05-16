@@ -172,7 +172,7 @@ class MarcoLegalController extends Seguridad.Shield {
                 selected = false
                 disabled = false
                 children = true
-                label = "Marco Legal"
+                label = "Raiz"
             }else{
                 label = ""
             }

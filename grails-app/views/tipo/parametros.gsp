@@ -97,6 +97,16 @@
                         </div>
                     </li>
                     <li class="margen">
+                        <g:link controller="articulo" class="over" action="list">
+                            <i class="fa fa-file-text"> Artículo legal</i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4>Artículo Legal</h4>
+
+                            <p>Administración de los artículos pertenecientes a la Ley Ecuatoriana.</p>
+                        </div>
+                    </li>
+                    <li class="margen">
                         <g:link controller="objetivo" class="over" action="list">
                             <i class="fa fa-check-circle-o"> Objetivos de la auditoría</i>
                         </g:link>

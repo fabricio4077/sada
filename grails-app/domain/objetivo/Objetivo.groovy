@@ -7,6 +7,8 @@ class Objetivo {
     String tipo
     String defecto
     String imagen
+    String controlador
+    String accion
 
     static mapping = {
         table 'objt'
@@ -19,13 +21,15 @@ class Objetivo {
             tipo column: 'objttipo'
             defecto column: 'objtdfto'
             imagen column: 'objtimgn'
+            controlador column: 'objtcntr'
+            accion column: 'objtactn'
         }
     }
 
     static constraints = {
-
         tipo inList: ['General','Específico']
         imagen(nullable: true)
-
+        controlador(nullable: true, blank: true)
+        accion(nullable: true, blank: true)
     }
 }

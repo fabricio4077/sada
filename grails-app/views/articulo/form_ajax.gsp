@@ -7,43 +7,45 @@
 <g:else>
     <g:form class="form-horizontal" name="frmArticulo" role="form" action="save" method="POST">
         <g:hiddenField name="id" value="${articuloInstance?.id}" />
-        
-        <div class="form-group ${hasErrors(bean: articuloInstance, field: 'descripcion', 'error')} ">
-            <span class="grupo">
-                <label for="descripcion" class="col-md-2 control-label text-info">
-                    Descripcion
-                </label>
-                <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1023" class="allCaps form-control" value="${articuloInstance?.descripcion}"/>
-                </div>
-                
-            </span>
-        </div>
-        
+
+
         <div class="form-group ${hasErrors(bean: articuloInstance, field: 'norma', 'error')} ">
             <span class="grupo">
                 <label for="norma" class="col-md-2 control-label text-info">
                     Norma
                 </label>
                 <div class="col-md-6">
-                    <g:select id="norma" name="norma.id" from="${legal.Norma.list()}" optionKey="id" required="" value="${articuloInstance?.norma?.id}" class="many-to-one form-control"/>
+                    <g:select id="norma" name="norma.id" from="${legal.Norma.list()}" optionKey="id" optionValue="nombre" required="" value="${articuloInstance?.norma?.id}" class="many-to-one form-control"/>
                 </div>
-                
+
             </span>
         </div>
-        
+
         <div class="form-group ${hasErrors(bean: articuloInstance, field: 'numero', 'error')} ">
             <span class="grupo">
                 <label for="numero" class="col-md-2 control-label text-info">
-                    Numero
+                    Art. N°
                 </label>
                 <div class="col-md-6">
-                    <g:field name="numero" type="number" value="${articuloInstance.numero}" class="digits form-control required" required=""/>
+                    %{--<g:field name="numero" type="number" value="${articuloInstance.numero}" class="digits form-control required" required=""/>--}%
+                    <g:textField name="numero" value="${articuloInstance.numero}" maxlength="4" class="digits form-control number required noEspacios" required=""/>
+                </div>
+
+            </span>
+        </div>
+        
+        <div class="form-group ${hasErrors(bean: articuloInstance, field: 'descripcion', 'error')} ">
+            <span class="grupo">
+                <label for="descripcion" class="col-md-2 control-label text-info">
+                    Descripción
+                </label>
+                <div class="col-md-6">
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1023" class="form-control"
+                                style="width: 430px; height: 420px; resize: none" value="${articuloInstance?.descripcion}"/>
                 </div>
                 
             </span>
         </div>
-        
     </g:form>
 
     <script type="text/javascript">

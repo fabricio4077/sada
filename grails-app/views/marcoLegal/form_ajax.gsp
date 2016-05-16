@@ -11,26 +11,26 @@
         <div class="form-group ${hasErrors(bean: marcoLegalInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">
                 <label for="descripcion" class="col-md-2 control-label text-info">
-                    Descripcion
+                    Descripción
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="descripcion" maxlength="63" class="allCaps form-control" value="${marcoLegalInstance?.descripcion}"/>
+                    <g:textField name="descripcion" maxlength="63" class="form-control" value="${marcoLegalInstance?.descripcion}"/>
                 </div>
                 
             </span>
         </div>
         
-        <div class="form-group ${hasErrors(bean: marcoLegalInstance, field: 'codigo', 'error')} ">
-            <span class="grupo">
-                <label for="codigo" class="col-md-2 control-label text-info">
-                    Codigo
-                </label>
-                <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="4" class="allCaps form-control" value="${marcoLegalInstance?.codigo}"/>
-                </div>
-                
-            </span>
-        </div>
+        %{--<div class="form-group ${hasErrors(bean: marcoLegalInstance, field: 'codigo', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label for="codigo" class="col-md-2 control-label text-info">--}%
+                    %{--Codigo--}%
+                %{--</label>--}%
+                %{--<div class="col-md-6">--}%
+                    %{--<g:textField name="codigo" maxlength="4" class="allCaps form-control" value="${marcoLegalInstance?.codigo}"/>--}%
+                %{--</div>--}%
+                %{----}%
+            %{--</span>--}%
+        %{--</div>--}%
         
     </g:form>
 

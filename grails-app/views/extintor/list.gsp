@@ -1,10 +1,10 @@
 
-<%@ page import="legal.Articulo" %>
+<%@ page import="estacion.Extintor" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="layout" content="mainSada">
-        <title>Lista de Artículos</title>
+        <meta name="layout" content="main">
+        <title>Lista de Extintor</title>
     </head>
     <body>
 
@@ -14,7 +14,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="form" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Nuevo Artículo
+                    <i class="fa fa-file-o"></i> Crear
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">
@@ -32,30 +32,36 @@
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    <g:sortableColumn property="norma" title="Norma" style="width: 20%"/>
-                    <g:sortableColumn property="descripcion" title="Descripción" style="width: 69%" />
-                    <g:sortableColumn property="numero" title="Artículo Número" style="width: 11%"/>
+                    
+                    <g:sortableColumn property="tipo" title="Tipo" />
+                    
+                    <g:sortableColumn property="capacidad" title="Capacidad" />
+                    
+                    <th>Ares</th>
                     
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${articuloInstanceList}" status="i" var="articuloInstance">
-                    <tr data-id="${articuloInstance.id}">
-                        <td>${articuloInstance?.norma?.nombre}</td>
-                        <td>${fieldValue(bean: articuloInstance, field: "descripcion")}</td>
-                        <td style="text-align: center"><strong>${fieldValue(bean: articuloInstance, field: "numero")}</strong></td>
+                <g:each in="${extintorInstanceList}" status="i" var="extintorInstance">
+                    <tr data-id="${extintorInstance.id}">
+                        
+                        <td>${fieldValue(bean: extintorInstance, field: "tipo")}</td>
+                        
+                        <td>${fieldValue(bean: extintorInstance, field: "capacidad")}</td>
+                        
+                        <td>${fieldValue(bean: extintorInstance, field: "ares")}</td>
                         
                     </tr>
                 </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${articuloInstanceCount}" params="${params}"/>
+        <elm:pagination total="${extintorInstanceCount}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
             function submitForm() {
-                var $form = $("#frmArticulo");
+                var $form = $("#frmExtintor");
                 var $btn = $("#dlgCreateEdit").find("#btnSave");
                 if ($form.valid()) {
                 $btn.replaceWith(spinner);
@@ -81,7 +87,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Articulo seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Extintor seleccionado? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -122,7 +128,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " Artículo",
+                            title   : title + " Extintor",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -155,66 +161,67 @@
                     return false;
                 });
 
-                $("tbody tr").contextMenu({
-                    items  : {
-                        header   : {
-                            label  : "Acciones",
-                            header : true
-                        },
-                        ver      : {
-                            label  : "Ver",
-                            icon   : "fa fa-search",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action:'show_ajax')}",
-                                    data    : {
-                                        id : id
-                                    },
-                                    success : function (msg) {
-                                        bootbox.dialog({
-                                            title   : "Ver",
-                                            message : msg,
-                                            buttons : {
-                                                ok : {
-                                                    label     : "Aceptar",
-                                                    className : "btn-primary",
-                                                    callback  : function () {
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        },
-                        editar   : {
-                            label  : "Editar",
-                            icon   : "fa fa-pencil",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                createEditRow(id);
-                            }
-                        },
-                        eliminar : {
-                            label            : "Eliminar",
-                            icon             : "fa fa-trash-o",
-                            separator_before : true,
-                            action           : function ($element) {
-                                var id = $element.data("id");
-                                deleteRow(id);
-                            }
-                        }
-                    },
-                    onShow : function ($element) {
-                        $element.addClass("trHighlight");
-                    },
-                    onHide : function ($element) {
-                        $(".trHighlight").removeClass("trHighlight");
+                context.settings({
+                    onShow : function (e) {
+                        $("tr.success").removeClass("success");
+                        var $tr = $(e.target).parent();
+                        $tr.addClass("success");
+                        id = $tr.data("id");
                     }
                 });
-
+                context.attach('tbody>tr', [
+                    {
+                        header : 'Acciones'
+                    },
+                    {
+                        text   : 'Ver',
+                        icon   : "<i class='fa fa-search'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            $.ajax({
+                                type    : "POST",
+                                url     : "${createLink(action:'show_ajax')}",
+                                data    : {
+                                    id : id
+                                },
+                                success : function (msg) {
+                                    bootbox.dialog({
+                                        title   : "Ver Extintor",
+                                        message : msg,
+                                        buttons : {
+                                            ok : {
+                                                label     : "Aceptar",
+                                                className : "btn-primary",
+                                                callback  : function () {
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    {
+                        text   : 'Editar',
+                        icon   : "<i class='fa fa-pencil'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            createEditRow(id);
+                        }
+                    },
+                    {divider : true},
+                    {
+                        text   : 'Eliminar',
+                        icon   : "<i class='fa fa-trash-o'></i>",
+                        action : function (e) {
+                            $("tr.success").removeClass("success");
+                            e.preventDefault();
+                            deleteRow(id);
+                        }
+                    }
+                ]);
             });
         </script>
 
