@@ -14,6 +14,9 @@
     <script src="${resource(dir: 'js/plugins/jstree-e22db21/dist', file: 'jstree.min.js')}"></script>
     <link href="${resource(dir: 'js/plugins/jstree-e22db21/dist/themes/default', file: 'style.min.css')}" rel="stylesheet">
 
+    <script src="${resource(dir: 'js/plugins/jstree-3.2.0/dist', file: 'jstree.min.js')}"></script>
+    <link href="${resource(dir: 'js/plugins/jstree-3.2.0/dist/themes/default', file: 'style.min.css')}" rel="stylesheet">
+
     <style type="text/css">
 
     #list-cuenta {
@@ -64,13 +67,19 @@
         <p>Por favor espere</p>
     </div>
 
-    <div id="tree" class="hide">
+    %{--<div id="tree" class="hide">--}%
+
+    %{--</div>--}%
+
+    <div id="jstree" class="hidden">
 
     </div>
+
 </div>
 
 <script type="text/javascript">
 
+    var $treeContainer = $('#jstree');
 
     function createMarcoLegal(id, tipo) {
         var title = id ? "Editar" : "Crear";
@@ -137,12 +146,6 @@
     }
 
 
-
-
-
-
-
-
     function createContextMenu(node){
         var nodeStrId = node.id;
         var $node = $("#" + nodeStrId);
@@ -151,55 +154,227 @@
         var nodeUsu = $node.data("usuario");
         var nodeHasChildren = $node.hasClass("hasChildren");
 
-        if(nodeType == "root"){
-            var items = {
-                crear : {
-                    label: "Crear Marco Legal",
-                    icon:  "fa fa-bank text-success",
-                    action: function (obj){
-                        createMarcoLegal(nodeId, "Crear");
-                    }
+        var items = {};
+
+        var root = {
+                label: "Crear Marco Legal",
+                icon:  "fa fa-bank text-success",
+                action: function (obj){
+                    createMarcoLegal(nodeId, "Crear");
                 }
+        };
+
+        var norma = {
+                label: "Nueva norma legal",
+                icon:  "fa fa-bank text-success",
+                action: function (obj){
+                    createMarcoLegal(nodeId, "Crear");
+                }
+        };
+
+        var articulo = {
+            label: "Nuevo artículo",
+            icon:  "fa fa-text text-success",
+            action: function (obj){
+                createMarcoLegal(nodeId, "Crear");
             }
+        };
+
+        if(nodeType == "root"){
+            items.root = root
         }
+
+        if(nodeType == "marco"){
+            items.norma = norma
+        }
+
+        if(nodeType == "norma"){
+            items.articulo = articulo
+        }
+
+
+
+
 
         return items
 
     }
 
+    //función para buscar en el árbol
 
-    $("#tree").on("loaded.jstree", function () {
-        $("#loading").hide();
-        $("#tree").removeClass("hide").show();
-    }).on("select_node.jstree", function (node, selected, event) {
-
-    }).jstree({
-        plugins: ["type","contextmenu","wholerow","search"],
-        core    : {
-            multiple : false,
-            check_callback: true,
-            themes : {
-                variant: "small",
-                dots: true,
-                stripes: true
+    function searchArbol() {
+        var v = $.trim($('#txtSearchArbol').val());
+        openLoader("Buscando");
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'arbolSearch_ajax')}",
+            data    : {
+                str : v
             },
-            data : {
-                async: false,
-                url: '${createLink(action: 'loadTreeNode')}',
-                data: function (node) {
-                    return {
-                        id: node.id
-                    };
+            success : function (msg) {
+                var json = $.parseJSON(msg);
+                var i = 0;
+                var total = json.length;
+                var interval = setInterval(function () {
+                    $treeContainer.jstree("open_node", json[i]);
+                    i++;
+                    if (i == total) {
+                        clearInterval(interval);
+                    }
+                }, 300);
+
+                setTimeout(function () {
+                    $treeContainer.jstree(true).search(v);
+                    searchRes = $(".jstree-search");
+                    var cantRes = searchRes.length;
+                    posSearchShow = 0;
+                    $("#divSearchRes").removeClass("hidden");
+                    $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + cantRes);
+                    scrollToSearchRes();
+                    closeLoader();
+                }, (total + 1) * 300);
+            }
+        });
+    }
+
+
+    function scrollToNode($scrollTo) {
+        $treeContainer.jstree("deselect_all").jstree("select_node", $scrollTo).animate({
+            scrollTop : $scrollTo.offset().top - $treeContainer.offset().top + $treeContainer.scrollTop() - 50
+        });
+    }
+
+    function scrollToRoot() {
+        var $scrollTo = $("#root");
+        scrollToNode($scrollTo);
+    }
+
+    function scrollToSearchRes() {
+        var $scrollTo = $(searchRes[posSearchShow]);
+        $("#spanSearchRes").text("Resultado " + (posSearchShow + 1) + " de " + searchRes.length);
+        scrollToNode($scrollTo);
+    }
+
+    //función para cargar el árbol
+
+
+    $(function () {
+        $treeContainer.on("loaded.jstree", function () {
+            $("#loading").hide();
+            $treeContainer.removeClass("hidden");
+        }).jstree({
+            plugins     : ["state", "types", "contextmenu", "search"],
+            core        : {
+                multiple : false,
+                themes   : {
+                    variant : "small",
+                    dots    : true,
+                    stripes : true
+                },
+                data     : {
+                    url  : '${createLink(action:"loadTreePart_ajax")}',
+                    data : function (node) {
+                        return {
+                            id : node.id
+                        }
+                    }
+                }
+            },
+            state       : {
+                key : "arbol1"
+            },
+            contextmenu : {
+                show_at_node : false,
+                items        : createContextMenu
+            },
+            search      : {},
+            types       : {
+                'default'   : {
+                    icon : "fa fa-folder-open"
+                },
+                'marco'   : {
+                    icon : "fa fa-link text-danger"
+                },
+                'norma'      : {
+                    icon : "fa fa-legal text-success"
+                },
+                'articulo'  : {
+                    icon : "fa fa-file-text text-info"
+                },
+                'sinUnidad' : {
+                    icon : "fa fa-folder"
+                },
+                'u_1'       : {
+                    icon : 'fa fa-hospital-o'
+                },
+                'u_2'       : {
+                    icon : 'fa fa-building'
+                },
+                'u_3'       : {
+                    icon : 'fa fa-building-o'
+                },
+                'u_4'       : {
+                    icon : 'fa fa-home'
                 }
             }
-        }
-        ,
-        contextmenu :{
-            show_at_node : false,
-            items    : createContextMenu
-        }
+        });
 
-    })
+        $("#btnExpandAll").click(function () {
+            $treeContainer.jstree("open_all");
+            scrollToRoot();
+            return false;
+
+        });
+
+        $("#btnCollapseAll").click(function () {
+            $treeContainer.jstree("close_all");
+            scrollToRoot();
+            return false;
+        });
+
+        $("#btnSearchArbol").click(function () {
+            searchArbol();
+            return false;
+        });
+
+        $("#txtSearchArbol").keyup(function (ev) {
+            if (ev.keyCode == 13) {
+                searchArbol();
+            }
+        });
+
+        $("#btnPrevSearch").click(function () {
+            if (posSearchShow > 0) {
+                posSearchShow--;
+            } else {
+                posSearchShow = searchRes.length - 1;
+            }
+            scrollToSearchRes();
+            return false;
+        });
+
+        $("#btnNextSearch").click(function () {
+            if (posSearchShow < searchRes.length - 1) {
+                posSearchShow++;
+            } else {
+                posSearchShow = 0;
+            }
+            scrollToSearchRes();
+            return false;
+        });
+
+        $("#btnClearSearch").click(function () {
+            $treeContainer.jstree("clear_search");
+            $("#txtSearchArbol").val("");
+            posSearchShow = 0;
+            searchRes = [];
+            scrollToRoot();
+            $("#divSearchRes").addClass("hidden");
+            $("#spanSearchRes").text("");
+        });
+    });
+
+
 
 
 </script>

@@ -1,5 +1,7 @@
 package legal
 
+import groovy.json.JsonBuilder
+
 
 class MarcoLegalController extends Seguridad.Shield {
 
@@ -109,43 +111,16 @@ class MarcoLegalController extends Seguridad.Shield {
     } //notFound para ajax
 
     def arbolLegal() {
-        return [params: params]
     }
 
-    def loadTreeNode(params) {
+
+    def loadTreePart_ajax() {
         render(makeTreeNode(params))
     }
 
-//    def makeTreeNode (params){
-//        println("params arbol " + params)
-//        def id = params.id
-//        def padre
-//        def hijos = []
-//
-//        String tree=""
-//        String clase=""
-//        String rel=""
-//
-//        if(id == "#"){
-//            clase="hasChildren jstree-closed"
-//
-//            tree="<li id='root' class='root ${clase}' data-jstree='{\"type\":\"root\"}' level='0' >" +
-//                    "<a href='#' class='label_arbol'>Estructura</a>" +
-//                    "</li>"
-//            if(clase == ""){
-//                tree=""
-//            }
-//        } else if(id == "root"){
-//            hijos = MarcoLegal.list()
-//            println("hijos " + hijos.size())
-//        }else{
-//            hijos = []
-//        }
-//            return tree
-//    }
 
-//    private static String makeTreeNode(params) {
-    def makeTreeNode(params) {
+
+    private static String makeTreeNode(params) {
         def html = ""
         def id = params.id
 
@@ -163,7 +138,7 @@ class MarcoLegalController extends Seguridad.Shield {
         if (id == "#") {
             // aún no hay nada en el árbol, se debe crear el primer nodo raíz (root)
 //            def cantUnidadesHijas = UnidadEjecutora.countByPadreIsNull([sort: "nombre"])
-            def cantUnidadesHijas = MarcoLegal.countByIdIsNotNull()
+            def cantUnidadesHijas = MarcoLegal.list().size()
             if (cantUnidadesHijas > 0) {
                 clase = "tieneHijos jstree-closed"
                 type = "root"
@@ -172,9 +147,7 @@ class MarcoLegalController extends Seguridad.Shield {
                 selected = false
                 disabled = false
                 children = true
-                label = "Raiz"
-            }else{
-                label = ""
+                label = "Raíz Marco Legal"
             }
 
             def dataJstree = "\"opened\": $opened, \"children\": $children, \"selected\": $selected, \"disabled\": $disabled, \"type\": \"$type\""
@@ -185,32 +158,50 @@ class MarcoLegalController extends Seguridad.Shield {
                 html = ""
             }
         } else if (id == "root") {
-            println("root")
             // se deben cargar las unidades sin padre (y 'sin unidad' de ser necesario)
 //            hijos = UnidadEjecutora.findAllByPadreIsNull([sort: 'nombre'])
-//            hijos = MarcoLegal.findAllByCodigoIsNotNull([sort: 'descripcion'])
             hijos = MarcoLegal.list([sort: 'descripcion'])
         } else {
             // se quiere abrir una unidad, se deben cargan las unidades hijas y los usuarios
+
+//            println("else " + id)
+
             def parts = id.toString().split("_")
             def node_id = parts[1].toString().toLong()
-//            def padre = UnidadEjecutora.get(node_id)
-            def padre = MarcoLegal.get(node_id)
-            if (padre) {
-                hijos = []
+            def padre
+
+            if(parts[0] == 'ue'){
+                padre = MarcoLegal.get(node_id)
+                if (padre) {
+                    hijos = []
 //                hijos += UnidadEjecutora.findAllByPadre(padre, [sort: "nombre"])
-                hijos += MarcoLegal.list([sort: "descripcion"])
 //                hijos += Persona.findAllByUnidad(padre, [sort: "nombre"])
-                hijos += MarcoNorma.findAllByMarcoLegal(padre)
+//                 hijos += MarcoNorma.findAllByMarcoLegal(padre)
+                    hijos += MarcoNorma.findAllByMarcoLegal(padre)
+               }
+            }else if (parts[0] == 'usu'){
+                padre = MarcoNorma.get(node_id)
+                if (padre) {
+                    hijos = []
+//                hijos += UnidadEjecutora.findAllByPadre(padre, [sort: "nombre"])
+//                hijos += Persona.findAllByUnidad(padre, [sort: "nombre"])
+//                 hijos += MarcoNorma.findAllByMarcoLegal(padre)
+                   hijos += Articulo.findAllByNorma(padre.norma)
+                }
             }
+
+
         }
 
         if (html == "" && hijos.size() > 0) {
             // solo se dibujan los hijos si la variable html está vacía (sino ya dibujó el root)
             // y si la cantidad de hijos es mayor a 0 (sino no hay nada que aumentar al árbol)
+//
+//            def abiertos = ["343", "AI", "9999", "GGGGG"]
+//            def seleccionado = "343"
 
-            def abiertos = ["343", "AI", "9999", "GGGGG"]
-            def seleccionado = "343"
+            def abiertos = ['1','2','3']
+            def seleccionado = '1'
 
             html += "<ul>"
 
@@ -224,19 +215,19 @@ class MarcoLegalController extends Seguridad.Shield {
 //                if (hijo instanceof UnidadEjecutora) {
                 if (hijo instanceof MarcoLegal) {
 //                    def cantHijos = UnidadEjecutora.countByPadre(hijo)
-                    def cantHijos = MarcoLegal.countByCodigo(hijo)
 //                    cantHijos += Persona.countByUnidad(hijo)
-                    cantHijos += MarcoNorma.countByMarcoLegal(hijo)
 
-//                    type = "u_" + hijo.tipoInstitucion.codigo
-                    type = "u_" + hijo.codigo
-//                    label = hijo.labelArbol
+                   def cantHijos = MarcoNorma.countByMarcoLegal(hijo)
+
+
+//                    type = "u_" + hijo.id
+                    type = 'marco'
                     label = hijo.descripcion
                     nodeId = "ue_" + hijo.id
-                    if (abiertos.contains(hijo.codigo)) {
+                    if (abiertos.contains(hijo.id.toString())) {
                         opened = true
                     }
-                    if (seleccionado == hijo.codigo) {
+                    if (seleccionado == hijo.id.toString()) {
                         selected = true
                     }
                     if (cantHijos > 0) {
@@ -244,27 +235,81 @@ class MarcoLegalController extends Seguridad.Shield {
                         children = true
                     }
                 } else if (hijo instanceof MarcoNorma) {
-                    type = "usuario"
-                    if (hijo.norma) {
-                        type = "director"
-//                    } else if (hijo.esJefe) {
-//                        type = "jefe"
-//                    }
-                        nodeId = "usu_" + hijo.id
-//                    label = hijo.labelArbol
-                        label = hijo.norma.descripcion
+
+                    def cantHijosN = Articulo.countByNorma(hijo.norma)
+                    type = "norma"
+                    nodeId = "usu_" + hijo.id
+                    label = hijo.norma.nombre
+                    if (cantHijosN > 0) {
+                        clase = " tieneHijos jstree-closed"
+                        children = true
                     }
-                    def dataJstree = "\"opened\": $opened, \"children\": $children, \"selected\": $selected, \"disabled\": $disabled, \"type\": \"$type\""
-                    html += "<li class='$clase' id='$nodeId' data-jstree='{$dataJstree}'>"
-                    html += label
-                    html += "</li>"
                 }
-                html += "</ul>"
+                else if(hijo instanceof Articulo){
+                    type = "articulo"
+                    nodeId = "art_" + hijo.id
+                    label = "Art. n° " + hijo.numero + " - " + hijo.descripcion.substring(0,50) + "..."
+
+                }
+                def dataJstree = "\"opened\": $opened, \"children\": $children, \"selected\": $selected, \"disabled\": $disabled, \"type\": \"$type\""
+                html += "<li class='$clase' id='$nodeId' data-jstree='{$dataJstree}'>"
+                html += label
+                html += "</li>"
             }
-
+            html += "</ul>"
         }
-            return html
-
-
+        return html
     }
+
+//búsquead en el árbol
+    def arbolSearch_ajax() {
+        def search = params.str.trim()
+        def nodosAbrir = [:]
+        // busco las unidades que coinciden con la búsqueda
+        def unidadesMatch = UnidadEjecutora.withCriteria {
+            or {
+                ilike("nombre", "%$search%")
+                ilike("codigo", "%$search%")
+            }
+        }
+        // busco los usuarios que coinciden con la búsqueda
+        def usuariosMatch = Persona.withCriteria {
+            or {
+                ilike("nombre", "%$search%")
+                ilike("login", "%$search%")
+            }
+        }
+        // para cada unidad voy recorriendo los padres y agregándolos a la lista de nodos que se tienen
+        // que abrir, junto con la cantidad de iteraciones que tomó encontrar cada nodo
+        // guardo solamente la mayor cantidad de iteraciones para cada nodo.
+        // esto permite después ordenar los nodos en el orden que tienen que abrirse en el árbol
+        // para mostrar los resultados encontrados
+        unidadesMatch.each { ue ->
+            def padre = ue.padre
+            def c = 0
+            while (padre) {
+                def id = "#ue_" + padre.id
+                if (!nodosAbrir[id] || nodosAbrir[id] < c) {
+                    nodosAbrir[id] = c
+                }
+                c++
+                padre = padre.padre
+            }
+        }
+        // para cada usuario agrego la unidad correspondiente en la lista de nodos que se tienen que abrir
+        // después de las unidades porque siempre los usuarios van a ser las últimas hojas del árbol
+        usuariosMatch.each { usu ->
+            def id = "#ue_" + usu.unidadId
+            if (!nodosAbrir[id]) {
+                nodosAbrir[id] = 0
+            }
+        }
+        // los últimos nodos en abrirse son los que se encontraron primero (orden 0) por lo que el ordenamiento
+        // es decendiente
+        nodosAbrir = nodosAbrir.sort { -it.value }
+        def json = new JsonBuilder(nodosAbrir.keySet())
+        render json
+    }
+
+
 }
