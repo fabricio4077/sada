@@ -158,7 +158,7 @@
 
         var root = {
                 label: "Crear Marco Legal",
-                icon:  "fa fa-bank text-success",
+                icon:  "fa fa-link text-danger",
                 action: function (obj){
                     createMarcoLegal(nodeId, "Crear");
                 }
@@ -166,7 +166,7 @@
 
         var norma = {
                 label: "Nueva norma legal",
-                icon:  "fa fa-bank text-success",
+                icon:  "fa fa-legal text-success",
                 action: function (obj){
                     createMarcoLegal(nodeId, "Crear");
                 }
@@ -174,7 +174,31 @@
 
         var articulo = {
             label: "Nuevo artículo",
-            icon:  "fa fa-text text-success",
+            icon:  "fa fa-file-text text-info",
+            action: function (obj){
+                createMarcoLegal(nodeId, "Crear");
+            }
+        };
+
+        var borrarMarco = {
+            label: "Borrar marco legal",
+            icon:  "fa fa-trash text-danger",
+            action: function (obj){
+                createMarcoLegal(nodeId, "Crear");
+            }
+        };
+
+        var borrarNorma = {
+            label: "Borrar norma legal",
+            icon:  "fa fa-trash text-danger",
+            action: function (obj){
+                createMarcoLegal(nodeId, "Crear");
+            }
+        };
+
+        var borrarArticulo = {
+            label: "Borrar articulo",
+            icon:  "fa fa-trash text-danger",
             action: function (obj){
                 createMarcoLegal(nodeId, "Crear");
             }
@@ -186,11 +210,19 @@
 
         if(nodeType == "marco"){
             items.norma = norma
+            items.borrarMarco = borrarMarco
         }
 
         if(nodeType == "norma"){
             items.articulo = articulo
+            items.borrarNorma = borrarNorma
         }
+
+        if(nodeType == "articulo"){
+            items.borrarArticulo = borrarArticulo
+        }
+
+
 
 
 
