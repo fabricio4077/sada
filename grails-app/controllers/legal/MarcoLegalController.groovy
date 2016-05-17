@@ -248,7 +248,14 @@ class MarcoLegalController extends Seguridad.Shield {
                 else if(hijo instanceof Articulo){
                     type = "articulo"
                     nodeId = "art_" + hijo.id
-                    label = "Art. n° " + hijo.numero + " - " + hijo.descripcion.substring(0,50) + "..."
+
+//
+                    if(hijo.descripcion.size() > 50){
+                        label = "Art. n° " + hijo.numero + " - " + hijo.descripcion.substring(0,50) + "..."
+                    }else{
+                        label = "Art. n° " + hijo.numero + " - " + hijo.descripcion
+                    }
+
 
                 }
                 def dataJstree = "\"opened\": $opened, \"children\": $children, \"selected\": $selected, \"disabled\": $disabled, \"type\": \"$type\""

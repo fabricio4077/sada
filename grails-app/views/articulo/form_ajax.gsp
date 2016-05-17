@@ -14,10 +14,18 @@
                 <label for="norma" class="col-md-2 control-label text-info">
                     Norma
                 </label>
-                <div class="col-md-6">
-                    <g:select id="norma" name="norma.id" from="${legal.Norma.list()}" optionKey="id" optionValue="nombre" required="" value="${articuloInstance?.norma?.id}" class="many-to-one form-control"/>
-                </div>
-
+                <g:if test="${normaExistente}">
+                    <div class="col-md-6">
+                        <g:hiddenField name="norma_id" value="${normaExistente?.id}" class="normaFija"/>
+                       <g:textField name="norma.id" id="norma" value="${normaExistente?.nombre}" class="form-control" readonly="true"/>
+                    </div>
+                </g:if>
+                <g:else>
+                    <div class="col-md-6">
+                        <g:select id="norma" name="norma.id" from="${legal.Norma.list()}" optionKey="id" optionValue="nombre" required=""
+                                  value="${articuloInstance?.norma?.id}" class="many-to-one form-control normaFija"/>
+                    </div>
+                </g:else>
             </span>
         </div>
 
@@ -61,6 +69,22 @@
             },
             success        : function (label) {
                 label.parents(".grupo").removeClass('has-error');
+            },
+            rules         : {
+                numero : {
+                    remote: {
+                        url : "${createLink(action: 'validar_numero_ajax')}",
+                        type: "post",
+                        data: {
+                            id: $(".normaFija").val()
+                        }
+                    }
+                }
+            },
+            messages      : {
+                numero : {
+                    remote: "Ya existe este número de artículo"
+                }
             }
         });
         $(".form-control").keydown(function (ev) {

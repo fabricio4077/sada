@@ -7,13 +7,14 @@
 <g:else>
     <g:form class="form-horizontal" name="frmNorma" role="form" action="save" method="POST">
         <g:hiddenField name="id" value="${normaInstance?.id}" />
+        <g:hiddenField name="marco" value="${marco}"/>
 
 
         <div class="col-md-12">
             <div class="col-md-6 form-group ${hasErrors(bean: normaInstance, field: 'tipoNorma', 'error')} ">
             <span class="grupo">
                 <label for="tipoNorma" class="col-md-4 control-label text-info">
-                    Tipo Norma
+                    Tipo de Norma
                 </label>
                 <div class="col-md-8">
                     <g:select id="tipoNorma" name="tipoNorma.id" from="${legal.TipoNorma.list()}" optionKey="id" optionValue="descripcion" required="" value="${normaInstance?.tipoNorma?.id}" class="many-to-one form-control"/>

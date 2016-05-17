@@ -57,6 +57,11 @@ class NormaController extends Seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
+        def marco
+        if(params.idMarco){
+            marco = params.idMarco
+        }
+
         def normaInstance = new Norma(params)
         if (params.id) {
             normaInstance = Norma.get(params.id)
@@ -65,7 +70,7 @@ class NormaController extends Seguridad.Shield {
                 return
             }
         }
-        return [normaInstance: normaInstance]
+        return [normaInstance: normaInstance, marco: marco]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
@@ -108,5 +113,19 @@ class NormaController extends Seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró Norma."
     } //notFound para ajax
+
+    def guardarNorma_ajax () {
+        println("params guardar norma " + params)
+
+
+        if(params.id){
+
+        }else{
+
+
+
+        }
+
+    }
 
 }

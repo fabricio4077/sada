@@ -71,7 +71,7 @@
                                 location.reload(true);
                             }, 1500);
                         } else {
-                            log("Erro al guardar la Norma Legal","error");
+                            log("Error al guardar la Norma Legal","error");
                             return false;
                         }
                     }

@@ -56,6 +56,11 @@ class ArticuloController extends Seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
+        def normaArbol
+        if(params.norma){
+            normaArbol =  Norma.get(params.norma)
+        }
+
         def articuloInstance = new Articulo(params)
         if (params.id) {
             articuloInstance = Articulo.get(params.id)
@@ -64,10 +69,16 @@ class ArticuloController extends Seguridad.Shield {
                 return
             }
         }
-        return [articuloInstance: articuloInstance]
+        return [articuloInstance: articuloInstance, normaExistente: normaArbol]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
+        println("params save articulo " + params)
+
+        if(params.norma_id){
+            params.norma = params.norma_id
+        }
+
         def articuloInstance = new Articulo()
         if (params.id) {
             articuloInstance = Articulo.get(params.id)
@@ -107,5 +118,25 @@ class ArticuloController extends Seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró Articulo."
     } //notFound para ajax
+
+    def validar_numero_ajax () {
+//        println("params validar " + params)
+
+        def numeroIngresado = params.numero.toInteger();
+        def norma = Norma.get(params.id)
+        def numerosArticulos = Articulo.findAllByNorma(norma).numero
+
+//        println("numeros " + numerosArticulos)
+
+        if(numerosArticulos.contains(numeroIngresado)){
+            render false
+            return
+        }else{
+            render true
+            return
+        }
+
+
+    }
 
 }
