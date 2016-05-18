@@ -29,7 +29,7 @@
     <div class="col-md-3 col-md-offset-9 col-sm-4 col-sm-offset-8 col-xs-6" style="background: none">
         <div class="tdn-tab tdn-tab-left tdn-tab-primary " style="background: none">
             <div class="tdn-tab-body" style="background: border-box">
-                <img class="img-login" src="${resource(dir: 'images/inicio', file: 'login_temp.jpg')}"/>
+                <img class="img-login" src="${resource(dir: 'images/inicio', file: 'logo_sada3.png')}"/>
                 <g:form name="frmLogin" action="validar">
                     <div class="input-group input-login">
                         <g:textField name="user" class="form-control required noEspacios" placeholder="Usuario"/>
