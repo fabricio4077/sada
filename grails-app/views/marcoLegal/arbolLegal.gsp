@@ -237,26 +237,26 @@
 
     function deleteArticulo (id) {
         bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar este artículo?", function (result) {
-          if(result){
-              $.ajax({
-                  type: 'POST',
-                  url: '${createLink(controller: 'articulo', action: 'delete_ajax')}',
-                  data:{
-                      id: id
-                  },
-                  success: function(msg){
-                      var parts = msg.split("_");
-                      if(parts[0] == 'OK'){
-                          log("Artículo borrado correctamente","success");
-                          setTimeout(function () {
-                              location.reload(true)
-                          }, 1500);
-                      }else{
-                          log('Error al borrar el artículo',"error");
-                      }
-                  }
-              });
-          }
+            if(result){
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'articulo', action: 'delete_ajax')}',
+                    data:{
+                        id: id
+                    },
+                    success: function(msg){
+                        var parts = msg.split("_");
+                        if(parts[0] == 'OK'){
+                            log("Artículo borrado correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true)
+                            }, 1500);
+                        }else{
+                            log('Error al borrar el artículo',"error");
+                        }
+                    }
+                });
+            }
         });
     }
 
@@ -308,8 +308,7 @@
                 url     : '${createLink(controller: 'norma', action:'guardarNorma_ajax')}',
                 data    : $form.serialize(),
                 success : function (msg) {
-                    var parts = msg.split("_");
-                    if (parts[0] == "OK") {
+                    if (msg == "ok") {
                         log("Norma Legal guardada correctamente","success");
                         setTimeout(function () {
                             location.reload(true);
@@ -329,26 +328,26 @@
 
     function deleteNorma (id){
         bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar este artículo?", function (result) {
-           if(result){
-               $.ajax({
-                   type: 'POST',
-                   url: '${createLink(controller: 'norma', action: 'delete_ajax')}',
-                   data:{
-                       id: id
-                   },
-                   success: function(msg){
-                       var parts = msg.split("_");
-                       if(parts[0] == 'OK'){
-                           log("Norma borrada correctamente","success");
-                           setTimeout(function () {
-                               location.reload(true)
-                           }, 1500);
-                       }else{
-                           log('Error al borrar la norma',"error");
-                       }
-                   }
-               });
-           }
+            if(result){
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'norma', action: 'delete_ajax')}',
+                    data:{
+                        id: id
+                    },
+                    success: function(msg){
+                        var parts = msg.split("_");
+                        if(parts[0] == 'OK'){
+                            log("Norma borrada correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true)
+                            }, 1500);
+                        }else{
+                            log('Error al borrar la norma',"error");
+                        }
+                    }
+                });
+            }
         });
     }
 
@@ -364,26 +363,26 @@
         var items = {};
 
         var root = {
-                label: "Crear Marco Legal",
-                icon:  "fa fa-link text-danger",
-                action: function (obj){
-                    createMarcoLegal(nodeId, "Crear");
-                }
+            label: "Crear Marco Legal",
+            icon:  "fa fa-link text-danger",
+            action: function (obj){
+                createMarcoLegal(nodeId, "Crear");
+            }
         };
 
         var norma = {
-                label: "Nueva norma legal",
-                icon:  "fa fa-legal text-success",
-                action: function (obj){
-                    crearNorma(nodeId);
-                }
+            label: "Nueva norma legal",
+            icon:  "fa fa-legal text-success",
+            action: function (obj){
+                crearNorma(nodeId);
+            }
         };
 
         var articulo = {
             label: "Nuevo artículo",
             icon:  "fa fa-file-text text-info",
             action: function (obj){
-               createArticulo(nodeId);
+                createArticulo(nodeId);
             }
         };
 

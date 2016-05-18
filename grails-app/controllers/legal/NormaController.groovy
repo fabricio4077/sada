@@ -116,13 +116,41 @@ class NormaController extends Seguridad.Shield {
 
     def guardarNorma_ajax () {
         println("params guardar norma " + params)
-
+        def norma
+        def error = ''
 
         if(params.id){
 
         }else{
 
+        norma = new Norma()
+        norma.nombre = params.nombre
+        norma.descripcion = params.descripcion
+        norma.anio = params.anio
+        norma.tipoNorma = TipoNorma.get(params."tipoNorma.id")
+        try{
+        norma.save(flush: true)
+        }catch (e){
+        error += norma.errors
+        println("Error al guardar la norma (arbol)" + norma.errors)
+        }
 
+        def marcoNorma = new MarcoNorma()
+        marcoNorma.norma = norma
+        marcoNorma.marcoLegal = MarcoLegal.get(params.marco)
+
+        try{
+        marcoNorma.save(flush: true)
+        }catch (e){
+        error += marcoNorma.errors
+        println("Error al guardar el marco x norma (arbol)" + marcoNorma.errors)
+        }
+
+         if(error == ''){
+             render "ok"
+         }else{
+             render "no"
+         }
 
         }
 
