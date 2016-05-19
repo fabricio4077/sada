@@ -91,7 +91,7 @@
             success : function (msg) {
                 var b = bootbox.dialog({
                     id      : "dlgCreateEdit",
-                    title   : title + " MarcoLegal",
+                    title   : "Marco Legal",
                     message : msg,
                     buttons : {
                         cancelar : {
@@ -326,18 +326,17 @@
 
     //función para borrar una norma
 
-    function deleteNorma (id){
-        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar este artículo?", function (result) {
+    function deleteNorma (idBorrarNorma){
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar esta norma?", function (result) {
             if(result){
                 $.ajax({
                     type: 'POST',
-                    url: '${createLink(controller: 'norma', action: 'delete_ajax')}',
+                    url: '${createLink(controller: 'norma', action: 'borrarNorma_ajax')}',
                     data:{
-                        id: id
+                        id: idBorrarNorma
                     },
                     success: function(msg){
-                        var parts = msg.split("_");
-                        if(parts[0] == 'OK'){
+                        if(msg == 'ok'){
                             log("Norma borrada correctamente","success");
                             setTimeout(function () {
                                 location.reload(true)
@@ -351,6 +350,119 @@
         });
     }
 
+    //función para editar un marco legal
+
+    function editarMarcoLegal (idMarcoEditar) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(action:'form_ajax')}",
+            data    : {
+                id: idMarcoEditar
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "Marco Legal",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitForm();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    }
+
+    //función editar norma legal
+
+    function editarNormaLegal (idNormaLegal) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'norma', action:'form_ajax')}",
+            data    : {
+                id: idNormaLegal
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCrearNorma",
+                    title   : "Norma Legal",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormNorma();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    }
+
+    //función editar artículo
+
+    function editarArticuloLegal (idArticuloLegal) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'articulo', action:'form_ajax')}",
+            data    : {
+                id: idArticuloLegal
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCrearArticulo",
+                    title   : "Artículo",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormArticulo();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    }
 
     function createContextMenu(node){
         var nodeStrId = node.id;
@@ -398,7 +510,7 @@
             label: "Borrar norma legal",
             icon:  "fa fa-trash text-danger",
             action: function (obj){
-                createMarcoLegal(nodeId, "Crear");
+                deleteNorma(nodeId);
             }
         };
 
@@ -410,28 +522,52 @@
             }
         };
 
+        var editarMarco = {
+            label: "Editar Marco",
+            icon:  "fa fa-pencil text-danger",
+            action: function (obj){
+                editarMarcoLegal(nodeId);
+            }
+        };
+
+        var editarNorma = {
+            label: "Editar Norma",
+            icon:  "fa fa-pencil text-success",
+            action: function (obj){
+                editarNormaLegal(nodeId);
+            }
+        };
+
+        var editarArticulo = {
+            label: "Editar Artículo",
+            icon:  "fa fa-pencil text-info",
+            action: function (obj){
+                editarArticuloLegal(nodeId);
+            }
+        };
+
+
         if(nodeType == "root"){
             items.root = root
         }
 
         if(nodeType == "marco"){
+            items.editarMarco = editarMarco
             items.norma = norma;
             items.borrarMarco = borrarMarco
 
         }
 
         if(nodeType == "norma"){
+            items.editarNorma = editarNorma
             items.articulo = articulo;
             items.borrarNorma = borrarNorma
         }
 
         if(nodeType == "articulo"){
+            items.editarArticulo = editarArticulo
             items.borrarArticulo = borrarArticulo
         }
-
-
-
-
 
 
 

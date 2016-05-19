@@ -121,38 +121,55 @@ class NormaController extends Seguridad.Shield {
 
         if(params.id){
 
+            norma = Norma.get(params.id)
+            norma.nombre = params.nombre
+            norma.descripcion = params.descripcion
+            norma.anio = params.anio
+            norma.tipoNorma = TipoNorma.get(params."tipoNorma.id")
+
+            try{
+                norma.save(flush: true)
+            }catch (e){
+                error += norma.errors
+                println("Error al guardar la norma (arbol)" + norma.errors)
+            }
+
         }else{
 
-        norma = new Norma()
-        norma.nombre = params.nombre
-        norma.descripcion = params.descripcion
-        norma.anio = params.anio
-        norma.tipoNorma = TipoNorma.get(params."tipoNorma.id")
-        try{
-        norma.save(flush: true)
-        }catch (e){
-        error += norma.errors
-        println("Error al guardar la norma (arbol)" + norma.errors)
+            norma = new Norma()
+            norma.nombre = params.nombre
+            norma.descripcion = params.descripcion
+            norma.anio = params.anio
+            norma.tipoNorma = TipoNorma.get(params."tipoNorma.id")
+            try{
+                norma.save(flush: true)
+            }catch (e){
+                error += norma.errors
+                println("Error al guardar la norma (arbol)" + norma.errors)
+            }
+
+            def marcoNorma = new MarcoNorma()
+            marcoNorma.norma = norma
+            marcoNorma.marcoLegal = MarcoLegal.get(params.marco)
+
+            try{
+                marcoNorma.save(flush: true)
+            }catch (e){
+                error += marcoNorma.errors
+                println("Error al guardar el marco x norma (arbol)" + marcoNorma.errors)
+            }
         }
 
-        def marcoNorma = new MarcoNorma()
-        marcoNorma.norma = norma
-        marcoNorma.marcoLegal = MarcoLegal.get(params.marco)
-
-        try{
-        marcoNorma.save(flush: true)
-        }catch (e){
-        error += marcoNorma.errors
-        println("Error al guardar el marco x norma (arbol)" + marcoNorma.errors)
+        if(error == ''){
+            render "ok"
+        }else{
+            render "no"
         }
+    }
 
-         if(error == ''){
-             render "ok"
-         }else{
-             render "no"
-         }
-
-        }
+    def borrarNorma_ajax () {
+        def norma = Norma.get(params.id)
+        def mctp = MarcoNorma.findByNorma(norma)
 
     }
 
