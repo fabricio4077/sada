@@ -19,9 +19,10 @@ class MenuTagLib {
         html += "<div class='container text-center'>"
         html += "<div class='row'>"
         html += "<div class='col-md-5 col-md-offset-3'>"
-        html += "<img src='${resource(dir: 'images/inicio', file: 'branch_1.png')}'/>"
+        html += "<strong>Sistema de auditoría ambiental</strong>"
+//        html += "<img src='${resource(dir: 'images/inicio', file: 'branch_1.png')}'/>"
         html += "<img src='${resource(dir: 'images/inicio', file: 'logo_sada3.png')}'/>"
-        html += "<img src='${resource(dir: 'images/inicio', file: 'branch_2.png')}'/>"
+//        html += "<img src='${resource(dir: 'images/inicio', file: 'branch_2.png')}'/>"
         html += "</div>"
         html += "</footer>"
         out << html
@@ -218,7 +219,7 @@ class MenuTagLib {
                          "<i class=\"fa fa-gear\"></i> Administración": ["<i class=\"fa fa-group\"></i> Usuarios", "${createLink(controller: 'persona', action: 'list')}",
                                             "<i class=\"fa fa-gears\"></i> Parámetros", "${createLink(controller: 'tipo', action: 'parametros')}"],
                          "<i class=\"fa fa-bank\"></i> Marco Legal": ["<i class=\"fa fa-legal\"></i> Leyes","${createLink(controller: 'marcoLegal', action: 'arbolLegal')}"],
-                         "<i class=\"fa fa-book\"></i> Metodología": ["Metodología","${createLink(controller: 'metodologia', action: 'list')}"],
+//                         "<i class=\"fa fa-book\"></i> Metodología": ["Metodología","${createLink(controller: 'metodologia', action: 'list')}"],
                          "<i class=\"fa fa-leaf\"></i> Auditoría": ["<i class=\"fa fa-plus\"></i> Iniciar una Auditoría","${createLink(controller: 'preauditoria', action: 'crearAuditoria')}", " <i class=\"fa fa-history\"></i> Continuar una Auditoría", "${createLink(controller: 'preauditoria', action: 'list')}",
                                        "<i class=\"fa fa-navicon\"></i> Listar Auditorías", "${createLink(controller: 'preauditoria', action: 'listaGeneral')}"]]
 
@@ -227,7 +228,7 @@ class MenuTagLib {
 
                     items = ["<i class=\"fa fa-info\"></i> Inicio": ["Inicio", "${createLink(controller: 'inicio', action: 'index')}", "Manual de usuario", "linkTest"],
                              "<i class=\"fa fa-bank\"></i> Marco Legal": ["<i class=\"fa fa-legal\"></i> Leyes","${createLink(controller: 'marcoLegal', action: 'arbolLegal')}"],
-                             "<i class=\"fa fa-book\"></i> Metodología": ["Metodología","${createLink(controller: 'metodologia', action: 'list')}"],
+//                             "<i class=\"fa fa-book\"></i> Metodología": ["Metodología","${createLink(controller: 'metodologia', action: 'list')}"],
                              "<i class=\"fa fa-leaf\"></i> Auditoría": ["<i class=\"fa fa-plus\"></i> Iniciar una Auditoría","${createLink(controller: 'preauditoria', action: 'crearAuditoria')}", " <i class=\"fa fa-history\"></i> Continuar una Auditoría", "${createLink(controller: 'preauditoria', action: 'list')}"
                                            ]]
 

@@ -25,8 +25,22 @@
 
 <elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
+
+
+
 <div class="row bbody">
-    <div class="col-md-3 col-md-offset-9 col-sm-4 col-sm-offset-8 col-xs-6" style="background: none">
+
+    <div class="col-md-6 col-md-offset-3">
+        <div class="tdn-tab tdn-tab-left tdn-tab-primary " style="background: none">
+            <div class="tdn-tab-body" style="">
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="col-md-3 col-md-offset-9 col-sm-4 col-sm-offset-8 col-xs-6">
         <div class="tdn-tab tdn-tab-left tdn-tab-primary " style="background: none">
             <div class="tdn-tab-body" style="background: border-box">
                 <img class="img-login" src="${resource(dir: 'images/inicio', file: 'logo_sada3.png')}"/>
@@ -37,7 +51,7 @@
                     </div>
 
                     <div class="input-group input-login">
-                        <g:passwordField name="pass" class="form-control required" placeholder="Contraseña"/>
+                        <g:passwordField name="pass" class="form-control required noEspacios" placeholder="Contraseña"/>
                         <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
                     </div>
 

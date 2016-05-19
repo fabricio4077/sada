@@ -13,7 +13,7 @@
         %{---moz-background-size    : cover;--}%
         %{---o-background-size      : cover;--}%
         %{--background-size         : cover;--}%
-        margin-top: 150px;
+        margin-top: 100px;
     }
 
     </style>

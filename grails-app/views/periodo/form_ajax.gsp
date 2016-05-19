@@ -1,6 +1,7 @@
 <%@ page import="tipo.Periodo" %>
 
 <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
+<%@ page import="java.util.Calendar"%>
 <g:if test="${!periodoInstance}">
     <elm:notFound elem="Periodo" genero="o" />
 </g:if>
@@ -19,7 +20,7 @@
                     </label>
                     <div class="col-md-2">
                         %{--<elm:datepicker name="inicio"  class="datepicker form-control required" value="${periodoInstance?.inicio}"  />--}%
-                        <g:datePicker name="inicio" precision="year"/>
+                        <g:datePicker name="inicio" id="inicioDate" precision="year" years="${2050..2000}"/>
                     </div>
 
                 </span>
@@ -32,7 +33,9 @@
                     </label>
                     <div class="col-md-2">
                         %{--<elm:datepicker name="fin"  class="datepicker form-control required" value="${periodoInstance?.fin}" changeYear="true"/>--}%
-                        <g:datePicker name="fin" precision="year" class="form-control required"/>
+                        %{--<g:datePicker name="fin" precision="year"  class="form-control required" years="${Calendar.instance.get(Calendar.YEAR)..1900}"/>--}%
+                        <g:datePicker name="fin" precision="year"  class="form-control required" years="${2050..2000}"/>
+
                     </div>
 
                 </span>
@@ -43,6 +46,16 @@
     </g:form>
 
     <script type="text/javascript">
+
+
+
+//        $("#inicioDate").selected(function () {
+//           console.log($(this).val())
+//        });
+
+        console.log("-->" +   $("#inicioDate").selected)
+
+
         var validator = $("#frmPeriodo").validate({
             errorClass     : "help-block",
             errorPlacement : function (error, element) {

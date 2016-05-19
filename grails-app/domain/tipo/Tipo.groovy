@@ -24,6 +24,6 @@ class Tipo {
 
     static constraints = {
         descripcion (nullable: false, blank: false, size: 1..1023)
-        codigo (nullable: false, blank: false, size: 1..4)
+        codigo (nullable: true, blank: true, size: 1..4)
     }
 }

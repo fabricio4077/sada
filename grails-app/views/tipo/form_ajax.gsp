@@ -10,7 +10,7 @@
         
         <div class="form-group ${hasErrors(bean: tipoInstance, field: 'descripcion', 'error')} ">
             <span class="grupo">
-                <label for="descripcion" class="col-md-2 control-label text-info">
+                <label for="descripcion" class="col-md-3 control-label text-info">
                     Descripción
                 </label>
                 <div class="col-md-6">
@@ -21,25 +21,26 @@
             </span>
         </div>
         
-        <div class="form-group ${hasErrors(bean: tipoInstance, field: 'codigo', 'error')} ">
-            <span class="grupo">
-                <label for="codigo" class="col-md-2 control-label text-info">
-                    Código
-                </label>
-                <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required" value="${tipoInstance?.codigo}"/>
-                </div>
-                
-            </span>
-        </div>
+        %{--<div class="form-group ${hasErrors(bean: tipoInstance, field: 'codigo', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label for="codigo" class="col-md-3 control-label text-info">--}%
+                    %{--Código--}%
+                %{--</label>--}%
+                %{--<div class="col-md-6">--}%
+                    %{--<g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required" value="${tipoInstance?.codigo}"/>--}%
+                %{--</div>--}%
+                %{----}%
+            %{--</span>--}%
+        %{--</div>--}%
         
         <div class="form-group ${hasErrors(bean: tipoInstance, field: 'tiempo', 'error')} ">
             <span class="grupo">
-                <label for="tiempo" class="col-md-2 control-label text-info">
+                <label for="tiempo" class="col-md-3 control-label text-info">
                     Tiempo de Vigencia
                 </label>
-                <div class="col-md-6">
-                    <g:field name="tiempo" type="number" value="${tipoInstance.tiempo}" class="digits form-control required" required=""/>
+                <div class="col-md-2">
+                    %{--<g:field name="tiempo" type="number" value="${tipoInstance.tiempo}" class="digits form-control required" required=""/>--}%
+                    <g:textField name="tiempo" value="${tipoInstance?.tiempo}" class="number form-control required noEspacios" required="" maxlength="2"/> Año(s)
                 </div>
                 
             </span>

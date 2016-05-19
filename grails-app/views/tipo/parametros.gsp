@@ -6,6 +6,7 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
+
 <html>
 <head>
     <meta name="layout" content="mainSada">
@@ -30,8 +31,9 @@
             </div>
 
             <div class="panel-body">
-                <ul class="fa-ul">
 
+
+                <ul class="fa-ul">
                     <li class="margen">
                         <g:link controller="prfl" class="over" action="list">
                             <i class="fa fa-credit-card"> Perfiles de usuario </i>
@@ -118,12 +120,23 @@
                     </li>
                     <li class="margen">
                         <g:link controller="area" class="over" action="list">
-                            <i class="fa fa-automobile"> Instalaciones de la estación de servicio</i>
+                            <i class="fa fa-automobile"> Instalaciones de una estación de servicio</i>
                         </g:link>
                         <div class="descripcion hidden">
                             <h4>Instalaciones </h4>
 
                             <p>Administración de las instalaciones pertenecientes a las estaciones de servicio</p>
+                        </div>
+                    </li>
+
+                    <li class="margen">
+                        <g:link controller="calificacion" class="over" action="list">
+                            <i class="fa fa-dot-circle-o"> Calificaciones</i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4>Calificaciones </h4>
+
+                            <p>Sistema de calificación usado para las distintas evaluaciones ambientales</p>
                         </div>
                     </li>
                 </ul>

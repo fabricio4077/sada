@@ -170,7 +170,34 @@ class NormaController extends Seguridad.Shield {
     def borrarNorma_ajax () {
         def norma = Norma.get(params.id)
         def mctp = MarcoNorma.findByNorma(norma)
+        def error = ''
 
+        def articulos = Articulo.findAllByNorma(norma)
+
+        if(articulos.size() > 0){
+            render "no"
+        }else{
+
+            try{
+                mctp.delete(flush: true)
+            }catch (e){
+                error += mctp.errors
+                println("error al borrar mctp")
+            }
+
+            try{
+                norma.delete(flush: true)
+            }catch (e){
+                error += norma.errors
+                println("error al borrar mctp")
+            }
+
+            if(error != ''){
+                render "ok"
+            }else{
+                render "no"
+            }
+        }
     }
 
 }
