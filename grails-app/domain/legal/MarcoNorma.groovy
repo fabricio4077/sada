@@ -5,6 +5,7 @@ class MarcoNorma {
     static auditable = true
     MarcoLegal marcoLegal
     Norma norma
+    Articulo articulo
 
     static mapping = {
         table 'mctp'
@@ -15,9 +16,13 @@ class MarcoNorma {
             id column: 'mctp__id'
             marcoLegal column: 'mclg__id'
             norma column: 'nmra__id'
+            articulo column: 'artc__id'
         }
     }
 
     static constraints = {
+
+        articulo(nullable: true)
+
     }
 }

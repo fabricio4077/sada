@@ -7,6 +7,7 @@
 <g:else>
     <g:form class="form-horizontal" name="frmArticulo" role="form" action="save" method="POST">
         <g:hiddenField name="id" value="${articuloInstance?.id}" />
+        <g:hiddenField name="papa" value="${papa}" />
 
 
         <div class="form-group ${hasErrors(bean: articuloInstance, field: 'norma', 'error')} ">
@@ -14,18 +15,11 @@
                 <label for="norma" class="col-md-2 control-label text-info">
                     Norma
                 </label>
-                <g:if test="${normaExistente}">
                     <div class="col-md-6">
                         <g:hiddenField name="norma_id" value="${normaExistente?.id}" class="normaFija"/>
+                       %{--<g:textField name="norma.id" id="norma" value="${normaExistente?.nombre}" class="form-control" readonly="true"/>--}%
                        <g:textField name="norma.id" id="norma" value="${normaExistente?.nombre}" class="form-control" readonly="true"/>
                     </div>
-                </g:if>
-                <g:else>
-                    <div class="col-md-6">
-                        <g:select id="norma" name="norma.id" from="${legal.Norma.list()}" optionKey="id" optionValue="nombre" required=""
-                                  value="${articuloInstance?.norma?.id}" class="many-to-one form-control normaFija"/>
-                    </div>
-                </g:else>
             </span>
         </div>
 
@@ -48,7 +42,7 @@
                     Descripción
                 </label>
                 <div class="col-md-6">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="1023" class="form-control"
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="6000" class="form-control"
                                 style="width: 430px; height: 420px; resize: none" value="${articuloInstance?.descripcion}"/>
                 </div>
                 

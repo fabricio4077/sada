@@ -134,6 +134,7 @@ class MarcoLegalController extends Seguridad.Shield {
         def nodeId = ""
         def clase = ""
         def label = ""
+        def valor
 
         if (id == "#") {
             // aún no hay nada en el árbol, se debe crear el primer nodo raíz (root)
@@ -177,16 +178,22 @@ class MarcoLegalController extends Seguridad.Shield {
 //                hijos += UnidadEjecutora.findAllByPadre(padre, [sort: "nombre"])
 //                hijos += Persona.findAllByUnidad(padre, [sort: "nombre"])
 //                 hijos += MarcoNorma.findAllByMarcoLegal(padre)
-                    hijos += MarcoNorma.findAllByMarcoLegal(padre)
+                    hijos += MarcoNorma.findAllByMarcoLegalAndArticuloIsNull(padre, [sort: 'norma.tipoNorma.descripcion', order: 'asc'])
                }
             }else if (parts[0] == 'usu'){
                 padre = MarcoNorma.get(node_id)
+                valor = padre.marcoLegal.id
                 if (padre) {
                     hijos = []
 //                hijos += UnidadEjecutora.findAllByPadre(padre, [sort: "nombre"])
 //                hijos += Persona.findAllByUnidad(padre, [sort: "nombre"])
 //                 hijos += MarcoNorma.findAllByMarcoLegal(padre)
-                   hijos += Articulo.findAllByNorma(padre.norma)
+//                   hijos += Articulo.findAllByNorma(padre.norma)
+//                   hijos += padre.articulo
+//                   hijos += padre.norma
+                   hijos += MarcoNorma.findAllByNormaAndArticuloIsNotNull(padre.norma).articulo
+
+//                    println("hijos " + hijos)
                 }
             }
 
@@ -236,20 +243,25 @@ class MarcoLegalController extends Seguridad.Shield {
                     }
                 } else if (hijo instanceof MarcoNorma) {
 
-                    def cantHijosN = Articulo.countByNorma(hijo.norma)
+//                    def cantHijosN = Articulo.countByNorma(hijo.norma)
+                    def cantHijosN = MarcoNorma.findAllByNormaAndArticuloIsNotNull(hijo.norma).articulo.size()
+
+//                    println("cant norma " + cantHijosN)
+
                     type = "norma"
                     nodeId = "usu_" + hijo.id
-                    label = hijo.norma.nombre
+                    label = hijo?.norma?.nombre
                     if (cantHijosN > 0) {
                         clase = " tieneHijos jstree-closed"
                         children = true
                     }
                 }
                 else if(hijo instanceof Articulo){
+//                    println("entro art")
+
                     type = "articulo"
                     nodeId = "art_" + hijo.id
 
-//
                     if(hijo.descripcion.size() > 50){
                         label = "Art. n° " + hijo.numero + " - " + hijo.descripcion.substring(0,50) + "..."
                     }else{
@@ -258,7 +270,7 @@ class MarcoLegalController extends Seguridad.Shield {
 
 
                 }
-                def dataJstree = "\"opened\": $opened, \"children\": $children, \"selected\": $selected, \"disabled\": $disabled, \"type\": \"$type\""
+                def dataJstree = " \"valor\": $valor, \"opened\": $opened, \"children\": $children, \"selected\": $selected, \"disabled\": $disabled, \"type\": \"$type\""
                 html += "<li class='$clase' id='$nodeId' data-jstree='{$dataJstree}'>"
                 html += label
                 html += "</li>"

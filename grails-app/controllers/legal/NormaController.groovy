@@ -57,9 +57,14 @@ class NormaController extends Seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
+//        println("params norma legal " + params)
         def marco
         if(params.idMarco){
             marco = params.idMarco
+            if(MarcoNorma.get(marco)?.norma?.id){
+                params.id = MarcoNorma.get(marco).norma.id
+            }
+
         }
 
         def normaInstance = new Norma(params)
@@ -115,7 +120,7 @@ class NormaController extends Seguridad.Shield {
     } //notFound para ajax
 
     def guardarNorma_ajax () {
-        println("params guardar norma " + params)
+//        println("params guardar norma " + params)
         def norma
         def error = ''
 
@@ -168,36 +173,47 @@ class NormaController extends Seguridad.Shield {
     }
 
     def borrarNorma_ajax () {
-        def norma = Norma.get(params.id)
-        def mctp = MarcoNorma.findByNorma(norma)
+
+        println("params borrar norma " + params)
+        def norma = MarcoNorma.get(params.id).norma
+        def ml = MarcoLegal.get(params.marco)
+        def mctp = MarcoNorma.findAllByNormaAndMarcoLegal(norma,ml)
+        def mn = MarcoNorma.findByNormaAndMarcoLegalAndArticuloIsNull(norma, ml)
         def error = ''
 
-        def articulos = Articulo.findAllByNorma(norma)
+        def articulos = MarcoNorma.findAllByNormaAndMarcoLegalAndArticuloIsNotNull(norma,ml).articulo
 
-        if(articulos.size() > 0){
-            render "no"
-        }else{
+        println("norma " + norma)
+        println("ml " + ml)
+        println("mctp " + mctp)
+        println("mn " + mn)
 
+        mctp.each {k->
             try{
-                mctp.delete(flush: true)
+                k.delete(flush: true)
             }catch (e){
-                error += mctp.errors
-                println("error al borrar mctp")
+                error += k.errors
             }
+        }
 
+        def otros = MarcoNorma.findAllByNorma(norma)
+        println("otros " + otros)
+        println("articulos " + articulos)
+
+        if(!otros){
             try{
                 norma.delete(flush: true)
+
             }catch (e){
                 error += norma.errors
-                println("error al borrar mctp")
             }
+        }
 
-            if(error != ''){
+            if(error == ''){
                 render "ok"
             }else{
                 render "no"
             }
-        }
     }
 
 }

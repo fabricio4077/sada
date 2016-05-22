@@ -39,18 +39,27 @@
                 </tr>
             </thead>
             <tbody>
-                <g:each in="${articuloInstanceList}" status="i" var="articuloInstance">
-                    <tr data-id="${articuloInstance.id}">
-                        <td>${articuloInstance?.norma?.nombre}</td>
-                        <td>${fieldValue(bean: articuloInstance, field: "descripcion")}</td>
-                        <td style="text-align: center"><strong>${fieldValue(bean: articuloInstance, field: "numero")}</strong></td>
-                        
-                    </tr>
-                </g:each>
+                %{--<g:each in="${articuloInstanceList}" status="i" var="articuloInstance">--}%
+                    %{--<tr data-id="${articuloInstance.id}">--}%
+                        %{--<td>${articuloInstance?.norma?.nombre}</td>--}%
+                        %{--<td>${fieldValue(bean: articuloInstance, field: "descripcion")}</td>--}%
+                        %{--<td style="text-align: center"><strong>${fieldValue(bean: articuloInstance, field: "numero")}</strong></td>--}%
+                        %{----}%
+                    %{--</tr>--}%
+                %{--</g:each>--}%
+
+            <g:each in="${mctp}" status="i" var="marcoNorma">
+                <tr data-id="${marcoNorma?.articulo?.id}">
+                    <td>${marcoNorma?.norma?.nombre}</td>
+                    <td>${marcoNorma?.articulo?.descripcion}</td>
+                    <td style="text-align: center"><strong>${marcoNorma?.articulo?.numero}</strong></td>
+
+                </tr>
+            </g:each>
             </tbody>
         </table>
 
-        <elm:pagination total="${articuloInstanceCount}" params="${params}"/>
+        <elm:pagination total="${mctp.articulo.size()}" params="${params}"/>
 
         <script type="text/javascript">
             var id = null;
@@ -113,39 +122,41 @@
                 });
             }
             function createEditRow(id) {
-                var title = id ? "Editar" : "Crear";
-                var data = id ? { id: id } : {};
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(action:'form_ajax')}",
-                    data    : data,
-                    success : function (msg) {
-                        var b = bootbox.dialog({
-                            id      : "dlgCreateEdit",
-                            title   : title + " Artículo",
-                            message : msg,
-                            buttons : {
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                },
-                                guardar  : {
-                                    id        : "btnSave",
-                                    label     : "<i class='fa fa-save'></i> Guardar",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        return submitForm();
-                                    } //callback
-                                } //guardar
-                            } //buttons
-                        }); //dialog
-                        setTimeout(function () {
-                            b.find(".form-control").first().focus()
-                        }, 500);
-                    } //success
-                }); //ajax
+
+                location.href='${createLink(controller: 'marcoLegal', action: 'arbolLegal')}'
+                %{--var title = id ? "Editar" : "Crear";--}%
+                %{--var data = id ? { id: id } : {};--}%
+                %{--$.ajax({--}%
+                    %{--type    : "POST",--}%
+                    %{--url     : "${createLink(action:'form_ajax')}",--}%
+                    %{--data    : data,--}%
+                    %{--success : function (msg) {--}%
+                        %{--var b = bootbox.dialog({--}%
+                            %{--id      : "dlgCreateEdit",--}%
+                            %{--title   : title + " Artículo",--}%
+                            %{--message : msg,--}%
+                            %{--buttons : {--}%
+                                %{--cancelar : {--}%
+                                    %{--label     : "Cancelar",--}%
+                                    %{--className : "btn-primary",--}%
+                                    %{--callback  : function () {--}%
+                                    %{--}--}%
+                                %{--},--}%
+                                %{--guardar  : {--}%
+                                    %{--id        : "btnSave",--}%
+                                    %{--label     : "<i class='fa fa-save'></i> Guardar",--}%
+                                    %{--className : "btn-success",--}%
+                                    %{--callback  : function () {--}%
+                                        %{--return submitForm();--}%
+                                    %{--} //callback--}%
+                                %{--} //guardar--}%
+                            %{--} //buttons--}%
+                        %{--}); //dialog--}%
+                        %{--setTimeout(function () {--}%
+                            %{--b.find(".form-control").first().focus()--}%
+                        %{--}, 500);--}%
+                    %{--} //success--}%
+                %{--}); //ajax--}%
             } //createEdit
 
             $(function () {
@@ -160,52 +171,54 @@
                         header   : {
                             label  : "Acciones",
                             header : true
-                        },
-                        ver      : {
-                            label  : "Ver",
-                            icon   : "fa fa-search",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                $.ajax({
-                                    type    : "POST",
-                                    url     : "${createLink(action:'show_ajax')}",
-                                    data    : {
-                                        id : id
-                                    },
-                                    success : function (msg) {
-                                        bootbox.dialog({
-                                            title   : "Ver",
-                                            message : msg,
-                                            buttons : {
-                                                ok : {
-                                                    label     : "Aceptar",
-                                                    className : "btn-primary",
-                                                    callback  : function () {
-                                                    }
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        },
-                        editar   : {
-                            label  : "Editar",
-                            icon   : "fa fa-pencil",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                createEditRow(id);
-                            }
-                        },
-                        eliminar : {
-                            label            : "Eliminar",
-                            icon             : "fa fa-trash-o",
-                            separator_before : true,
-                            action           : function ($element) {
-                                var id = $element.data("id");
-                                deleteRow(id);
-                            }
                         }
+//                        ,
+                        %{--ver      : {--}%
+                            %{--label  : "Ver",--}%
+                            %{--icon   : "fa fa-search",--}%
+                            %{--action : function ($element) {--}%
+                                %{--var id = $element.data("id");--}%
+                                %{--$.ajax({--}%
+                                    %{--type    : "POST",--}%
+                                    %{--url     : "${createLink(action:'show_ajax')}",--}%
+                                    %{--data    : {--}%
+                                        %{--id : id--}%
+                                    %{--},--}%
+                                    %{--success : function (msg) {--}%
+                                        %{--bootbox.dialog({--}%
+                                            %{--title   : "Ver",--}%
+                                            %{--message : msg,--}%
+                                            %{--buttons : {--}%
+                                                %{--ok : {--}%
+                                                    %{--label     : "Aceptar",--}%
+                                                    %{--className : "btn-primary",--}%
+                                                    %{--callback  : function () {--}%
+                                                    %{--}--}%
+                                                %{--}--}%
+                                            %{--}--}%
+                                        %{--});--}%
+                                    %{--}--}%
+                                %{--});--}%
+                            %{--}--}%
+                        %{--}--}%
+//                        ,
+//                        editar   : {
+//                            label  : "Editar",
+//                            icon   : "fa fa-pencil",
+//                            action : function ($element) {
+//                                var id = $element.data("id");
+//                                createEditRow(id);
+//                            }
+//                        },
+//                        eliminar : {
+//                            label            : "Eliminar",
+//                            icon             : "fa fa-trash-o",
+//                            separator_before : true,
+//                            action           : function ($element) {
+//                                var id = $element.data("id");
+//                                deleteRow(id);
+//                            }
+//                        }
                     },
                     onShow : function ($element) {
                         $element.addClass("trHighlight");

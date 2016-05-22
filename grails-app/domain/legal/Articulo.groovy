@@ -3,9 +3,9 @@ package legal
 class Articulo {
 
     static auditable = true
-    Norma norma
     int numero
     String descripcion
+//    Norma norma
 
     static mapping = {
         table 'artc'
@@ -14,15 +14,15 @@ class Articulo {
         id generator: 'identity'
         columns {
             id column: 'artc__id'
-            norma column: 'nmra__id'
             descripcion column: 'artcdscr'
             numero column: 'artcnmro'
+//            norma column: 'nmra__id'
         }
     }
 
     static constraints = {
 
-        descripcion(nullable: true, blank: true, size: 1..1023)
+//        descripcion(nullable: true, blank: true, size: 1..1023)
 
     }
 }

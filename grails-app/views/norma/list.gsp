@@ -115,39 +115,41 @@
                 });
             }
             function createEditRow(id) {
-                var title = id ? "Editar" : "Crear";
-                var data = id ? { id: id } : {};
-                $.ajax({
-                    type    : "POST",
-                    url     : "${createLink(action:'form_ajax')}",
-                    data    : data,
-                    success : function (msg) {
-                        var b = bootbox.dialog({
-                            id      : "dlgCreateEdit",
-                            title   : title + " Norma Legal",
-                            message : msg,
-                            buttons : {
-                                cancelar : {
-                                    label     : "Cancelar",
-                                    className : "btn-primary",
-                                    callback  : function () {
-                                    }
-                                },
-                                guardar  : {
-                                    id        : "btnSave",
-                                    label     : "<i class='fa fa-save'></i> Guardar",
-                                    className : "btn-success",
-                                    callback  : function () {
-                                        return submitForm();
-                                    } //callback
-                                } //guardar
-                            } //buttons
-                        }); //dialog
-                        setTimeout(function () {
-                            b.find(".form-control").first().focus()
-                        }, 500);
-                    } //success
-                }); //ajax
+                location.href='${createLink(controller: 'marcoLegal', action: 'arbolLegal')}'
+
+                %{--var title = id ? "Editar" : "Crear";--}%
+                %{--var data = id ? { id: id } : {};--}%
+                %{--$.ajax({--}%
+                    %{--type    : "POST",--}%
+                    %{--url     : "${createLink(action:'form_ajax')}",--}%
+                    %{--data    : data,--}%
+                    %{--success : function (msg) {--}%
+                        %{--var b = bootbox.dialog({--}%
+                            %{--id      : "dlgCreateEdit",--}%
+                            %{--title   : title + " Norma Legal",--}%
+                            %{--message : msg,--}%
+                            %{--buttons : {--}%
+                                %{--cancelar : {--}%
+                                    %{--label     : "Cancelar",--}%
+                                    %{--className : "btn-primary",--}%
+                                    %{--callback  : function () {--}%
+                                    %{--}--}%
+                                %{--},--}%
+                                %{--guardar  : {--}%
+                                    %{--id        : "btnSave",--}%
+                                    %{--label     : "<i class='fa fa-save'></i> Guardar",--}%
+                                    %{--className : "btn-success",--}%
+                                    %{--callback  : function () {--}%
+                                        %{--return submitForm();--}%
+                                    %{--} //callback--}%
+                                %{--} //guardar--}%
+                            %{--} //buttons--}%
+                        %{--}); //dialog--}%
+                        %{--setTimeout(function () {--}%
+                            %{--b.find(".form-control").first().focus()--}%
+                        %{--}, 500);--}%
+                    %{--} //success--}%
+                %{--}); //ajax--}%
             } //createEdit
 
             $(function () {
@@ -191,24 +193,25 @@
                                     }
                                 });
                             }
-                        },
-                        editar   : {
-                            label  : "Editar",
-                            icon   : "fa fa-pencil",
-                            action : function ($element) {
-                                var id = $element.data("id");
-                                createEditRow(id);
-                            }
-                        },
-                        eliminar : {
-                            label            : "Eliminar",
-                            icon             : "fa fa-trash-o",
-                            separator_before : true,
-                            action           : function ($element) {
-                                var id = $element.data("id");
-                                deleteRow(id);
-                            }
                         }
+//                        ,
+//                        editar   : {
+//                            label  : "Editar",
+//                            icon   : "fa fa-pencil",
+//                            action : function ($element) {
+//                                var id = $element.data("id");
+//                                createEditRow(id);
+//                            }
+//                        },
+//                        eliminar : {
+//                            label            : "Eliminar",
+//                            icon             : "fa fa-trash-o",
+//                            separator_before : true,
+//                            action           : function ($element) {
+//                                var id = $element.data("id");
+//                                deleteRow(id);
+//                            }
+//                        }
                     },
                     onShow : function ($element) {
                         $element.addClass("trHighlight");

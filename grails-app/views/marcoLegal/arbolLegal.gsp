@@ -68,7 +68,7 @@
     </div>
 
 
-    <div id="jstree" class="hidden">
+    <div id="jstree" class="hidden" style="height: 700px">
 
     </div>
 
@@ -171,12 +171,13 @@
     //función para crear un nuevo artículo
 
 
-    function createArticulo (idNorma) {
+    function createArticulo (idNorma, nodoPapa) {
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'articulo', action:'form_ajax')}",
             data    : {
-                norma: idNorma
+                norma: idNorma,
+                papa: nodoPapa
             },
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -209,6 +210,7 @@
     }
 
     function submitFormArticulo() {
+
         var $form = $("#frmArticulo");
         var $btn = $("#dlgCrearArticulo").find("#btnSave");
         if ($form.valid()) {
@@ -218,13 +220,18 @@
                 url     : '${createLink(controller: 'articulo', action:'save_ajax')}',
                 data    : $form.serialize(),
                 success : function (msg) {
-                    var parts = msg.split("_");
+//                    var parts = msg.split("_");
 //                    log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
-                    if (parts[0] == "OK") {
-                        location.reload(true);
+//                    if (parts[0] == "OK") {
+                    if (msg == "ok") {
+//                        location.reload(true);
+                        log("Artículo guardado correctamente","success");
+                        setTimeout(function () {
+                            location.reload(true)
+                        }, 1500);
                     } else {
-                        spinner.replaceWith($btn);
-                        return false;
+                        log("Error al guardar el artículo","error");
+//                        return false;
                     }
                 }
             });
@@ -235,18 +242,21 @@
 
     //función para borrar artículos
 
-    function deleteArticulo (id) {
+    function deleteArticulo (id, nodoPapa1, abuelo) {
         bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar este artículo?", function (result) {
             if(result){
                 $.ajax({
                     type: 'POST',
                     url: '${createLink(controller: 'articulo', action: 'delete_ajax')}',
                     data:{
-                        id: id
+                        id: id,
+                        papa: nodoPapa1,
+                        abuelo: abuelo
                     },
                     success: function(msg){
-                        var parts = msg.split("_");
-                        if(parts[0] == 'OK'){
+//                        var parts = msg.split("_");
+//                        if(parts[0] == 'OK'){
+                        if(msg == 'ok'){
                             log("Artículo borrado correctamente","success");
                             setTimeout(function () {
                                 location.reload(true)
@@ -326,14 +336,16 @@
 
     //función para borrar una norma
 
-    function deleteNorma (idBorrarNorma){
-        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar esta norma?", function (result) {
+    function deleteNorma (idBorrarNorma, idMarco){
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar " +
+        "esta norma? <br><br> Todos los artículos pertenecientes a la misma también serán borrados!", function (result) {
             if(result){
                 $.ajax({
                     type: 'POST',
                     url: '${createLink(controller: 'norma', action: 'borrarNorma_ajax')}',
                     data:{
-                        id: idBorrarNorma
+                        id: idBorrarNorma,
+                        marco: idMarco
                     },
                     success: function(msg){
                         if(msg == 'ok'){
@@ -395,7 +407,7 @@
             type    : "POST",
             url     : "${createLink(controller: 'norma', action:'form_ajax')}",
             data    : {
-                id: idNormaLegal
+                idMarco: idNormaLegal
             },
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -428,12 +440,13 @@
 
     //función editar artículo
 
-    function editarArticuloLegal (idArticuloLegal) {
+    function editarArticuloLegal (idArticuloLegal, nodoPapa) {
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'articulo', action:'form_ajax')}",
             data    : {
-                id: idArticuloLegal
+                id: idArticuloLegal,
+                norma: nodoPapa
             },
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -467,6 +480,10 @@
     function createContextMenu(node){
         var nodeStrId = node.id;
         var $node = $("#" + nodeStrId);
+        var nodoPapa = node.parent;
+        var papa = nodoPapa.split("_")[1];
+        var nodoAbuelo = $node.data("jstree").valor;
+//        console.log("-->" + $node.data("jstree").valor);
         var nodeId = nodeStrId.split("_")[1];
         var nodeType = $node.data("jstree").type;
         var nodeUsu = $node.data("usuario");
@@ -494,7 +511,7 @@
             label: "Nuevo artículo",
             icon:  "fa fa-file-text text-info",
             action: function (obj){
-                createArticulo(nodeId);
+                createArticulo(nodeId,papa);
             }
         };
 
@@ -510,7 +527,7 @@
             label: "Borrar norma legal",
             icon:  "fa fa-trash text-danger",
             action: function (obj){
-                deleteNorma(nodeId);
+                deleteNorma(nodeId, papa);
             }
         };
 
@@ -518,7 +535,7 @@
             label: "Borrar articulo",
             icon:  "fa fa-trash text-danger",
             action: function (obj){
-                deleteArticulo(nodeId);
+                deleteArticulo(nodeId, papa, nodoAbuelo);
             }
         };
 
@@ -542,7 +559,7 @@
             label: "Editar Artículo",
             icon:  "fa fa-pencil text-info",
             action: function (obj){
-                editarArticuloLegal(nodeId);
+                editarArticuloLegal(nodeId, papa);
             }
         };
 
