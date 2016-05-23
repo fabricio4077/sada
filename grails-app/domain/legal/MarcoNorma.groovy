@@ -6,6 +6,8 @@ class MarcoNorma {
     MarcoLegal marcoLegal
     Norma norma
     Articulo articulo
+    Literal literal
+    int seleccionado = 0
 
     static mapping = {
         table 'mctp'
@@ -17,12 +19,16 @@ class MarcoNorma {
             marcoLegal column: 'mclg__id'
             norma column: 'nmra__id'
             articulo column: 'artc__id'
+            literal column: 'ltrl__id'
+            seleccionado column: 'mctpsele'
         }
     }
 
     static constraints = {
 
         articulo(nullable: true)
+        literal(nullable: true)
+
 
     }
 }

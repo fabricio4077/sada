@@ -132,6 +132,7 @@ class AuditoriaController extends Seguridad.Shield {
         def preauditoria = Preauditoria.get(params.id)
         def auditoria
         def objetivoAuditoria
+        def detalleAuditoria
         def error = ''
 
 
@@ -151,6 +152,12 @@ class AuditoriaController extends Seguridad.Shield {
                 error += auditoria.errors
                 println("error al guardar la auditoria " + auditoria.errors)
             }
+
+            detalleAuditoria = new DetalleAuditoria()
+            detalleAuditoria.auditoria = auditoria
+
+            detalleAuditoria.save(flush: true)
+
 
 
             listaObjetivos.each {k->
@@ -207,6 +214,15 @@ class AuditoriaController extends Seguridad.Shield {
          return [auditoria: auditoria, general: objetivoGeneral, especificos: especificos]
 
      }
+
+    def leyes () {
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+
+        return [pre: pre, auditoria: auditoria]
+
+    }
 
 
 

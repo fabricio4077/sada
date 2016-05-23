@@ -477,6 +477,139 @@
         }); //ajax
     }
 
+    // LITERAL
+
+
+    function crearLiteral(idArticulo, nodoPapa, abuelo) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'literal', action:'form_ajax')}",
+            data    : {
+                articulo: idArticulo,
+                norma: nodoPapa,
+                marco: abuelo
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "Literal",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormLiteral();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+    function submitFormLiteral() {
+        var $form = $("#frmLiteral");
+        if ($form.valid()) {
+            $.ajax({
+                type    : "POST",
+                url     : '${createLink(controller: 'literal', action:'save_ajax')}',
+                data    : $form.serialize(),
+                success : function (msg) {
+                    if(msg == 'ok'){
+                        log("Literal guardado correctamente","success");
+                        setTimeout(function () {
+                            location.reload(true)
+                        }, 1500);
+                    }else{
+                        log('Error al guardar el literal',"error");
+                    }
+                }
+            });
+        } else {
+            return false;
+        } //else
+    }
+
+    function editLiteral(idLiteral,idArticulo, abuelo) {
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'literal', action:'form_ajax')}",
+            data    : {
+                id: idLiteral,
+                articulo: idArticulo,
+                marco: abuelo
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCreateEdit",
+                    title   : "Literal",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitFormLiteral();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
+    } //createEdit
+
+
+    function deleteLiteral (id, nodoPapa, abuelo) {
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar este literal?", function (result) {
+            if(result){
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'literal', action: 'delete_ajax')}',
+                    data:{
+                        id: id,
+                        papa: nodoPapa,
+                        abuelo: abuelo
+                    },
+                    success: function(msg){
+//                        var parts = msg.split("_");
+//                        if(parts[0] == 'OK'){
+                        if(msg == 'ok'){
+                            log("Literal borrado correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true)
+                            }, 1500);
+                        }else{
+                            log('Error al borrar el literal',"error");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+
     function createContextMenu(node){
         var nodeStrId = node.id;
         var $node = $("#" + nodeStrId);
@@ -563,6 +696,30 @@
             }
         };
 
+        var literal = {
+            label: "Nuevo Literal",
+            icon:  "fa fa-asterisk text-warning",
+            action: function (obj){
+                crearLiteral(nodeId, papa, nodoAbuelo);
+            }
+        };
+
+        var editarLiteral = {
+            label: "Editar Literal",
+            icon:  "fa fa-pencil text-warning",
+            action: function (obj){
+                editLiteral(nodeId, papa, nodoAbuelo);
+            }
+        };
+
+        var borrarLiteral = {
+            label: "Borrar Literal",
+            icon:  "fa fa-trash text-danger",
+            action: function (obj){
+                deleteLiteral(nodeId, papa, nodoAbuelo);
+            }
+        };
+
 
         if(nodeType == "root"){
             items.root = root
@@ -576,14 +733,20 @@
         }
 
         if(nodeType == "norma"){
-            items.editarNorma = editarNorma
+            items.editarNorma = editarNorma;
             items.articulo = articulo;
             items.borrarNorma = borrarNorma
         }
 
         if(nodeType == "articulo"){
-            items.editarArticulo = editarArticulo
+            items.editarArticulo = editarArticulo;
+            items.crearLiteral = literal;
             items.borrarArticulo = borrarArticulo
+        }
+
+        if(nodeType == 'literal'){
+            items.editarLiteral = editarLiteral;
+            items.borrarLiteral = borrarLiteral
         }
 
 
@@ -696,17 +859,8 @@
                 'sinUnidad' : {
                     icon : "fa fa-folder"
                 },
-                'u_1'       : {
-                    icon : 'fa fa-hospital-o'
-                },
-                'u_2'       : {
-                    icon : 'fa fa-building'
-                },
-                'u_3'       : {
-                    icon : 'fa fa-building-o'
-                },
-                'u_4'       : {
-                    icon : 'fa fa-home'
+                'literal'       : {
+                    icon : 'fa fa-asterisk text-warning'
                 }
             }
         });

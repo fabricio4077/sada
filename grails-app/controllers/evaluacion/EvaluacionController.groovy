@@ -1,5 +1,10 @@
 package evaluacion
 
+import auditoria.Auditoria
+import auditoria.Preauditoria
+import legal.MarcoLegal
+import legal.MarcoNorma
+
 
 class EvaluacionController extends Seguridad.Shield {
 
@@ -107,5 +112,41 @@ class EvaluacionController extends Seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró Evaluacion."
     } //notFound para ajax
+
+    def evaluacionAmbiental () {
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def leyes = MarcoNorma.findAllByMarcoLegalAndSeleccionado(audi.marcoLegal, 1, [sort:'norma.nombre', order: 'asc'])
+
+        return [pre: pre, auditoria: audi, leyes: leyes]
+
+    }
+
+    def asignarMarco_ajax () {
+
+        println("params asignar marco " + params)
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def marcoPredeterminado = MarcoLegal.findByCodigo('DFLT')
+        def marco
+
+        if(params.marco == 'null'){
+            auditoria.marcoLegal = marcoPredeterminado
+        }else{
+
+            marco = MarcoLegal.get(params.marco)
+            auditoria.marcoLegal = marco
+        }
+
+        try{
+            auditoria.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al asignar el marco legal a la auditoria" + auditoria.errors)
+        }
+    }
 
 }

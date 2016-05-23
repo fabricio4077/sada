@@ -65,8 +65,18 @@ class ArticuloController extends Seguridad.Shield {
 
         def nodoPapa = params.papa
         def normaArbol
+        def articulo
+        def mctp
+        def marco
+
         if(params.norma){
             normaArbol =  MarcoNorma.get(params.norma).norma
+        }
+
+        if(params.id){
+            articulo = Articulo.get(params.id)
+            marco = MarcoNorma.get(params.norma).marcoLegal
+            mctp = MarcoNorma.findByArticuloAndNormaAndMarcoLegal(articulo,normaArbol, marco)
         }
 
         def articuloInstance = new Articulo(params)
@@ -77,7 +87,7 @@ class ArticuloController extends Seguridad.Shield {
                 return
             }
         }
-        return [articuloInstance: articuloInstance, normaExistente: normaArbol, papa: nodoPapa]
+        return [articuloInstance: articuloInstance, normaExistente: normaArbol, papa: nodoPapa, mctp: mctp]
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
@@ -89,8 +99,22 @@ class ArticuloController extends Seguridad.Shield {
             articulo = Articulo.get(params.id)
             articulo.descripcion = params.descripcion
             articulo.numero = params.numero.toInteger()
-
             articulo.save(flush: true)
+
+            def mctpEditar = MarcoNorma.get(params.mc)
+            if(params.seleccionado == 'on'){
+                mctpEditar.seleccionado = 1
+            }else{
+                mctpEditar.seleccionado = 0
+            }
+
+            try{
+                mctpEditar.save(flush: true)
+            }catch (e){
+                println("error al guardar articulo - mctp - arbol")
+                error += mctpEditar.errors
+            }
+
         }else{
 
             articulo = new Articulo()
@@ -110,6 +134,9 @@ class ArticuloController extends Seguridad.Shield {
             mctp.marcoLegal = ml
             mctp.norma = norma
             mctp.articulo = articulo
+            if(params.seleccionado == 'on'){
+                mctp.seleccionado = 1
+            }
 
             try{
                 mctp.save(flush: true)
@@ -154,7 +181,7 @@ class ArticuloController extends Seguridad.Shield {
         println("params borrar articulo " + params)
 
         def articulo = Articulo.get(params.id)
-        def otros = MarcoNorma.findAllByArticulo(articulo)
+
         def marcoLegal = MarcoLegal.get(params.abuelo)
         def norma = MarcoNorma.get(params.papa).norma
         def mctp = MarcoNorma.findByNormaAndArticuloAndMarcoLegal(norma, articulo, marcoLegal)
@@ -167,10 +194,9 @@ class ArticuloController extends Seguridad.Shield {
             error += mctp.errors
         }
 
+        def otros = MarcoNorma.findAllByArticulo(articulo)
 
         if(!otros){
-
-            articulo.delete(flush: true)
             try{
                 articulo.delete(flush: true)
             }catch (e){
@@ -180,28 +206,11 @@ class ArticuloController extends Seguridad.Shield {
 
         }
 
-
         if(error == ''){
             render "ok"
         }else{
             render "no"
         }
-
-//        if (params.id) {
-//            def articuloInstance = Articulo.get(params.id)
-//            if (articuloInstance) {
-//                try {
-//                    articuloInstance.delete(flush: true)
-//                    render "OK_Eliminación de Articulo exitosa."
-//                } catch (e) {
-//                    render "NO_No se pudo eliminar Articulo."
-//                }
-//            } else {
-//                notFound_ajax()
-//            }
-//        } else {
-//            notFound_ajax()
-//        }
     } //delete para eliminar via ajax
 
     protected void notFound_ajax() {

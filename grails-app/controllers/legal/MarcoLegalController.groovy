@@ -148,7 +148,7 @@ class MarcoLegalController extends Seguridad.Shield {
                 selected = false
                 disabled = false
                 children = true
-                label = "Raíz Marco Legal"
+                label = "Raíz Marcos Legales"
             }
 
             def dataJstree = "\"opened\": $opened, \"children\": $children, \"selected\": $selected, \"disabled\": $disabled, \"type\": \"$type\""
@@ -191,10 +191,24 @@ class MarcoLegalController extends Seguridad.Shield {
 //                   hijos += Articulo.findAllByNorma(padre.norma)
 //                   hijos += padre.articulo
 //                   hijos += padre.norma
-                   hijos += MarcoNorma.findAllByNormaAndArticuloIsNotNull(padre.norma).articulo
+                   hijos += MarcoNorma.findAllByNormaAndArticuloIsNotNullAndLiteralIsNull(padre.norma, [sort: 'articulo.numero', order: 'desc']).articulo
 
 //                    println("hijos " + hijos)
                 }
+            }else if (parts[0] == 'art') {
+                def art = Articulo.get(node_id)
+                padre = MarcoNorma.findByArticuloAndLiteralIsNull(art)
+                valor = padre.marcoLegal.id
+
+//                println("padre " + padre)
+
+                if (padre) {
+                    hijos = []
+                    hijos += MarcoNorma.findAllByArticuloAndLiteralIsNotNull(padre.articulo).literal
+//                    println("hijos -- literal" + hijos)
+                }
+
+
             }
 
 
@@ -244,9 +258,9 @@ class MarcoLegalController extends Seguridad.Shield {
                 } else if (hijo instanceof MarcoNorma) {
 
 //                    def cantHijosN = Articulo.countByNorma(hijo.norma)
-                    def cantHijosN = MarcoNorma.findAllByNormaAndArticuloIsNotNull(hijo.norma).articulo.size()
+                    def cantHijosN = MarcoNorma.findAllByNormaAndArticuloIsNotNullAndLiteralIsNull(hijo.norma).articulo.size()
 
-//                    println("cant norma " + cantHijosN)
+//                    println("cant norma " + hijo.id + "- "+  cantHijosN)
 
                     type = "norma"
                     nodeId = "usu_" + hijo.id
@@ -257,7 +271,11 @@ class MarcoLegalController extends Seguridad.Shield {
                     }
                 }
                 else if(hijo instanceof Articulo){
-//                    println("entro art")
+//                    println("entro art" + hijo)
+
+                    def cantHijosN = MarcoNorma.findAllByArticuloAndLiteralIsNotNull(hijo).literal.size()
+
+//                    println("hijos articulo " + cantHijosN)
 
                     type = "articulo"
                     nodeId = "art_" + hijo.id
@@ -268,7 +286,21 @@ class MarcoLegalController extends Seguridad.Shield {
                         label = "Art. n° " + hijo.numero + " - " + hijo.descripcion
                     }
 
+                    if (cantHijosN > 0) {
+                        clase = " tieneHijos jstree-closed"
+                        children = true
+                    }
 
+
+                }else if(hijo instanceof  Literal){
+                    type = "literal"
+                    nodeId = "lit_" + hijo.id
+
+                    if(hijo.descripcion.size() > 50){
+                        label = "Literal " + hijo.identificador + " - " + hijo.descripcion.substring(0,50) + "..."
+                    }else{
+                        label = "Literal " + hijo.identificador + " - " + hijo.descripcion
+                    }
                 }
                 def dataJstree = " \"valor\": $valor, \"opened\": $opened, \"children\": $children, \"selected\": $selected, \"disabled\": $disabled, \"type\": \"$type\""
                 html += "<li class='$clase' id='$nodeId' data-jstree='{$dataJstree}'>"

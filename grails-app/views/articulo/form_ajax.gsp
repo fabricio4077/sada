@@ -8,6 +8,7 @@
     <g:form class="form-horizontal" name="frmArticulo" role="form" action="save" method="POST">
         <g:hiddenField name="id" value="${articuloInstance?.id}" />
         <g:hiddenField name="papa" value="${papa}" />
+        <g:hiddenField name="mc" value="${mctp?.id}"/>
 
 
         <div class="form-group ${hasErrors(bean: articuloInstance, field: 'norma', 'error')} ">
@@ -28,9 +29,15 @@
                 <label for="numero" class="col-md-2 control-label text-info">
                     Art. N°
                 </label>
-                <div class="col-md-6">
-                    %{--<g:field name="numero" type="number" value="${articuloInstance.numero}" class="digits form-control required" required=""/>--}%
+                <div class="col-md-3">
                     <g:textField name="numero" value="${articuloInstance.numero}" maxlength="4" class="digits form-control number required noEspacios" required=""/>
+                </div>
+
+                <label for="seleccionado" class="col-md-5 control-label text-info">
+                    Se usará este artículo en la evaluación ambiental?
+                </label>
+                <div class="col-md-1">
+                    <g:checkBox name="seleccionado" checked="${(mctp?.seleccionado == 1) ? 'true' : 'false'}"/>
                 </div>
 
             </span>
