@@ -70,13 +70,19 @@
                                         </g:each>
                                     </ul>
                                 </div>
-                                <div class="divCalificacion">
+                                <div class="divCalificacion_${ley?.id}">
 
                                 </div>
 
                             </td>
-                            <td style="width: 15%"></td>
-                            <td style="width: 10%"></td>
+                            <td style="width: 15%">
+
+                            </td>
+                            <td style="width: 10%">
+                                <a href="#" id="btnAnexo" class="btn btn-primary" data-id="${ley?.id}" title="Agregar anexo" style="float: right">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </td>
                         </tr>
                     </g:each>
 

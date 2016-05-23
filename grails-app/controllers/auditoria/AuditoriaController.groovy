@@ -126,7 +126,7 @@ class AuditoriaController extends Seguridad.Shield {
 
 
     def cargarObjetivos_ajax () {
-        println ("params cargar ob " + params)
+//        println ("params cargar ob " + params)
 
         def listaObjetivos = Objetivo.findAllByDefecto("1")
         def preauditoria = Preauditoria.get(params.id)

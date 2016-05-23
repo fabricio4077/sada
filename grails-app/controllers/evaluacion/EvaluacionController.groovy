@@ -1,6 +1,7 @@
 package evaluacion
 
 import auditoria.Auditoria
+import auditoria.DetalleAuditoria
 import auditoria.Preauditoria
 import legal.MarcoLegal
 import legal.MarcoNorma
@@ -125,17 +126,17 @@ class EvaluacionController extends Seguridad.Shield {
 
     def asignarMarco_ajax () {
 
-        println("params asignar marco " + params)
+//        println("params asignar marco " + params)
 
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
         def marcoPredeterminado = MarcoLegal.findByCodigo('DFLT')
         def marco
 
         if(params.marco == 'null'){
             auditoria.marcoLegal = marcoPredeterminado
         }else{
-
             marco = MarcoLegal.get(params.marco)
             auditoria.marcoLegal = marco
         }
@@ -147,6 +148,22 @@ class EvaluacionController extends Seguridad.Shield {
             render "no"
             println("error al asignar el marco legal a la auditoria" + auditoria.errors)
         }
+
+
+        def leyes = MarcoNorma.findAllByMarcoLegalAndSeleccionado(auditoria.marcoLegal, 1, [sort:'norma.nombre', order: 'asc'])
+        def evaluacion
+
+
+        leyes.each {
+
+            evaluacion = new Evaluacion()
+            evaluacion.detalleAuditoria = detalleAuditoria
+
+        }
+
+
+
+
     }
 
 }

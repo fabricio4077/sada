@@ -27,5 +27,7 @@ class Evaluacion {
 
     static constraints = {
         anexo(nullable: true, blank: true)
+        hallazgo(nullable: true)
+        calificacion(nullable: true)
     }
 }
