@@ -56,8 +56,8 @@
                     <g:each in="${leyes}" var="ley" status="j">
                         <tr>
                             <td style="width: 2%">${j+1}</td>
-                            <td style="width: 10%; font-size: smaller">${ley?.norma?.nombre + " - Art. N° " + ley?.articulo?.numero}</td>
-                            <td style="width: 30%; font-size: smaller">${ley?.literal ? (ley?.literal?.identificador + ")  " + ley?.literal?.descripcion) : ley?.articulo?.descripcion}</td>
+                            <td style="width: 10%; font-size: smaller">${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}</td>
+                            <td style="width: 30%; font-size: smaller">${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}</td>
                             <td style="width: 15%">
 
                                 <div class="btn-group">
@@ -76,10 +76,12 @@
 
                             </td>
                             <td style="width: 15%">
-
+                                <a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${ley?.id}" title="Agregar hallazgo" style="float: right">
+                                    <i class="fa fa-plus"></i>
+                                </a>
                             </td>
                             <td style="width: 10%">
-                                <a href="#" id="btnAnexo" class="btn btn-primary" data-id="${ley?.id}" title="Agregar anexo" style="float: right">
+                                <a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${ley?.id}" title="Agregar anexo" style="float: right">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </td>
@@ -103,9 +105,38 @@
     $(".btnCalificacion").click(function () {
 
         console.log($(this).data("id"))
-        console.log($(this).data("ley"))
 
-    })
+    });
+
+    //botón agregar hallazgo
+
+    $(".btnHallazgo").click(function () {
+
+        var idEva = $(this).data("id");
+        $.ajax({
+            type:'POST',
+            url:"${createLink(controller: 'evaluacion', action: 'cargarHallazgo_ajax')}",
+            data: {
+                id: idEva
+            },
+            success: function (msg) {
+                bootbox.dialog({
+                    id: "dlgHallazgo",
+                    title: "Hallazgo",
+                    message: msg,
+                    buttons: {
+                        cancelar :{
+                            label     : '<i class="fa fa-times"></i> Cancelar',
+                            className : 'btn-danger',
+                            callback  : function () {
+
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    });
 
 
 </script>

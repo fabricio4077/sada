@@ -1,6 +1,7 @@
 package evaluacion
 
 import auditoria.DetalleAuditoria
+import legal.MarcoNorma
 
 
 class Evaluacion {
@@ -10,6 +11,7 @@ class Evaluacion {
     Hallazgo hallazgo
     Calificacion calificacion
     String anexo
+    MarcoNorma marcoNorma
 
     static mapping = {
         table 'evam'
@@ -22,6 +24,7 @@ class Evaluacion {
             hallazgo column: 'hzgo__id'
             calificacion column: 'clfc__id'
             anexo column: 'evamanxo'
+            marcoNorma column: 'mctp__id'
         }
     }
 
@@ -29,5 +32,7 @@ class Evaluacion {
         anexo(nullable: true, blank: true)
         hallazgo(nullable: true)
         calificacion(nullable: true)
+        marcoNorma(nullable: true)
+
     }
 }

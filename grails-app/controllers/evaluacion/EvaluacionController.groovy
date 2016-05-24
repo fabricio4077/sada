@@ -118,10 +118,11 @@ class EvaluacionController extends Seguridad.Shield {
 
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
-        def leyes = MarcoNorma.findAllByMarcoLegalAndSeleccionado(audi.marcoLegal, 1, [sort:'norma.nombre', order: 'asc'])
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+//        def leyes = MarcoNorma.findAllByMarcoLegalAndSeleccionado(audi.marcoLegal, 1, [sort:'norma.nombre', order: 'asc'])
+        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria)
 
         return [pre: pre, auditoria: audi, leyes: leyes]
-
     }
 
     def asignarMarco_ajax () {
@@ -133,6 +134,7 @@ class EvaluacionController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
         def marcoPredeterminado = MarcoLegal.findByCodigo('DFLT')
         def marco
+        def error = ''
 
         if(params.marco == 'null'){
             auditoria.marcoLegal = marcoPredeterminado
@@ -143,9 +145,9 @@ class EvaluacionController extends Seguridad.Shield {
 
         try{
             auditoria.save(flush: true)
-            render "ok"
+
         }catch (e){
-            render "no"
+            error += auditoria.errors
             println("error al asignar el marco legal a la auditoria" + auditoria.errors)
         }
 
@@ -154,16 +156,41 @@ class EvaluacionController extends Seguridad.Shield {
         def evaluacion
 
 
-        leyes.each {
-
+        leyes.each { ly->
             evaluacion = new Evaluacion()
             evaluacion.detalleAuditoria = detalleAuditoria
+            evaluacion.marcoNorma = ly
 
+            try{
+                evaluacion.save(flush: true)
+            }catch (e){
+                println("error al crear alguna evam " + evaluacion.errors)
+                error += evaluacion.errors
+            }
         }
 
+        if(error == ''){
+            render "ok"
+        }else{
+            render "no"
+        }
 
+    }
 
+    def cargarHallazgo_ajax () {
 
+//        println("params hallazgo " + params)
+
+        def evaluacion = Evaluacion.get(params.id)
+        def listaHallazgos
+
+        if(evaluacion.marcoNorma.literal){
+            listaHallazgos = Hallazgo.findByLiteral(evaluacion.marcoNorma.literal)
+        }else{
+            listaHallazgos = Hallazgo.findByArticulo(evaluacion.marcoNorma.articulo)
+        }
+
+        return [listaHallazgos: listaHallazgos]
     }
 
 }
