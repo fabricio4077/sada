@@ -120,10 +120,21 @@ class EvaluacionController extends Seguridad.Shield {
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
 //        def leyes = MarcoNorma.findAllByMarcoLegalAndSeleccionado(audi.marcoLegal, 1, [sort:'norma.nombre', order: 'asc'])
-        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria)
+        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
 
         return [pre: pre, auditoria: audi, leyes: leyes]
     }
+
+    def tablaEvaluacion_ajax () {
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+
+        return [leyes: leyes]
+    }
+
 
     def asignarMarco_ajax () {
 
@@ -179,18 +190,100 @@ class EvaluacionController extends Seguridad.Shield {
 
     def cargarHallazgo_ajax () {
 
-//        println("params hallazgo " + params)
+        def evaluacion = Evaluacion.get(params.id)
+        return [evaluacion: evaluacion]
+    }
+
+    def crearHallazgo_ajax() {
+
+        def evaluacion = Evaluacion.get(params.id)
+        return [evaluacion: evaluacion]
+    }
+
+    def comboHallazgo_ajax () {
 
         def evaluacion = Evaluacion.get(params.id)
         def listaHallazgos
 
         if(evaluacion.marcoNorma.literal){
-            listaHallazgos = Hallazgo.findByLiteral(evaluacion.marcoNorma.literal)
+            listaHallazgos = Hallazgo.findAllByLiteral(evaluacion.marcoNorma.literal)
         }else{
-            listaHallazgos = Hallazgo.findByArticulo(evaluacion.marcoNorma.articulo)
+            listaHallazgos = Hallazgo.findAllByArticulo(evaluacion.marcoNorma.articulo)
         }
 
         return [listaHallazgos: listaHallazgos]
+    }
+
+    def guardarHallazgo_ajax () {
+
+//        println("params guardar hallazgo " + params)
+
+        def cali = Calificacion.get(params.calificacion)
+        def evaluacion = Evaluacion.get(params.id)
+        def ref
+        def hallazgo = new Hallazgo()
+
+        if(evaluacion.marcoNorma.literal){
+             hallazgo.literal = evaluacion.marcoNorma.literal
+        }else{
+             hallazgo.articulo = evaluacion.marcoNorma.articulo
+        }
+
+        hallazgo.calificacion = cali
+        hallazgo.descripcion = params.descripcion
+
+        try{
+            hallazgo.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar nuevo hallazgo")
+        }
+    }
+
+    def guardarSeleccionado_ajax () {
+//        println("seleccionar hallazgo params " + params)
+
+        def evaluacion = Evaluacion.get(params.id)
+        def hallazgo = Hallazgo.get(params.combo)
+
+        evaluacion.hallazgo = hallazgo
+        evaluacion.calificacion = hallazgo.calificacion
+
+        try {
+            evaluacion.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al seleccionar hallazgo" + evaluacion.errors)
+        }
+    }
+
+
+    def tablaHallazgo_ajax () {
+
+        def evaluacion = Evaluacion.get(params.id)
+        return [evaluacion: evaluacion]
+
+    }
+
+    def borrarHallazgo_ajax (){
+
+        def evaluacion = Evaluacion.get(params.id)
+        evaluacion.hallazgo = null
+        evaluacion.calificacion = null
+
+        try {
+            evaluacion.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al borrar hallazgo" + evaluacion.errors)
+        }
+    }
+
+    def calificacion_ajax () {
+
     }
 
 }

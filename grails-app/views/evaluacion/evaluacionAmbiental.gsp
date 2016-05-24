@@ -48,52 +48,56 @@
         </thead>
     </table>
 
-    <div class="row-fluid"  style="width: 99.7%;height: 500px;overflow-y: auto;float: right;">
-        <div class="span12">
-            <div style="width: 1120px; height: 500px;">
-                <table class="table table-condensed table-bordered table-striped">
-                    <tbody>
-                    <g:each in="${leyes}" var="ley" status="j">
-                        <tr>
-                            <td style="width: 2%">${j+1}</td>
-                            <td style="width: 10%; font-size: smaller">${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}</td>
-                            <td style="width: 30%; font-size: smaller">${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}</td>
-                            <td style="width: 15%">
+    <div id="divTablaEvaluaciones">
 
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Calificar <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <g:each in="${evaluacion.Calificacion.list([sort: 'nombre', order: 'asc'])}" var="cal">
-                                            <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacion" data-id="${cal?.id}" data-ley="${ley?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
-                                        </g:each>
-                                    </ul>
-                                </div>
-                                <div class="divCalificacion_${ley?.id}">
+    </div>
 
-                                </div>
+    %{--<div class="row-fluid"  style="width: 99.7%;height: 500px;overflow-y: auto;float: right;">--}%
+        %{--<div class="span12">--}%
+            %{--<div style="width: 1120px; height: 500px;">--}%
+                %{--<table class="table table-condensed table-bordered table-striped" id="tablaH">--}%
+                    %{--<tbody>--}%
+                    %{--<g:each in="${leyes}" var="ley" status="j">--}%
+                        %{--<tr>--}%
+                            %{--<td style="width: 2%">${j+1}</td>--}%
+                            %{--<td style="width: 10%; font-size: smaller">${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}</td>--}%
+                            %{--<td style="width: 30%; font-size: smaller">${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}</td>--}%
+                            %{--<td style="width: 15%">--}%
 
-                            </td>
-                            <td style="width: 15%">
-                                <a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${ley?.id}" title="Agregar hallazgo" style="float: right">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </td>
-                            <td style="width: 10%">
-                                <a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${ley?.id}" title="Agregar anexo" style="float: right">
-                                    <i class="fa fa-plus"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </g:each>
+                                %{--<div class="btn-group">--}%
+                                    %{--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}%
+                                        %{--Calificar <span class="caret"></span>--}%
+                                    %{--</button>--}%
+                                    %{--<ul class="dropdown-menu">--}%
+                                        %{--<g:each in="${evaluacion.Calificacion.list([sort: 'nombre', order: 'asc'])}" var="cal">--}%
+                                            %{--<li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacion" data-id="${cal?.id}" data-ley="${ley?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>--}%
+                                        %{--</g:each>--}%
+                                    %{--</ul>--}%
+                                %{--</div>--}%
+                                %{--<div class="divCalificacion_${ley?.id}">--}%
 
-                    </tbody>
-                </table>
+                                %{--</div>--}%
 
-            </div>
-         </div>
-     </div>
+                            %{--</td>--}%
+                            %{--<td style="width: 15%">--}%
+                                %{--<a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${ley?.id}" title="Agregar hallazgo" style="float: right">--}%
+                                    %{--<i class="fa fa-plus"></i>--}%
+                                %{--</a>--}%
+                            %{--</td>--}%
+                            %{--<td style="width: 10%">--}%
+                                %{--<a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${ley?.id}" title="Agregar anexo" style="float: right">--}%
+                                    %{--<i class="fa fa-plus"></i>--}%
+                                %{--</a>--}%
+                            %{--</td>--}%
+                        %{--</tr>--}%
+                    %{--</g:each>--}%
+
+                    %{--</tbody>--}%
+                %{--</table>--}%
+
+            %{--</div>--}%
+         %{--</div>--}%
+     %{--</div>--}%
 
 
 
@@ -102,41 +106,60 @@
 </div>
 
 <script type="text/javascript">
+
+    cargarTablaEva();
+
+    //función para cargar la tabla con las evaluaciones
+    function  cargarTablaEva () {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'evaluacion', action: 'tablaEvaluacion_ajax')}',
+            data: {
+                id: ${pre?.id}
+            },
+            success: function (msg) {
+                $("#divTablaEvaluaciones").html(msg)
+            }
+        });
+    }
+
+
+
     $(".btnCalificacion").click(function () {
 
         console.log($(this).data("id"))
 
     });
 
-    //botón agregar hallazgo
+    %{--//botón agregar hallazgo--}%
 
-    $(".btnHallazgo").click(function () {
+    %{--$(".btnHallazgo").click(function () {--}%
 
-        var idEva = $(this).data("id");
-        $.ajax({
-            type:'POST',
-            url:"${createLink(controller: 'evaluacion', action: 'cargarHallazgo_ajax')}",
-            data: {
-                id: idEva
-            },
-            success: function (msg) {
-                bootbox.dialog({
-                    id: "dlgHallazgo",
-                    title: "Hallazgo",
-                    message: msg,
-                    buttons: {
-                        cancelar :{
-                            label     : '<i class="fa fa-times"></i> Cancelar',
-                            className : 'btn-danger',
-                            callback  : function () {
+        %{--var idEva = $(this).data("id");--}%
+        %{--$.ajax({--}%
+            %{--type:'POST',--}%
+            %{--url:"${createLink(controller: 'evaluacion', action: 'cargarHallazgo_ajax')}",--}%
+            %{--data: {--}%
+                %{--id: idEva--}%
+            %{--},--}%
+            %{--success: function (msg) {--}%
+                %{--bootbox.dialog({--}%
+                    %{--id: "dlgHallazgo",--}%
+                    %{--title: "Hallazgo",--}%
+                    %{--message: msg,--}%
+                    %{--buttons: {--}%
+                        %{--cancelar :{--}%
+                            %{--label     : '<i class="fa fa-times"></i> Cancelar',--}%
+                            %{--className : 'btn-primary',--}%
+                            %{--callback  : function () {--}%
 
-                            }
-                        }
-                    }
-                })
-            }
-        });
-    });
+                            %{--}--}%
+                        %{--}--}%
+                    %{--}--}%
+                %{--})--}%
+            %{--}--}%
+        %{--});--}%
+    %{--});--}%
 
 
 </script>

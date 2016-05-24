@@ -8,82 +8,132 @@
 
 <div class="row">
     <div class="col-md-2">
-        Hallazgo
+        <strong> Hallazgo</strong>
     </div>
-    <div class="col-md-6">
-        <g:select name="hallazgo_name" id="hallazgo" from="${listaHallazgos}"
-                  class="form-control"
-                  noSelection="[null: 'Seleccione...']"/>
+    <div class="col-md-7" id="divHallazgo">
+
     </div>
 
-    <div class="col-md-3" style="margin-left: 10px">
+    <div class="col-md-1" style="margin-left: 10px">
         <div class="btn-group">
             <a href="#" id="btnSeleccionarHallazgo" class="btn btn-info" title="Seleccionar Hallazgo">
-                <i class="fa fa-check-circle-o"></i>
+                <i class="fa fa-check"></i>
             </a>
-            <a href="#" id="btnAgregarHallazgo" class="btn btn-success" title="Agregar Hallazgo">
-                <i class="fa fa-plus"> Nuevo</i>
-            </a>
+
         </div>
+    </div>
+</div>
+
+<div class="row" style="margin-left: 50px">
+
+    <div id="divSeleccionado">
+
+
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-3" style="float: right">
+        <a href="#" id="btnAgregarHallazgo" class="btn btn-info" title="Agregar Hallazgo">
+            <i class="fa fa-plus"> Nuevo</i>
+        </a>
     </div>
 </div>
 
 
 
-%{--<div class="row" style="margin-left: 50px">--}%
 
-    %{--<div id="tablaExtintores" >--}%
+<div class="row" style="margin-left: 50px">
+
+    <div id="tablaCrearHallazgo" >
 
 
-    %{--</div>--}%
+    </div>
 
-%{--</div>--}%
+</div>
 
 <script type="text/javascript">
 
-//    cargarTabla();
+      cargarComboHallazgo(${evaluacion?.id});
 
-    //funcion para cargar la tabla de los extintores del área correspondiente
+     //función para cargar el combo de hallazgo
 
-    %{--function cargarTabla () {--}%
-        %{--$.ajax({--}%
-            %{--type: 'POST',--}%
-            %{--url: '${createLink(controller: 'area', action: 'tablaExtintores_ajax')}',--}%
-            %{--data: {--}%
-                %{--id: ${ares.id}--}%
-            %{--},--}%
-            %{--success: function (msg) {--}%
-                %{--$("#tablaExtintores").html(msg)--}%
-            %{--}--}%
-        %{--});--}%
-    %{--}--}%
+    function cargarComboHallazgo (idEvaluacion) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'evaluacion', action: 'comboHallazgo_ajax')}',
+            data: {
+                id: idEvaluacion
+            },
+            success: function (msg) {
+                $("#divHallazgo").html(msg)
+            }
+        });
+    }
 
-    //función para agregar los extintores al área
+    //funcion para cargar los campos de creación de hallazgos
 
-    %{--$("#btnAgregarExtintor").click(function () {--}%
-        %{--var tp = $("#tipo").val();--}%
-        %{--var cp = $("#capacidad").val();--}%
-        %{--if(tp == 'null' || cp == 'null'){--}%
-            %{--bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-info text-shadow'></i>  Debe seleccionar el tipo y la capacidad")--}%
-        %{--}else{--}%
-            %{--$.ajax({--}%
-                %{--type: 'POST',--}%
-                %{--url: '${createLink(controller: 'area',action:  'agregarExtintor_ajax')}',--}%
-                %{--data:{--}%
-                    %{--id: ${ares?.id},--}%
-                    %{--tipo: tp,--}%
-                    %{--capacidad: cp--}%
-                %{--},--}%
-                %{--success: function (msg){--}%
-                    %{--if(msg == 'ok'){--}%
-                        %{--cargarTabla();--}%
-                    %{--}else{--}%
-                        %{--log("Error al agregar un extintor al área","error")--}%
-                    %{--}--}%
+  $("#btnAgregarHallazgo").click(function () {
+      $.ajax({
+          type: 'POST',
+          url: '${createLink(controller: 'evaluacion', action: 'crearHallazgo_ajax')}',
+          data: {
+              id: ${evaluacion?.id}
+          },
+          success: function (msg) {
+              $("#tablaCrearHallazgo").html(msg)
+          }
+      });
+  });
 
-                %{--}--}%
-            %{--});--}%
-        %{--}--}%
-    %{--});--}%
+    //función para seleccionar el hallazgo
+
+    $("#btnSeleccionarHallazgo").click(function () {
+        if($("#hallazgoCombo").val() == 'null'){
+            bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-info text-shadow'></i> Debe seleccionar un hallazgo!");
+            cargarComboHallazgo(${evaluacion?.id});
+        }else{
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'evaluacion', action: 'guardarSeleccionado_ajax')}',
+                data: {
+                    id: ${evaluacion?.id},
+                    combo: $("#hallazgoCombo").val()
+                },
+                success: function (msg) {
+                    if(msg == 'ok'){
+                        cargarExistente(${evaluacion?.id})
+                        cargarTablaEva();
+                    }else{
+                        log("Error al seleccionar el hallazgo","error")
+                    }
+
+                }
+            });
+        }
+    });
+
+    //función cargar hallazgo SELECCIONADO
+
+
+    <g:if test="${evaluacion?.hallazgo}">
+      cargarExistente(${evaluacion?.id});
+    </g:if>
+
+    function cargarExistente(idEva) {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'evaluacion', action: 'tablaHallazgo_ajax')}',
+            data: {
+                id: idEva
+            },
+            success: function (msg) {
+                $("#divSeleccionado").html(msg)
+            }
+        });
+    }
+
+
 
 </script>
