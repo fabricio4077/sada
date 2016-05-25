@@ -286,4 +286,20 @@ class EvaluacionController extends Seguridad.Shield {
 
     }
 
+    def guardarCalificacion_ajax () {
+        def evaluacion = Evaluacion.get(params.id)
+        def cali = Calificacion.get(params.calificacion)
+
+        evaluacion.calificacion = cali
+
+        try{
+        evaluacion.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar la calificacion")
+        }
+
+    }
+
 }

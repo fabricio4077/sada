@@ -123,14 +123,6 @@
         });
     }
 
-
-
-    $(".btnCalificacion").click(function () {
-
-        console.log($(this).data("id"))
-
-    });
-
     %{--//botón agregar hallazgo--}%
 
     %{--$(".btnHallazgo").click(function () {--}%
