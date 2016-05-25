@@ -117,8 +117,14 @@ class PlanAccionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def listaCalificaciones = ['NC+','nc-','O']
+        def calificaciones = Calificacion.findAllBySiglaInList(listaCalificaciones)
+        def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalleAuditoria,calificaciones)
 
-        return [pre: pre]
+        println("no " + evaluacionesNo)
+
+
+        return [pre: pre, lista: evaluacionesNo]
 
     }
 

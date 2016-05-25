@@ -134,4 +134,32 @@
     });
 
 
+    $(".btnAnexo").click(function () {
+        var idEva = $(this).data("id");
+        $.ajax({
+            type:'POST',
+            url:"${createLink(controller: 'evaluacion', action: 'anexo_ajax')}",
+            data: {
+                id: idEva
+            },
+            success: function (msg) {
+                bootbox.dialog({
+                    id: "dlgAnexo",
+                    title: "Anexo",
+                    message: msg,
+                    buttons: {
+                        cancelar :{
+                            label     : 'Aceptar',
+                            className : 'btn-primary',
+                            callback  : function () {
+
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    });
+
+
 </script>
