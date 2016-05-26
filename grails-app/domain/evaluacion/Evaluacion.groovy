@@ -10,8 +10,8 @@ class Evaluacion {
     DetalleAuditoria detalleAuditoria
     Hallazgo hallazgo
     Calificacion calificacion
-    String anexo
     MarcoNorma marcoNorma
+    PlanAccion planAccion
 
     static mapping = {
         table 'evam'
@@ -23,16 +23,16 @@ class Evaluacion {
             detalleAuditoria column: 'dtau__id'
             hallazgo column: 'hzgo__id'
             calificacion column: 'clfc__id'
-            anexo column: 'evamanxo'
             marcoNorma column: 'mctp__id'
+            planAccion column: 'plac__id'
         }
     }
 
     static constraints = {
-        anexo(nullable: true, blank: true)
         hallazgo(nullable: true)
         calificacion(nullable: true)
         marcoNorma(nullable: true)
+        planAccion(nullable: true)
 
     }
 }

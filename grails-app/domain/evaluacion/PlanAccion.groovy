@@ -1,12 +1,8 @@
 package evaluacion
 
-import auditoria.DetalleAuditoria
-import legal.MarcoNorma
-
 class PlanAccion {
 
     static auditable = true
-    Hallazgo hallazgo
     String actividad
     String responsable
     String estado
@@ -22,8 +18,7 @@ class PlanAccion {
         id generator: 'identity'
         columns {
             id column: 'plac__id'
-            hallazgo column: 'hzgo__id'
-            actividad column: 'placactv'
+              actividad column: 'placactv'
             responsable column: 'placrspn'
             estado column: 'placetdo'
             avance column: 'planavce'

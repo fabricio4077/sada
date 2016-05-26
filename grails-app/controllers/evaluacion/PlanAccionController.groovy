@@ -117,15 +117,40 @@ class PlanAccionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+//        def listaCalificaciones = ['NC+','nc-','O']
+//        def calificaciones = Calificacion.findAllBySiglaInList(listaCalificaciones)
+//        def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalleAuditoria,calificaciones)
+
+        return [pre: pre]
+    }
+
+    def tablaPlan_ajax (){
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def listaCalificaciones = ['NC+','nc-','O']
         def calificaciones = Calificacion.findAllBySiglaInList(listaCalificaciones)
         def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalleAuditoria,calificaciones)
 
-        println("no " + evaluacionesNo)
-
-
         return [pre: pre, lista: evaluacionesNo]
+    }
 
+    def planes_ajax () {
+
+        def evam = Evaluacion.get(params.id)
+        def listaPlanes = Evaluacion.findAllByHallazgoAndPlanAccionIsNotNull(evam?.hallazgo).planAccion
+
+        return[evam: evam, lis: listaPlanes]
+
+    }
+
+    def bodyPlanes_ajax () {
+
+        def evam = Evaluacion.get(params.id)
+        def listaPlanes = Evaluacion.findAllByHallazgoAndPlanAccionIsNotNull(evam?.hallazgo).planAccion
+
+        return [lista: listaPlanes]
     }
 
 }
