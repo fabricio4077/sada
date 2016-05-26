@@ -313,7 +313,7 @@ class EvaluacionController extends Seguridad.Shield {
 
         def eva = Evaluacion.get(params.id)
 
-        return [evaluacion: eva]
+        return [evas: eva]
 
     }
 
@@ -434,34 +434,31 @@ class EvaluacionController extends Seguridad.Shield {
                     /* fin resize */
                 } //si es imagen hace resize para que no exceda 800x800
 //                println "llego hasta aca"
-//                def docTramite = new DocumentoTramite([
-//                        tramite    : tramite,
-//                        fecha      : new Date(),
-//                        resumen    : params.resumen,
-//                        clave      : params.clave,
-//                        descripcion: params.descripcion,
-//                        path       : nombre
-//                ])
+                def anexo = new Anexo([
+                        evaluacion: eva,
+                        path      : nombre
+//                        path      : pathFile
+                ])
                 def data
-                if (docTramite.save(flush: true)) {
+                if (anexo.save(flush: true)) {
                     data = [
                             files: [
                                     [
                                             name: nombre,
-                                            url : resource(dir: "anexos/${session.departamento.codigo}/" + tramite.codigo, file: nombre),
+//                                            url : resource(dir: "anexos/estacion_${eva?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${eva?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${eva?.id}", file: nombre),
                                             size: f.getSize(),
                                             url : pathFile
                                     ]
                             ]
                     ]
                 } else {
-                    println "error al guardar: " + docTramite.errors
+                    println "error al guardar: " + anexo.errors
                     data = [
                             files: [
                                     [
                                             name : nombre,
                                             size : f.getSize(),
-                                            error: "Ha ocurrido un error al guardar: " + renderErrors(bean: docTramite)
+                                            error: "Ha ocurrido un error al guardar: " + renderErrors(bean: anexo)
                                     ]
                             ]
                     ]
@@ -488,6 +485,38 @@ class EvaluacionController extends Seguridad.Shield {
                 return
             }
         } //f && !f.empty
-
     }
+
+
+    def tablaAnexos_ajax () {
+
+        def evaluacion = Evaluacion.get(params.idEvalua)
+        def anexos = Anexo.findAllByEvaluacion(evaluacion)
+
+        println("lista anexos " + anexos)
+
+        return [existentes: anexos]
+    }
+
+
+    def borrarAnexo_ajax () {
+            def anxo = Anexo.get(params.id)
+            def band
+                try {
+                    def path = servletContext.getRealPath("/") + "anexos/estacion_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${anxo?.evaluacion?.id}" + "/" + anxo?.path
+                    def file = new File(path)
+                    file.delete()
+                } catch (e) {
+                    println "error borrar " + e
+                    band = false
+                }
+                if (band) {
+                    anxo.delete(flush: true)
+                    render "ok"
+                } else {
+//                    render "error_No se pudo eliminar el archivo."
+                    render "no"
+                }
+    }
+
 }

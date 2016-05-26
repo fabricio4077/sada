@@ -4,6 +4,7 @@ class Anexo {
 
     static auditable = true
     Evaluacion evaluacion
+    String path
 
     static mapping = {
         table 'anxo'
@@ -13,6 +14,7 @@ class Anexo {
         columns {
             id column: 'anxo__id'
             evaluacion column: 'evam__id'
+            path column: 'anxopath'
         }
     }
 
