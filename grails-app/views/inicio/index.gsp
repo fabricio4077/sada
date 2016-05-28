@@ -106,45 +106,6 @@
 
 <body>
 
-%{--<div style="margin-bottom: 100px">--}%
-%{--<div class="list-group col-md-4" style="text-align: center">--}%
-%{--<g:link controller="preauditoria" action="crearAuditoria" class="list-group-item bgOpcion bg-claro">--}%
-%{--<h4 class="list-group-item-heading"><span class="icon"></span>--}%
-%{--<i class="fa fa-plus"></i>--}%
-%{--</h4>--}%
-%{--<p class="list-group-item-text">--}%
-%{--<strong>Iniciar Auditoría</strong>--}%
-%{--</p>--}%
-%{--</g:link>--}%
-%{--</div>--}%
-
-%{--<div class="list-group col-md-4" style="text-align: center">--}%
-%{--<g:link controller="preauditoria" action="list" class="list-group-item bgOpcion bg-oscuro">--}%
-%{--<h4 class="list-group-item-heading"><span class="icon"></span>--}%
-%{--<i class="fa fa-history"></i>--}%
-%{--</h4>--}%
-%{--<p class="list-group-item-text">--}%
-%{--<strong>Continuar una Auditoría</strong>--}%
-%{--</p>--}%
-%{--</g:link>--}%
-%{--</div>--}%
-
-%{--<g:if test="${session.perfil.codigo == 'ADMI'}">--}%
-%{--<div class="list-group col-md-4" style="text-align: center;">--}%
-%{--<g:link controller="persona" action="list" class="list-group-item bgOpcion bg-otro">--}%
-%{--<h4 class="list-group-item-heading"><span class="icon"></span>--}%
-%{--<i class="fa fa-navicon"></i>--}%
-%{--</h4>--}%
-%{--<p class="list-group-item-text">--}%
-%{--<strong>Listar Auditorías</strong>--}%
-%{--</p>--}%
-%{--</g:link>--}%
-%{--</div>--}%
-%{--</g:if>--}%
-%{--</div>--}%
-
-
-
 
 <div class="panel panel-info">
     <div class="panel-heading">

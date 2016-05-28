@@ -27,42 +27,42 @@
     <div id="progress" class="progress progress-striped active col-md-4" style="width: 50%">
         <div class="progress-bar progress-bar-info"></div>
     </div>
+</div>
 
+<div class="row">
     <div id="mensaje">
 
     </div>
 </div>
 
+
 <div class="row">
-    <div class="col-md-12">
-        <div id="divAnexos">
+    <div class="col-md-12" style="text-align: center">
+        <div id="divAnexos" class="col-md-12">
 
         </div>
     </div>
 </div>
 
 
+
 <script type="text/javascript">
 
 
-    cargarTablaAnexos();
+    cargarAnexosExistentes();
 
-    function cargarTablaAnexos() {
+    function  cargarAnexosExistentes () {
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'evaluacion', action: 'tablaAnexos_ajax')}',
-            data:{
-                idEvalua: ${evas?.id}
+            data: {
+                id: ${evas?.id}
             },
-            succcess: function (msg){
+            success: function (msg) {
                 $("#divAnexos").html(msg)
             }
         });
     }
-
-
-
-
 
     $(function () {
         $('#file').fileupload({
@@ -86,7 +86,7 @@
             });
         }).on('fileuploadprocessalways', function (e, data) {
 //                    console.log("fileuploadprocessalways");
-            $("#mensaje").remove();
+
             var index = data.index,
                     file = data.files[index],
                     node = $(data.context.children()[index]);
@@ -120,15 +120,15 @@
                         0 + '%'
                 ).remove();
             }, 700);
-            var exito = $('<span class="text-success"/>').text('Archivo cargado exitosamente!.');
+            var exito = $('<span class="text-success"/>').text('Archivo cargado exitosamente!');
             $.each(data.files, function (index, file) {
                 $(data.context.children()[index])
                         .append('<br>')
                         .append(exito);
-                $("#mensaje").append(exito);
+                $("#mensaje").append(exito).toggle(3500);
             });
 
-            cargarTablaAnexos()
+            cargarAnexosExistentes();
 
             %{--setTimeout(function () {--}%
             %{--location.href = "${createLink(action: 'personal', params:[tipo:'foto'])}";--}%

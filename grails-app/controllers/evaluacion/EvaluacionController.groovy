@@ -3,10 +3,12 @@ package evaluacion
 import auditoria.Auditoria
 import auditoria.DetalleAuditoria
 import auditoria.Preauditoria
+import estacion.Estacion
 import groovy.json.JsonBuilder
 import legal.MarcoLegal
 import legal.MarcoNorma
 import objetivo.Objetivo
+import tipo.Periodo
 
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
@@ -312,7 +314,6 @@ class EvaluacionController extends Seguridad.Shield {
     def anexo_ajax () {
 
         def eva = Evaluacion.get(params.id)
-
         return [evas: eva]
 
     }
@@ -490,18 +491,17 @@ class EvaluacionController extends Seguridad.Shield {
 
     def tablaAnexos_ajax () {
 
-        def evaluacion = Evaluacion.get(params.idEvalua)
+        def evaluacion = Evaluacion.get(params.id)
         def anexos = Anexo.findAllByEvaluacion(evaluacion)
 
         println("lista anexos " + anexos)
-
         return [existentes: anexos]
     }
 
 
     def borrarAnexo_ajax () {
             def anxo = Anexo.get(params.id)
-            def band
+            def band = true
                 try {
                     def path = servletContext.getRealPath("/") + "anexos/estacion_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${anxo?.evaluacion?.id}" + "/" + anxo?.path
                     def file = new File(path)
@@ -510,13 +510,85 @@ class EvaluacionController extends Seguridad.Shield {
                     println "error borrar " + e
                     band = false
                 }
+
                 if (band) {
                     anxo.delete(flush: true)
                     render "ok"
                 } else {
-//                    render "error_No se pudo eliminar el archivo."
+                   println("error al borrar anexo");
                     render "no"
                 }
+    }
+
+
+    def descargarDoc() {
+        def anxo = Anexo.get(params.id)
+//        if (session.key == (anxo.path.size() + anxo.path?.encodeAsMD5()?.substring(0, 10))) {
+            session.key = null
+            def path = servletContext.getRealPath("/") + "anexos/estacion_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${anxo?.evaluacion?.id}" + "/" + anxo?.path
+            def tipo = anxo.path.split("\\.")
+            tipo = tipo[1]
+            switch (tipo) {
+                case "jpeg":
+                case "gif":
+                case "jpg":
+                case "bmp":
+                case "png":
+                    tipo = "application/image"
+                    break;
+                case "pdf":
+                    tipo = "application/pdf"
+                    break;
+                case "doc":
+                case "docx":
+                case "odt":
+                    tipo = "application/msword"
+                    break;
+                case "xls":
+                case "xlsx":
+                    tipo = "application/vnd.ms-excel"
+                    break;
+                default:
+                    tipo = "application/pdf"
+                    break;
+            }
+            try {
+                def file = new File(path)
+                def b = file.getBytes()
+                response.setContentType(tipo)
+                response.setHeader("Content-disposition", "attachment; filename=" + (anxo.path))
+                response.setContentLength(b.length)
+                response.getOutputStream().write(b)
+            } catch (e) {
+                response.sendError(404)
+            }
+//        } else {
+//            response.sendError(403)
+//        }
+    }
+
+    def evaluacionPlan () {
+
+        def pre = Preauditoria.get(params.id)
+        def periodoActual = pre.periodo.inicio
+
+        def anteriores = Preauditoria.withCriteria {
+                        eq('estacion', pre?.estacion)
+                        periodo{
+                            lt('fin',periodoActual)
+                        }
+        }
+
+        println("anteriores " + anteriores)
+
+        return [pre: pre]
+
+    }
+
+    def evaluacionLicencia () {
+        def pre = Preauditoria.get(params.id)
+
+        return [pre: pre]
     }
 
 }

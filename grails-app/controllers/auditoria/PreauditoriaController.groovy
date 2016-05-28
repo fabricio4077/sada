@@ -212,18 +212,29 @@ class PreauditoriaController extends Seguridad.Shield {
 
     def guardarPaso2_ajax () {
 
-        println("params paso 2 " + params)
+//        println("params paso 2 " + params)
 
         def  paso = Preauditoria.get(params.id)
         def estacion = Estacion.get(params.estacion)
-        paso.estacion = estacion
+
+        def anterioresPeriodo = Preauditoria.findAllByEstacionAndPeriodoAndIdNotEqual(estacion, paso.periodo,paso.id)
+        def anterioresTipo = Preauditoria.findAllByEstacionAndTipoAndIdNotEqual(estacion, paso.tipo,paso.id)
+
+        println("anter p " + anterioresPeriodo)
+        println("anter t " + anterioresTipo)
+
+        if(anterioresPeriodo || anterioresTipo){
+            render "no_Ya existe una auditoría para esta estación con el mismo <strong>${anterioresPeriodo ? 'PERÍODO' : 'TIPO'}</strong>, seleccione otra estación."
+        }else{
+            paso.estacion = estacion
             try{
                 paso.save(flush: true)
                 render "ok_${paso?.id}"
             }catch(e){
-                render "no"
+                render "no_Error al asignar la estación"
                 println("error al guardar el paso 2 - crearAuditoria");
             }
+        }
     }
 
     def guardarCoordenadas_ajax () {

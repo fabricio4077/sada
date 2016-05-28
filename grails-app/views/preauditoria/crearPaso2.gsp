@@ -207,7 +207,7 @@
                         location.href = "${createLink(controller:'preauditoria',action:'crearPaso3')}/" + parts[1];
                     }, 1500);
                 }else{
-                    log("Error al guardar los datos de la estación", "error")
+                    log(parts[1], "error")
                 }
             }
 

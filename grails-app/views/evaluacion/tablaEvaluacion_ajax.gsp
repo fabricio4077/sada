@@ -1,3 +1,4 @@
+<%@ page import="evaluacion.Evaluacion" %>
 <%--
   Created by IntelliJ IDEA.
   User: gato
@@ -56,6 +57,11 @@
                             </a>
                         </td>
                         <td style="width: 10%">
+
+                            <g:set value="${evaluacion.Anexo.findAllByEvaluacion(evaluacion.Evaluacion.get(ley?.id)).size()}" var="numero"/>
+
+                            Anexos : ${numero}
+                            
                             <a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${ley?.id}" title="Agregar anexo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
