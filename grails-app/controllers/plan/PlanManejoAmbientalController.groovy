@@ -1,5 +1,9 @@
 package plan
 
+import auditoria.Auditoria
+import auditoria.DetalleAuditoria
+import auditoria.Preauditoria
+
 
 class PlanManejoAmbientalController extends Seguridad.Shield {
 
@@ -77,6 +81,7 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
             }
         } //update
         planManejoAmbientalInstance.properties = params
+        planManejoAmbientalInstance.codigo = params.codigo.toUpperCase();
         if(!planManejoAmbientalInstance.save(flush:true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} PlanManejoAmbiental."
             msg += renderErrors(bean: planManejoAmbientalInstance)
@@ -107,5 +112,65 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró PlanManejoAmbiental."
     } //notFound para ajax
+
+    def planManejoAmbiental () {
+
+//        println("params pma " + params)
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        
+        return [pre: pre, band: params.band]
+    }
+
+    def cargarAspectos_ajax () {
+
+        def plan = PlanManejoAmbiental.get(params.id)
+        def aspectos = AspectoAmbiental.findAllByPlanManejoAmbiental(plan)
+
+        return [listaAspectos: aspectos]
+    }
+
+    def tablaPlan_ajax() {
+
+//        println("params tabla plan " + params)
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        def per
+        if(params.band){
+            per = 'ANT'
+        }else{
+            per = 'ACT'
+        }
+
+        def aupm = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria, per, [sort: 'aspectoAmbiental.planManejoAmbiental', order: 'asc'])
+
+//        println("aupm " + aupm)
+
+        return [aupm: aupm]
+    }
+
+    def cargarMedida_ajax() {
+
+        def aupm = PlanAuditoria.get(params.id).aspectoAmbiental
+
+        def medidasExistentes = PlanAuditoria.findAllByAspectoAmbientalAndMedidaIsNotNull(aupm)
+
+//        println("medidas " + medidasExistentes)
+
+        return [medidasExistentes: medidasExistentes]
+    }
+
+    def tablaMedida_ajax() {
+        def medida = Medida.get(params.id)
+        return [medida: medida]
+    }
+
+    def crearMedida_ajax (){
+
+    }
 
 }

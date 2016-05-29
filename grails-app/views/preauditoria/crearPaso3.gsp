@@ -48,7 +48,7 @@
 
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title" style="text-align: center"> <i class="fa fa-area-chart"></i> Paso 3: Coordenadas geográficas</h3>
+                <h3 class="panel-title" style="text-align: center"> <i class="fa fa-area-chart"></i> Paso 3: Coordenadas geográficas (UTM)</h3>
             </div>
 
         <i class="fa fa-area-chart fa-5x text-info" style="float: left; margin-left: 60px"></i>

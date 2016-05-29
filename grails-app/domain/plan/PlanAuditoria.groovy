@@ -24,8 +24,8 @@ class PlanAuditoria {
         }
     }
 
-
     static constraints = {
-
+        aspectoAmbiental (nullable: true)
+        medida(nullable: true)
     }
 }

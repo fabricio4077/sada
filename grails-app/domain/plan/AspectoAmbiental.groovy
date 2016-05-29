@@ -3,9 +3,9 @@ package plan
 class AspectoAmbiental {
 
     static auditable = true
-    PlanManejoAmbiental planManejoAmbiental
     String descripcion
     String impacto
+    PlanManejoAmbiental planManejoAmbiental
 
     static mapping = {
         table 'apam'
@@ -14,9 +14,9 @@ class AspectoAmbiental {
         id generator: 'identity'
         columns {
             id column: 'apam__id'
-            planManejoAmbiental column: 'plma__id'
             descripcion column: 'apamdscr'
             impacto column: 'apamimpc'
+            planManejoAmbiental column: 'plma__id'
         }
     }
 

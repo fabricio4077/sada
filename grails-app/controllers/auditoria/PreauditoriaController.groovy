@@ -5,6 +5,7 @@ import complemento.ActiAudi
 import consultor.Asignados
 import estacion.Coordenadas
 import estacion.Estacion
+import legal.TipoNorma
 import tipo.Periodo
 import tipo.Tipo
 
@@ -52,22 +53,22 @@ class PreauditoriaController extends Seguridad.Shield {
         def listaAuditorias = Preauditoria.findAllByCreador(creador)
 
         return [preauditoriaInstanceList: preauditoriaInstanceList, preauditoriaInstanceCount: preauditoriaInstanceCount, params: params,
-        lista: listaAuditorias]
+                lista: listaAuditorias]
     } //list
 
 
     def listaGeneral () {
 
-            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-            def preauditoriaInstanceList = getLista(params, false)
-            def preauditoriaInstanceCount = getLista(params, true).size()
-            if(preauditoriaInstanceList.size() == 0 && params.offset && params.max) {
-                params.offset = params.offset - params.max
-            }
-            preauditoriaInstanceList = getLista(params, false)
+        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+        def preauditoriaInstanceList = getLista(params, false)
+        def preauditoriaInstanceCount = getLista(params, true).size()
+        if(preauditoriaInstanceList.size() == 0 && params.offset && params.max) {
+            params.offset = params.offset - params.max
+        }
+        preauditoriaInstanceList = getLista(params, false)
 
-            return [preauditoriaInstanceList: preauditoriaInstanceList, preauditoriaInstanceCount: preauditoriaInstanceCount, params: params]
-           }
+        return [preauditoriaInstanceList: preauditoriaInstanceList, preauditoriaInstanceCount: preauditoriaInstanceCount, params: params]
+    }
 
     def show_ajax() {
         if(params.id) {
@@ -144,9 +145,7 @@ class PreauditoriaController extends Seguridad.Shield {
 //        println("parmas audi "  + params)
 
         def paso1 = Preauditoria.get(params.id)
-
         return [pre: paso1]
-
     }
 
     def guardarPaso1_ajax () {
@@ -167,7 +166,7 @@ class PreauditoriaController extends Seguridad.Shield {
                 paso.save(flush: true)
                 render "ok_${paso?.id}"
             }catch(e){
-                render "no"
+                render "no_Error al guardar el tipo y el período"
                 println("error al guardar el paso 1 - crearAuditoria");
             }
         }else{
@@ -180,7 +179,7 @@ class PreauditoriaController extends Seguridad.Shield {
                 paso.save(flush: true)
                 render "ok_${paso?.id}"
             }catch(e){
-                render "no"
+                render "no_Error al guardar el tipo y el período"
                 println("error al guardar el paso 1 - crearAuditoria");
             }
         }
@@ -216,30 +215,37 @@ class PreauditoriaController extends Seguridad.Shield {
 
         def  paso = Preauditoria.get(params.id)
         def estacion = Estacion.get(params.estacion)
+        def tipoIni = Tipo.findByCodigo('INIC')
+        def tipoLic = Tipo.findByCodigo('LCM1')
+        def tipoCump = Tipo.findByCodigo('CMPM')
 
-        def anterioresPeriodo = Preauditoria.findAllByEstacionAndPeriodoAndIdNotEqual(estacion, paso.periodo,paso.id)
-        def anterioresTipo = Preauditoria.findAllByEstacionAndTipoAndIdNotEqual(estacion, paso.tipo,paso.id)
+        def inicio = Preauditoria.findByEstacionAndTipoAndIdNotEqual(estacion,tipoIni,paso.id)
+        def licenciamiento = Preauditoria.findByEstacionAndTipoAndIdNotEqual(estacion,tipoLic,paso.id)
+        def anteriores = Preauditoria.findByEstacionAndTipoAndPeriodoAndIdNotEqual(estacion,tipoCump,paso.periodo,paso.id)
 
-        println("anter p " + anterioresPeriodo)
-        println("anter t " + anterioresTipo)
+//        println("anteriores " + anteriores)
 
-        if(anterioresPeriodo || anterioresTipo){
-            render "no_Ya existe una auditoría para esta estación con el mismo <strong>${anterioresPeriodo ? 'PERÍODO' : 'TIPO'}</strong>, seleccione otra estación."
+        if(inicio || licenciamiento){
+            render "no_Ya existe una auditoría para esta estación del tipo <strong>${inicio ? 'INICIO' : 'LICENCIAMIENTO'}</strong>, seleccione otra estación."
         }else{
-            paso.estacion = estacion
-            try{
-                paso.save(flush: true)
-                render "ok_${paso?.id}"
-            }catch(e){
-                render "no_Error al asignar la estación"
-                println("error al guardar el paso 2 - crearAuditoria");
+            if(anteriores){
+                render "no_Ya existe una auditoría para esta estación del tipo <strong>CUMPLIMIENTO</strong> en el período ${paso?.periodo?.inicio?.format("yyyy") + " - " + paso?.periodo?.fin?.format("yyyy")}, seleccione otra estación."
+            }else{
+                paso.estacion = estacion
+                try{
+                    paso.save(flush: true)
+                    render "ok_${paso?.id}"
+                }catch(e){
+                    render "no_Error al asignar la estación"
+                    println("error al guardar el paso 2 - crearAuditoria");
+                }
             }
         }
     }
 
     def guardarCoordenadas_ajax () {
 
-        println("params coordenadas " + params)
+//        println("params coordenadas " + params)
 
         def estacion = Preauditoria.get(params.id).estacion
         def coordenada
@@ -278,10 +284,10 @@ class PreauditoriaController extends Seguridad.Shield {
         def asignados = Asignados.findAllByPreauditoria(pre)
 
         def coordinador = Asignados.withCriteria {
-                          eq("preauditoria",pre)
-                            persona {
-                           eq("cargo", "Coordinador")
-                            }
+            eq("preauditoria",pre)
+            persona {
+                eq("cargo", "Coordinador")
+            }
         }
 
         def biologo = Asignados.withCriteria {

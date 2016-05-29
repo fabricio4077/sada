@@ -8,6 +8,8 @@ import groovy.json.JsonBuilder
 import legal.MarcoLegal
 import legal.MarcoNorma
 import objetivo.Objetivo
+import plan.AspectoAmbiental
+import plan.PlanAuditoria
 import tipo.Periodo
 
 import javax.imageio.ImageIO
@@ -571,6 +573,8 @@ class EvaluacionController extends Seguridad.Shield {
 
         def pre = Preauditoria.get(params.id)
         def periodoActual = pre.periodo.inicio
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
 
         def anteriores = Preauditoria.withCriteria {
                         eq('estacion', pre?.estacion)
@@ -578,17 +582,50 @@ class EvaluacionController extends Seguridad.Shield {
                             lt('fin',periodoActual)
                         }
         }
-
         println("anteriores " + anteriores)
 
-        return [pre: pre]
 
+        def aupm = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria,'ANT')
+
+        return [pre: pre, anteriores: anteriores, plan: aupm]
     }
 
     def evaluacionLicencia () {
         def pre = Preauditoria.get(params.id)
-
         return [pre: pre]
+    }
+
+    def asignarPlanAnterior_Ajax (){
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+
+        def apam = AspectoAmbiental.list()
+        def aupm
+        def error = ''
+
+        apam.each { a->
+
+            aupm = new PlanAuditoria()
+            aupm.periodo = 'ANT'
+            aupm.aspectoAmbiental = a
+            aupm.detalleAuditoria = detalleAuditoria
+
+            try{
+                aupm.save(flush: true)
+            }catch (e){
+                error += aupm.errors
+                println("error al guardar aupm anterior")
+            }
+        }
+
+        if(error == ''){
+            render "ok"
+        }else{
+            render "no"
+        }
+
+
     }
 
 }

@@ -58,23 +58,25 @@
                 </p>
             </g:link>
 
-            <g:link controller="evaluacion" action="evaluacionPlan" id="${pre?.id}" class="list-group-item bgOpcion bg-oscuro">
-                <h4 class="list-group-item-heading"><span class="icon"></span>
-                    <i class="fa fa-leaf"></i>
-                </h4>
-                <p class="list-group-item-text">
-                    <strong>Plan de Manejo Ambiental</strong>
-                </p>
-            </g:link>
+            <g:if test="${pre?.tipo?.codigo != 'LCM1'}">
+                <g:link controller="evaluacion" action="evaluacionPlan" id="${pre?.id}" class="list-group-item bgOpcion bg-oscuro">
+                    <h4 class="list-group-item-heading"><span class="icon"></span>
+                        <i class="fa fa-leaf"></i>
+                    </h4>
+                    <p class="list-group-item-text">
+                        <strong>Plan de Manejo Ambiental</strong>
+                    </p>
+                </g:link>
 
-            <g:link controller="evaluacion" action="evaluacionLicencia" id="${pre?.id}" class="list-group-item bgOpcion bg-otro">
-                <h4 class="list-group-item-heading"><span class="icon"></span>
-                    <i class="fa fa-key"></i>
-                </h4>
-                <p class="list-group-item-text">
-                    <strong>Licencia</strong>
-                </p>
-            </g:link>
+                <g:link controller="evaluacion" action="evaluacionLicencia" id="${pre?.id}" class="list-group-item bgOpcion bg-otro">
+                    <h4 class="list-group-item-heading"><span class="icon"></span>
+                        <i class="fa fa-key"></i>
+                    </h4>
+                    <p class="list-group-item-text">
+                        <strong>Licencia</strong>
+                    </p>
+                </g:link>
+            </g:if>
         </div>
     </div>
 </div>

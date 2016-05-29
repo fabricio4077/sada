@@ -14,10 +14,6 @@
 
 <body>
 
-%{--<div class="wizard-container">--}%
-%{--<div class="wizard-step wizard-next-step corner-left wizard-current">--}%
-    %{--<i class="fa fa-pencil-square"></i> Paso 1: Selección del tipo de auditoría y período--}%
-    %{--<div class="wizard-form">--}%
 
 <div class="panel panel-info">
 <div class="panel-heading">
@@ -34,23 +30,24 @@
                 <div class="col-xs-2 negrilla control-label">Tipo: </div>
                 <div class="col-md-6" style="margin-bottom: 45px">
                     <g:select id="tipo" name="tipo_name" from="${tipo.Tipo.list([sort: 'descripcion'])}" optionKey="id"
-                              optionValue="descripcion" class="many-to-one form-control" noSelection="[0: 'Seleccione...']" value="${pre?.tipo?.id}"/>
+                              optionValue="descripcion" class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
+                              value="${pre?.tipo?.id}" disabled="${pre?.estacion ? true : false}"/>
                 </div>
 
                 <div class="descripcion hidden">
                     <h4>Ayuda</h4>
                     <p>Las auditorías pueden ser de tres tipos: <br>
-                        Licenciamiento<br>
                         Inicio<br>
+                        Licenciammiento<br>
                         Cumplimiento<br>
-                    * Si necesita crear un tipo adicional de auditoría comuniquese con el administrador del sistema</p>
+                    %{--* Si necesita crear un tipo adicional de auditoría comuniquese con el administrador del sistema</p>--}%
                 </div>
 
-                <g:if test="${session.perfil.codigo == 'ADMI'}">
-                    <a href="#" id="btnTipo" class="btn btn-primary" title="Agregar un tipo">
-                        <i class="fa fa-plus"> Agregar</i>
-                    </a>
-                </g:if>
+                %{--<g:if test="${session.perfil.codigo == 'ADMI'}">--}%
+                    %{--<a href="#" id="btnTipo" class="btn btn-primary" title="Agregar un tipo">--}%
+                        %{--<i class="fa fa-plus"> Agregar</i>--}%
+                    %{--</a>--}%
+                %{--</g:if>--}%
 
                 <a href="#" id="btnAyudaTipo" class="btn btn-info over" title="Ayuda">
                     <i class="fa fa-exclamation"></i>
@@ -73,11 +70,12 @@
             <p class="css-vertical-text" style="margin-top: -10px;">Período</p>
             <div class="linea"></div>
             <div class="row">
-                <div class="col-xs-2 negrilla control-label">Período: </div>
+                <div class="col-md-2 negrilla control-label">Período: </div>
                 <div class="col-md-6" style="margin-bottom: 45px">
-                    <g:select id="periodo" name="periodo_name" from="${tipo.Periodo.list()}" optionKey="id"
+                    <g:select id="periodo" name="periodo_name" from="${tipo.Periodo.list([sort: 'inicio', order: 'asc' ])}" optionKey="id"
                               optionValue="${{it?.inicio?.format("yyyy") + '  -  '+ it?.fin?.format("yyyy") }}"
-                              class="many-to-one form-control" noSelection="[0: 'Seleccione...']" style="text-align: center" value="${pre?.periodo?.id}"/>
+                              class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
+                              style="text-align: center" value="${pre?.periodo?.id}" disabled="${pre?.estacion ? true : false}"/>
                 </div>
 
                 <div class="descripcion hidden">
@@ -85,7 +83,7 @@
                     <p>Período en el que se va a realizar la auditoría
                     </p>
                 </div>
-                <a href="#" id="btnPeriodo" class="btn btn-primary" title="Agregar un período">
+                <a href="#" id="btnPeriodo" class="btn btn-primary ${pre?.estacion ? 'disabled' : ''}" title="Agregar un período" >
                     <i class="fa fa-plus"> Agregar</i>
                 </a>
                 <a href="#" id="btnAyudaPeriodo" class="btn btn-info over" title="Ayuda">
@@ -305,7 +303,7 @@
                         location.href = "${createLink(controller:'preauditoria',action:'crearPaso2')}/" + parts[1];
                     }, 2000);
                 }else{
-                    log("Error al guardar los datos", "error")
+                    log(parts[1], "error")
                 }
 
             }

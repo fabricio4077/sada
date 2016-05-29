@@ -84,6 +84,36 @@
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-leaf"></i> Evaluación Ambiental: Plan de Manejo Ambiental</h3>
     </div>
     <div class="well" style="text-align: center; height: 200px">
+
+        <g:if test="${anteriores}">
+            <div class="col-md-4 negrilla control-label">Seleccione el Plan de Manejo Ambiental anterior del cual se realizará la Evaluación Ambiental:
+            </div>
+
+            <div class="col-md-4">
+                <g:select name="anteriores_name" class="form-control"
+                          from="${anteriores}" id="anteriores"
+                          optionValue="${{it?.tipo?.descripcion + " - Período: " + it?.periodo?.inicio?.format("yyyy") + " - " + it?.periodo?.fin?.format("yyyy")}}" optionKey="id"/>
+                <a href="#" id="btnSeleccionarPlan" class="btn btn-info ${plan.size() >0 ? 'disabled' : ''}" title="" style="margin-bottom: 20px; margin-top: 10px">
+                    <i class="fa fa-check"></i> Seleccionar PMA
+                </a>
+            </div>
+        </g:if>
+
+        <div class="col-md-4 negrilla control-label">
+            Opción 2: Crear un Plan de Manejo Ambiental del cual se realizará la Evaluación Ambiental:
+        </div>
+
+            <div class="btn-group">
+                <a href="#" id="btnCrearPlan" class="btn btn-success btn-sm ${plan.size() >0 ? 'disabled' : ''}" title="">
+                    <i class="fa fa-plus"></i> Crear PMA
+                </a>
+                <a href="#" id="btnEditarPlan" class="btn btn-primary btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
+                    <i class="fa fa-pencil"></i> Editar PMA
+                </a>
+                <a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
+                    <i class="fa fa-trash"></i> Borrar PMA
+                </a>
+            </div>
     </div>
 </div>
 
@@ -106,6 +136,31 @@
 </div>
 
 
+<script type="text/javascript">
+
+
+    //función que asigna el PMA por defecto y redirecciona a dicha pantalla
+    $("#btnCrearPlan").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'evaluacion', action:  'asignarPlanAnterior_Ajax')}',
+            data:{
+                id: ${pre?.id}
+            },
+            success: function(msg){
+                if(msg == 'ok'){
+                    location.href="${createLink(controller: 'planManejoAmbiental', action: 'planManejoAmbiental')}?id=" + ${pre?.id} + "&band=" + true
+                }else{
+                log("Error al asignar el PMA anterior", "error")
+                }
+            }
+        })
+    });
+
+    $("#btnEditarPlan").click(function () {
+        location.href="${createLink(controller: 'planManejoAmbiental', action: 'planManejoAmbiental')}?id=" + ${pre?.id} + "&band=" + true
+    })
+</script>
 
 </body>
 </html>

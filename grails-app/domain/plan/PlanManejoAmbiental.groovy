@@ -23,5 +23,6 @@ class PlanManejoAmbiental {
     }
 
     static constraints = {
+        codigo(nullable: true, blank: true)
     }
 }

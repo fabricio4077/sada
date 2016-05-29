@@ -139,6 +139,28 @@
                             <p>Sistema de calificación usado para las distintas evaluaciones ambientales</p>
                         </div>
                     </li>
+
+                    <li class="margen">
+                        <g:link controller="planManejoAmbiental" class="over" action="list">
+                            <i class="fa fa-book"> Tipo de Plan de Manejo Ambiental</i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4> Tipo de Plan de Manejo Ambiental </h4>
+
+                            <p>Diferentes tipos de planes que forma parte del PMA</p>
+                        </div>
+                    </li>
+
+                    <li class="margen">
+                        <g:link controller="aspectoAmbiental" class="over" action="list">
+                            <i class="fa fa-leaf"> Aspectos Ambientales</i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4> Aspectos Ambiental </h4>
+
+                            <p>Aspectos ambientales pertenecientes a los diferentes Planes ambientales</p>
+                        </div>
+                    </li>
                 </ul>
             </div>
 

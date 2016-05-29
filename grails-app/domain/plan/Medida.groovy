@@ -6,6 +6,7 @@ class Medida {
     String descripcion
     String indicadores
     String plazo
+    String verificacion
 
     static mapping = {
         table 'mdda'
@@ -17,6 +18,7 @@ class Medida {
             descripcion column: 'mddadscr'
             indicadores column: 'mddaindi'
             plazo column: 'mddaplzo'
+            verificacion column: 'mddavrfc'
         }
     }
 
