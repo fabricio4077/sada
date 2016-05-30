@@ -12,48 +12,76 @@
     <title>PMA - Plan de Manejo Ambiental (${band ? 'Anterior' : 'Actual'})</title>
 
     <style>
-        .table th{
-            text-align: center;
-        }
+    .table th{
+        text-align: center;
+    }
     </style>
 </head>
 
 <body>
 
-<div class="panel panel-info">
+<div class="panel panel-warning">
     <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-leaf"></i> Selección de Aspectos Ambientales</h3>
+        <h3 class="panel-title" style="text-align: center"><i class="fa fa-gear"></i> Acciones</h3>
+    </div>
+    <div class="panel-body" style="height: 100px">
+        <div class="col-md-8">
+            <p>
+                <i class='fa fa-exclamation-triangle fa-3x text-info text-shadow'></i>
+                <strong>Una vez ha seleccionado todos los aspectos ambientales de los que consta su PMA, click en en el botón "Aceptar"</strong>
+            </p>
+            <p>
+                <i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i>
+                <strong>Todos los aspectos ambientales deben teber asignada una "Medida Propuesta"</strong>
+            </p>
+        </div>
+
+        <div class="btn-group" style="float: right">
+
+            <a href="#" id="btnAceptarPlan" class="btn btn-success" title="Aceptar PMA">
+                <i class="fa fa-check"></i> Aceptar
+            </a>
+
+            <a href="#" id="btnRegresarEvaluacion" class="btn btn-primary" title="Regresar a Evaluación Ambiental">
+                <i class="fa fa-angle-double-left"></i> Regresar
+            </a>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-gear"></i>Selección: Aspectos Ambientales</h3>
     </div>
 
-    <div style="margin-top: 40px; width: 750px; height: 100px; margin-left: 150px" class="vertical-container">
-        <p class="css-vertical-text" style="margin-top: -10px;">Aspectos A.</p>
-        <div class="linea"></div>
+    <div class="row">
+        <div class="col-md-2 negrilla control-label">Plan: </div>
+        <div class="col-md-7">
+            <g:select name="pma_name" id="pma" optionKey="id" optionValue="nombre"
+                      class="form-control" from="${plan.PlanManejoAmbiental.list([sort: 'nombre', order: 'asc'])}"/>
+        </div>
+    </div>
 
-        <div class="row">
-            <div class="col-md-2 negrilla control-label">Plan: </div>
-            <div class="col-md-7">
-                <g:select name="pma_name" id="pma" optionKey="id" optionValue="nombre"
-                          class="form-control" from="${plan.PlanManejoAmbiental.list([sort: 'nombre', order: 'asc'])}"/>
-            </div>
+
+    <div class="row">
+        <div class="col-md-4 negrilla control-label">Aspectos Ambientales: </div>
+        <div class="col-md-6" id="divAspectos">
+
         </div>
 
 
-        <div class="row">
-            <div class="col-md-4 negrilla control-label">Aspectos Ambientales: </div>
-            <div class="col-md-6" id="divAspectos">
+        <div class="btn-group">
 
-            </div>
+            <a href="#" id="btnSeleccionarAspecto" class="btn btn-info" title="Seleccionar Aspecto Ambiental">
+                <i class="fa fa-check"></i>
+            </a>
 
-            <div class="col-md-1">
-                <a href="#" id="btnSeleccionarAspecto" class="btn btn-info" title="Seleccionar Aspecto Ambiental">
-                    <i class="fa fa-check"></i>
-                </a>
-            </div>
-            <div class="col-md-1">
-                <a href="#" id="btnCrearAspecto" class="btn btn-success" title="Crear Aspecto Ambiental">
-                    <i class="fa fa-plus"></i>
-                </a>
-            </div>
+            <a href="#" id="btnCrearAspecto" class="btn btn-success" title="Crear Aspecto Ambiental">
+                <i class="fa fa-plus"></i>
+            </a>
 
         </div>
     </div>
@@ -61,7 +89,7 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-leaf"></i> Planes Ambientales</h3>
+        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-leaf"></i> PMA </h3>
     </div>
 
     <table class="table table-condensed table-bordered table-striped">
@@ -71,9 +99,6 @@
             <th style="width: 22%" >Aspecto Ambiental</th>
             <th style="width: 16%" >Impacto Identificado</th>
             <th style="width: 30%">Medida Propuesta</th>
-            %{--<th style="width: 15%">Indicadores</th>--}%
-            %{--<th style="width: 10%">Medio de Verificación</th>--}%
-            %{--<th style="width: 1%">Plazo</th>--}%
             <th style="width: 5%">Acciones</th>
             <th style="width: 1%"></th>
         </tr>
@@ -87,6 +112,38 @@
 </div>
 
 <script type="text/javascript">
+
+    $("#btnRegresarEvaluacion").click(function (){
+       location.href="${createLink(controller: 'evaluacion', action: 'evaluacionAmbiental')}/" + ${pre?.id};
+    });
+
+    $("#btnAceptarPlan").click(function () {
+        $.ajax({
+           type: 'POST',
+            url: "${createLink(controller: 'planManejoAmbiental', action: 'comprobarPlan_ajax')}",
+            data: {
+                id: ${pre?.id},
+                band: ${band}
+            },
+            success: function (msg) {
+                if(msg == 'ok'){
+                    $.ajax({
+                        type: 'POST',
+                        url: "${createLink(controller: 'planManejoAmbiental', action: 'guardarPlan_Ajax')}",
+                        data: {
+                            id: ${pre?.id},
+                            band: ${band}
+                        },
+                        success: function (msg) {
+
+                        }
+                    })
+                }else{
+                    bootbox.alert("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> En su PMA consta un aspecto ambiental el cual NO TIENE asignado una Medida!")
+                }
+            }
+        });
+    });
 
     cargarTablaPlanes(${pre?.id}, ${band});
 
@@ -109,7 +166,7 @@
 
     function cargarAspectos (idPlan) {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: "${createLink(controller: 'planManejoAmbiental', action: 'cargarAspectos_ajax')}",
             data:{
                 id: idPlan
@@ -120,10 +177,39 @@
         });
     }
 
-
     $("#pma").change(function () {
         cargarAspectos($(this).val());
     });
+
+    $("#btnSeleccionarAspecto").click(function () {
+        var idAspecto = $("#aspecto").val();
+        if(idAspecto != 'null'){
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'planManejoAmbiental', action: 'asignarAspecto_ajax')}',
+                data:{
+                    id: ${pre?.id},
+                    band: ${band},
+                    aspecto: idAspecto
+                },
+                success: function (msg) {
+                    if(msg == 'ok'){
+                        log("Aspecto ambiental agregado correctamente","success");
+                        cargarTablaPlanes(${pre?.id}, ${band});
+                    }else{
+                        log("Error al agregar el Aspecto ambiental","success")
+                    }
+                }
+            })
+        }
+    });
+
+
+
+
+
+
+
 </script>
 </body>
 </html>

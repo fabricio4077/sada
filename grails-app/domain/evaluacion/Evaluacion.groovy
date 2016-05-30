@@ -2,6 +2,7 @@ package evaluacion
 
 import auditoria.DetalleAuditoria
 import legal.MarcoNorma
+import plan.PlanAuditoria
 
 
 class Evaluacion {
@@ -12,6 +13,7 @@ class Evaluacion {
     Calificacion calificacion
     MarcoNorma marcoNorma
     PlanAccion planAccion
+    PlanAuditoria planAuditoria
 
     static mapping = {
         table 'evam'
@@ -25,6 +27,7 @@ class Evaluacion {
             calificacion column: 'clfc__id'
             marcoNorma column: 'mctp__id'
             planAccion column: 'plac__id'
+            planAuditoria column: 'aupm__id'
         }
     }
 
@@ -33,6 +36,7 @@ class Evaluacion {
         calificacion(nullable: true)
         marcoNorma(nullable: true)
         planAccion(nullable: true)
+        planAuditoria(nullable: true)
 
     }
 }

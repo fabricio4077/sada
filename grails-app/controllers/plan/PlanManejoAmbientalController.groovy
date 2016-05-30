@@ -3,6 +3,7 @@ package plan
 import auditoria.Auditoria
 import auditoria.DetalleAuditoria
 import auditoria.Preauditoria
+import evaluacion.Evaluacion
 
 
 class PlanManejoAmbientalController extends Seguridad.Shield {
@@ -150,27 +151,180 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
 
 //        println("aupm " + aupm)
 
-        return [aupm: aupm]
+        return [aupm: aupm, pre: pre, band: params.band]
     }
 
     def cargarMedida_ajax() {
 
-        def aupm = PlanAuditoria.get(params.id).aspectoAmbiental
+        def aupm = PlanAuditoria.get(params.id)
 
-        def medidasExistentes = PlanAuditoria.findAllByAspectoAmbientalAndMedidaIsNotNull(aupm)
+        def medidasExistentes = PlanAuditoria.findAllByAspectoAmbientalAndMedidaIsNotNull(aupm.aspectoAmbiental).medida
 
 //        println("medidas " + medidasExistentes)
 
-        return [medidasExistentes: medidasExistentes]
+        return [medidasExistentes: medidasExistentes, aupm: aupm]
     }
 
     def tablaMedida_ajax() {
         def medida = Medida.get(params.id)
-        return [medida: medida]
+        def aupm = PlanAuditoria.get(params.aupm)
+        def ver = params.ver
+        return [medida: medida, aupm: aupm, ver: ver]
     }
 
     def crearMedida_ajax (){
+        def aupm = PlanAuditoria.get(params.aupm)
+        return [aupm: aupm]
+    }
 
+    def asignarMedida_ajax (){
+
+        def medida = Medida.get(params.id)
+        def aupm = PlanAuditoria.get(params.aupm)
+
+        aupm.medida = medida
+
+        try{
+            aupm.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al asignar la medida")
+        }
+    }
+
+    def verMedida_ajax () {
+        def aupm = PlanAuditoria.get(params.aupm)
+        return [aupm: aupm]
+    }
+
+    def quitarMedida_Ajax () {
+
+        def aupm = PlanAuditoria.get(params.id)
+        aupm.medida = null
+
+        try{
+            aupm.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al quitar del aupm la medida");
+        }
+    }
+
+    def asignarAspecto_ajax (){
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        def aspecto = AspectoAmbiental.get(params.aspecto)
+        def per
+        def aupm
+        if(params.band){
+            per = 'ANT'
+        }else{
+            per = 'ACT'
+        }
+
+        aupm = new PlanAuditoria()
+        aupm.detalleAuditoria = detalleAuditoria
+        aupm.aspectoAmbiental = aspecto
+        aupm.periodo = per
+
+        try{
+            aupm.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al crear aupm con el nuevo aspecto")
+        }
+    }
+
+    def comprobarPlan_ajax () {
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        def per
+        def faltantes
+        if(params.band){
+            per = 'ANT'
+        }else{
+            per = 'ACT'
+        }
+
+        faltantes = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodoAndMedidaIsNull(detalleAuditoria, per)
+//         println("faltantes " + faltantes)
+
+        if(faltantes.size() > 0){
+         render "no"
+        }else{
+         render "ok"
+        }
+    }
+
+    def guardarPlan_Ajax (){
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        def per
+        def todos
+        def evam
+        def error = ''
+        if(params.band){
+            per = 'ANT'
+        }else{
+            per = 'ACT'
+        }
+
+        todos = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria, per)
+
+        def todosEvam = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaInList(detalleAuditoria, todos)
+
+//        println("todos evam " + todosEvam)
+
+
+        if(todosEvam){
+
+          def inter =  todos.intersect(todosEvam.planAuditoria)
+          def diferente = todos - inter
+
+            if(diferente.size() > 0){
+                diferente.each { d->
+                    evam = new Evaluacion()
+                    evam.detalleAuditoria = detalleAuditoria
+                    evam.planAuditoria = d
+
+                    try{
+                        evam.save(flush: true)
+                    }catch (e){
+                        println("error al crear alguna evam de PMA " + evam.errors)
+                        error += evam.errors
+                    }
+                }
+            }else{
+                println("nada q hacer")
+            }
+        }else{
+            todos.each {t->
+                evam = new Evaluacion()
+                evam.detalleAuditoria = detalleAuditoria
+                evam.planAuditoria = t
+
+                try{
+                    evam.save(flush: true)
+                }catch (e){
+                    println("error al crear alguna evam de PMA " + evam.errors)
+                    error += evam.errors
+                }
+            }
+        }
+
+        if(error == ''){
+            render "ok"
+        }else{
+            render "no"
+        }
     }
 
 }

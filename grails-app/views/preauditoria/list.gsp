@@ -278,20 +278,20 @@
 
                             }
                         },
-                        configuración2:{
-                            label: "Configuración 2",
-                            icon: "fa fa-pencil-square",
-                            submenu:{
+//                        configuración2:{
+//                            label: "Configuración 2",
+//                            icon: "fa fa-pencil-square",
+//                            submenu:{
                                 objetivos: {
                                     label: "Objetivos",
                                     icon: "fa fa-check-circle-o",
                                     action: function ($element) {
-                                        var id = $element.data("id")
+                                        var id = $element.data("id");
                                         location.href = "${createLink(controller: 'auditoria', action: 'objetivos')}/" + id
                                     }
-                                }
-                            }
-                        },
+                                },
+//                            }
+//                        },
                         configuración3:{
                             label: "Imprimir",
                             icon: "fa fa-print",

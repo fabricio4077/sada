@@ -14,7 +14,7 @@
               Descripción:
           </label>
           <div class="col-md-4">
-              <g:textArea name="descripcion" maxlength="255" class="form-control required" style="height: 130px; resize: none"/>
+              <g:textArea name="descripcion" maxlength="500" class="form-control required" style="height: 130px; resize: none"/>
           </div>
       </span>
 
@@ -23,7 +23,7 @@
               Indicadores:
           </label>
           <div class="col-md-4">
-              <g:textField name="indicadores" maxlength="255" class="form-control required"/>
+              <g:textArea name="indicadores" maxlength="255" class="form-control required" style="height: 130px; resize: none"/>
           </div>
 
       </span>
@@ -82,6 +82,27 @@
 
     $("#btnCancelarMedida").click(function () {
         $("#divCrearMedida").html('')
+    });
+
+    $("#btnGuardarMedida").click(function () {
+        var $form = $("#frmMedida");
+        if ($form.valid()) {
+            $.ajax({
+                type: "POST",
+                url: '${createLink(controller: 'medida', action:'guardarMedida_ajax')}',
+                data: $form.serialize(),
+                success: function (msg) {
+                    var parts = msg.split("_");
+                    if (parts[0] == "ok") {
+                        log("Medida guardada correctamente","success");
+                        $("#divCrearMedida").html('');
+                        cargarTabla(parts[1],${aupm?.id})
+                    } else {
+                      log("Error al guardar la medida","error")
+                    }
+                }
+            });
+        }
     });
 
 

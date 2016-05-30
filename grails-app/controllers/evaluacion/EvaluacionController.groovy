@@ -132,9 +132,10 @@ class EvaluacionController extends Seguridad.Shield {
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
 //        def leyes = MarcoNorma.findAllByMarcoLegalAndSeleccionado(audi.marcoLegal, 1, [sort:'norma.nombre', order: 'asc'])
-        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+//        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
 
-        return [pre: pre, auditoria: audi, leyes: leyes]
+//        return [pre: pre, auditoria: audi, leyes: leyes]
+        return [pre: pre, auditoria: audi]
     }
 
     def tablaEvaluacion_ajax () {
@@ -142,7 +143,7 @@ class EvaluacionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
-        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
 
         return [leyes: leyes]
     }

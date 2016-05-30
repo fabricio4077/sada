@@ -86,7 +86,7 @@
     <div class="well" style="text-align: center; height: 200px">
 
         <g:if test="${anteriores}">
-            <div class="col-md-4 negrilla control-label">Seleccione el Plan de Manejo Ambiental anterior del cual se realizará la Evaluación Ambiental:
+            <div class="col-md-4 negrilla control-label">Seleccione el Plan de Manejo Ambiental (anterior) del cual se realizará la Evaluación Ambiental:
             </div>
 
             <div class="col-md-4">
@@ -100,7 +100,7 @@
         </g:if>
 
         <div class="col-md-4 negrilla control-label">
-            Opción 2: Crear un Plan de Manejo Ambiental del cual se realizará la Evaluación Ambiental:
+            Opción 2: Crear un Plan de Manejo Ambiental (anterior) del cual se realizará la Evaluación Ambiental:
         </div>
 
             <div class="btn-group">

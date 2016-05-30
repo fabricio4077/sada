@@ -83,7 +83,8 @@ class MedidaController extends Seguridad.Shield {
             render msg
             return
         }
-        render "OK_${params.id ? 'Actualización' : 'Creación'} de Medida exitosa."
+//        render "OK_${params.id ? 'Actualización' : 'Creación'} de Medida exitosa."
+        render "OK_${params.id}"
     } //save para grabar desde ajax
 
     def delete_ajax() {
@@ -107,5 +108,25 @@ class MedidaController extends Seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró Medida."
     } //notFound para ajax
+
+    def guardarMedida_ajax (){
+
+//        println("params guardar medida " + params)
+        def medida
+        medida = new Medida()
+        medida.verificacion = params.verificacion
+        medida.indicadores = params.indicadores
+        medida.descripcion = params.descripcion
+        medida.plazo = params.plazo
+
+        try{
+            medida.save(flush: true)
+            render "ok_${medida?.id}"
+        }catch (e){
+            render "no"
+            println("error al guardar la medida")
+        }
+
+    }
 
 }

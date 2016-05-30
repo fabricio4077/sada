@@ -25,7 +25,7 @@ class Medida {
 
     static constraints = {
 
-        plazo inList: ['Anual','Semestral','Permanente','Cuando se requiera']
+        plazo inList: ['Una vez','Semestral','Anual','Bi Anual','Permanente','Cuando se requiera', 'Etapa de Abandono del Proyecto']
 
     }
 }
