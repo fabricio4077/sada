@@ -89,7 +89,7 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-leaf"></i> PMA </h3>
+        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-leaf"></i> PMA (${band ? 'Anterior' : 'Actual'})</h3>
     </div>
 
     <table class="table table-condensed table-bordered table-striped">
@@ -113,8 +113,66 @@
 
 <script type="text/javascript">
 
+    $("#btnCrearAspecto").click(function () {
+        var idPlan = $("#pma").val();
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'aspectoAmbiental', action:'crearAspecto_ajax')}",
+            data    : {
+                id: idPlan
+            },
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgAspectoAmbiental",
+                    title   : "Aspecto Ambiental",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitForm();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            } //success
+        }); //ajax
+    });
+
+
+    function submitForm() {
+        var $form = $("#frmAspectoAmbiental");
+        if ($form.valid()) {
+            $.ajax({
+                type    : "POST",
+                url     : '${createLink(controller: 'aspectoAmbiental', action:'save_ajax')}',
+                data    : $form.serialize(),
+                success : function (msg) {
+                    var parts = msg.split("_");
+                    if (parts[0] == "OK") {
+                        log("Aspecto ambiental creado correctamente","success");
+                        cargarAspectos($("#pma").val());
+                    } else {
+                        log("Error al crear el aspecto ambiental","error");
+//                        return false;
+                    }
+                }
+            });
+        } else {
+            return false;
+        } //else
+    }
+
     $("#btnRegresarEvaluacion").click(function (){
-       location.href="${createLink(controller: 'evaluacion', action: 'evaluacionAmbiental')}/" + ${pre?.id};
+       location.href="${createLink(controller: 'evaluacion', action: 'evaluacionPlan')}/" + ${pre?.id};
     });
 
     $("#btnAceptarPlan").click(function () {
@@ -135,7 +193,7 @@
                             band: ${band}
                         },
                         success: function (msg) {
-
+                            location.href="${createLink(controller: 'evaluacion', action: 'evaluacionPlan')}/" + ${pre?.id};
                         }
                     })
                 }else{

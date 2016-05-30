@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: gato
+  Date: 30/05/16
+  Time: 10:47 AM
+--%>
+
 <%@ page import="evaluacion.Evaluacion" %>
 <%--
   Created by IntelliJ IDEA.
@@ -11,13 +18,12 @@
         <div style="width: 1120px; height: 500px;">
             <table class="table table-condensed table-bordered table-striped" id="tablaH">
                 <tbody>
-                <g:each in="${leyes}" var="ley" status="j">
+                <g:each in="${planes}" var="plan" status="j">
                     <tr>
                         <td style="width: 2%">${j+1}</td>
-                        <td style="width: 10%; font-size: smaller">${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}</td>
-                        <td style="width: 30%; font-size: smaller">${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}</td>
+                        <td style="width: 10%; font-size: smaller">${plan?.planAuditoria?.aspectoAmbiental?.planManejoAmbiental?.nombre}</td>
+                        <td style="width: 30%; font-size: smaller">${plan?.planAuditoria?.aspectoAmbiental?.descripcion + " - " + plan?.planAuditoria?.medida?.descripcion}</td>
                         <td style="width: 15%">
-
                             <table>
                                 <tbody>
                                 <tr>
@@ -28,41 +34,41 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <g:each in="${evaluacion.Calificacion.list([sort: 'nombre', order: 'asc'])}" var="cal">
-                                                    <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacion" data-id="${cal?.id}" data-ley="${ley?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
+                                                    <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacion" data-id="${cal?.id}" data-plan="${plan?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
                                                 </g:each>
                                             </ul>
                                         </div>
                                     </td>
-                                    <td style="background-color: ${ley?.calificacion?.tipo};" class="col-md-3">
-                                        <div class="divCalificacion_${ley?.id} col-md-4" title="${ley?.calificacion?.nombre}">
-                                            ${ley?.calificacion?.sigla}
+                                    <td style="background-color: ${plan?.calificacion?.tipo};" class="col-md-3">
+                                        <div class="divCalificacion_${plan?.id} col-md-4" title="${plan?.calificacion?.nombre}">
+                                            ${plan?.calificacion?.sigla}
                                         </div>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </td>
-                        <td style="width: 15%; font-size: smaller" title="${ley?.hallazgo?.descripcion ? ley?.hallazgo?.descripcion : 'Hallazgo no cargado'}">
-                            <g:if test="${ley?.hallazgo?.descripcion}">
-                                <g:if test="${ley?.hallazgo?.descripcion?.size() > 100}">
-                                    ${ley?.hallazgo?.descripcion?.substring(0,100)}...
+                        <td style="width: 15%; font-size: smaller" title="${plan?.hallazgo?.descripcion ? plan?.hallazgo?.descripcion : 'Hallazgo no cargado'}">
+                            <g:if test="${plan?.hallazgo?.descripcion}">
+                                <g:if test="${plan?.hallazgo?.descripcion?.size() > 100}">
+                                    ${plan?.hallazgo?.descripcion?.substring(0,100)}...
                                 </g:if>
                                 <g:else>
-                                    ${ley?.hallazgo?.descripcion}
+                                    ${plan?.hallazgo?.descripcion}
                                 </g:else>
                             </g:if>
 
-                            <a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${ley?.id}" title="Agregar hallazgo" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${plan?.id}" title="Agregar hallazgo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
                         <td style="width: 10%">
 
-                            <g:set value="${evaluacion.Anexo.findAllByEvaluacion(evaluacion.Evaluacion.get(ley?.id)).size()}" var="numero"/>
+                            <g:set value="${evaluacion.Anexo.findAllByEvaluacion(evaluacion.Evaluacion.get(plan?.id)).size()}" var="numero"/>
 
                             <i class="fa fa-folder-open"></i> Anexos : ${numero}
 
-                            <a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${ley?.id}" title="Agregar anexo" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${plan?.id}" title="Agregar anexo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -80,10 +86,10 @@
 
     //función cargar calificación
     $(".btnCalificacion").click(function () {
-        var idEva = $(this).data('ley');
+        var idEva = $(this).data('plan');
         var idCali = $(this).data('id');
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: "${createLink(controller: 'evaluacion', action: 'guardarCalificacion_ajax')}",
             data:{
                 id: idEva,
@@ -91,7 +97,7 @@
             },
             success: function (msg){
                 if(msg == 'ok'){
-                    cargarTablaEva();
+                    cargarTablaEvaPlan();
                 }else{
 
                 }

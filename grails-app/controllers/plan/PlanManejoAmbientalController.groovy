@@ -3,6 +3,7 @@ package plan
 import auditoria.Auditoria
 import auditoria.DetalleAuditoria
 import auditoria.Preauditoria
+import evaluacion.Anexo
 import evaluacion.Evaluacion
 
 
@@ -324,6 +325,80 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
             render "ok"
         }else{
             render "no"
+        }
+    }
+
+
+    def asociarPlanEvam_ajax () {
+
+        def preAnterior = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(preAnterior)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        def per = 'ACT'
+        def todosAnteriores = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria, per)
+        def evam
+
+
+        def preActual = Preauditoria.get(params.actual)
+        def auditoriaAct = Auditoria.findByPreauditoria(preActual)
+        def detalleAuditoriaAct = DetalleAuditoria.findByAuditoria(auditoriaAct)
+
+        def evamPlan = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalleAuditoriaAct)
+
+        if(evamPlan.size() > 0){
+            render "no_Ya existe un PMA (anterior) cargado, clic en el botón Borrar PMA si desea continuar"
+        }else{
+
+            if(todosAnteriores.size() > 0){
+                todosAnteriores.each { a->
+                    evam = new Evaluacion()
+                    evam.detalleAuditoria = detalleAuditoriaAct
+                    evam.planAuditoria = a
+
+                    try{
+                        evam.save(flush: true)
+                        render "ok_PMA cargado correctamente para ser usado en la evaluación ambiental"
+                    }catch (e){
+                        println("error al crear alguna evam de PMA anterior " + evam.errors)
+                        render "no_Error al cargar el PMA (anterior)"
+                    }
+                }
+            }else{
+                render "no_La auditoría (anterior) seleccionada, no contiene un PMA"
+            }
+        }
+
+    }
+
+
+
+    def comprobarBorrarMedida_Ajax () {
+        def aupm = PlanAuditoria.get(params.idAs)
+        def evam = Evaluacion.findByPlanAuditoria(aupm)
+
+        if(evam){
+            render "no"
+        }else{
+            render "ok"
+        }
+    }
+
+    def borrarAspecto_ajax () {
+        def aupm = PlanAuditoria.get(params.id)
+        def evam = Evaluacion.findByPlanAuditoria(aupm)
+        def anexo = Anexo.findAllByEvaluacion(evam)
+
+        if(evam){
+            if(evam.calificacion || evam.hallazgo || anexo){
+                render "no"
+            }else{
+                evam.delete(flush: true)
+                aupm.delete(flush: true)
+                render "ok"
+            }
+        }else{
+            aupm.delete(flush: true)
+            render "ok"
         }
     }
 

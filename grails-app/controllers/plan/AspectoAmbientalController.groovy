@@ -68,6 +68,9 @@ class AspectoAmbientalController extends Seguridad.Shield {
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
+
+        println("params save aspecto " + params)
+
         def aspectoAmbientalInstance = new AspectoAmbiental()
         if (params.id) {
             aspectoAmbientalInstance = AspectoAmbiental.get(params.id)
@@ -107,5 +110,11 @@ class AspectoAmbientalController extends Seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró AspectoAmbiental."
     } //notFound para ajax
+
+    def crearAspecto_ajax () {
+//        println("params crear aspecto " + params)
+        def plan = PlanManejoAmbiental.get(params.id)
+        return [plan: plan]
+    }
 
 }

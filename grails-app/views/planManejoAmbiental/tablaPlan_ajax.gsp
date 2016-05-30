@@ -49,7 +49,7 @@
                             %{--<a href="#" id="btnGuardarAupm" class="btn btn-success btn-sm" title="Guardar Aspecto Ambiental">--}%
                                 %{--<i class="fa fa-save"></i>--}%
                             %{--</a>--}%
-                            <a href="#" id="btnBorrarAupm" class="btn btn-danger btn-sm" title="Borrar Aspecto Ambiental">
+                            <a href="#" class="btn btn-danger btn-sm btnBorrarAupm" data-id="${a?.id}" title="Borrar Aspecto Ambiental">
                                 <i class="fa fa-trash"></i>
                             </a>
                         </div>
@@ -126,28 +126,73 @@
        });
    });
 
-   //función para borrar del aspecto ambiental una medida
+   //función para borrar la medida del aspecto ambiental
    $(".btnBorrarMedida").click(function () {
        var idAspecto = $(this).data("id");
-       bootbox.confirm("Está seguro de quitar esta medida?", function (result) {
+       bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de remover esta medida?", function (result) {
            if(result){
                $.ajax({
                    type: 'POST',
-                   url: '${createLink(controller: 'planManejoAmbiental', action: 'quitarMedida_Ajax')}',
+                   url: '${createLink(controller: 'planManejoAmbiental', action: 'comprobarBorrarMedida_Ajax')}',
                    data:{
-                       id: idAspecto
+                        idAs: idAspecto
                    },
-                   success: function (msg) {
+                   success: function (msg){
                        if(msg == 'ok'){
-                            log("Medida retirada correctamente","success");
-                           cargarTablaPlanes(${pre?.id}, ${band});
+                           $.ajax({
+                               type: 'POST',
+                               url: '${createLink(controller: 'planManejoAmbiental', action: 'quitarMedida_Ajax')}',
+                               data:{
+                                   id: idAspecto
+                               },
+                               success: function (msg) {
+                                   if(msg == 'ok'){
+                                       log("Medida retirada correctamente","success");
+                                       cargarTablaPlanes(${pre?.id}, ${band});
+                                   }else{
+                                       log("Error al retirar la medida","error")
+                                   }
+                               }
+                           });
                        }else{
-                            log("Error al retirar la medida","error")
+                            log("No es posible borrar la Medida, este Aspecto Ambiental ya está siendo evaluado!","error")
                        }
                    }
-               })
+
+               });
+
+
            }
        })
 
    }) ;
+
+
+    //función para borrar un aspecto ambiental que no se encuentre ya en evaluación
+    $(".btnBorrarAupm").click(function () {
+        var idAspe = $(this).data("id");
+        bootbox.confirm("Está seguro de borrar este aspecto ambiental?", function (result) {
+            if(result){
+                $.ajax({
+                   type: 'POST',
+                    url: '${createLink(controller: 'planManejoAmbiental', action: 'borrarAspecto_ajax')}',
+                    data:{
+                        id: idAspe
+                    },
+                    success: function (msg){
+                        if(msg == 'ok'){
+                            log("Aspecto borrado correctamente","success");
+                            cargarTablaPlanes(${pre?.id}, ${band});
+                        }else{
+                            log("Error al borrar el aspecto","error")
+                        }
+                    }
+                });
+            }
+        });
+
+
+    });
+
+
 </script>

@@ -139,12 +139,10 @@ class EvaluacionController extends Seguridad.Shield {
     }
 
     def tablaEvaluacion_ajax () {
-
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
-
         return [leyes: leyes]
     }
 
@@ -218,11 +216,25 @@ class EvaluacionController extends Seguridad.Shield {
         def evaluacion = Evaluacion.get(params.id)
         def listaHallazgos
 
-        if(evaluacion.marcoNorma.literal){
-            listaHallazgos = Hallazgo.findAllByLiteral(evaluacion.marcoNorma.literal)
-        }else{
-            listaHallazgos = Hallazgo.findAllByArticulo(evaluacion.marcoNorma.articulo)
+        if(evaluacion.marcoNorma){
+            if(evaluacion.marcoNorma.literal){
+                listaHallazgos = Hallazgo.findAllByLiteral(evaluacion.marcoNorma.literal)
+            }else{
+                listaHallazgos = Hallazgo.findAllByArticulo(evaluacion.marcoNorma.articulo)
+            }
         }
+        if(evaluacion.planAuditoria){
+            listaHallazgos = Evaluacion.withCriteria {
+                                planAuditoria{
+                                    eq("aspectoAmbiental", evaluacion.planAuditoria.aspectoAmbiental)
+                                }
+
+                                isNotNull("hallazgo")
+            }.hallazgo
+        }
+
+//        println("lista hallazgos " + listaHallazgos)
+
 
         return [listaHallazgos: listaHallazgos]
     }
@@ -583,7 +595,7 @@ class EvaluacionController extends Seguridad.Shield {
                             lt('fin',periodoActual)
                         }
         }
-        println("anteriores " + anteriores)
+//        println("anteriores " + anteriores)
 
 
         def aupm = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria,'ANT')
@@ -626,7 +638,15 @@ class EvaluacionController extends Seguridad.Shield {
             render "no"
         }
 
+    }
 
+    def tablaEvaPlan_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalleAuditoria, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
+
+        return[planes: planes]
     }
 
 }

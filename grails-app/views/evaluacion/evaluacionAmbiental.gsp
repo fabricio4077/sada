@@ -116,7 +116,7 @@
             <th style="width: 31%">Descripción</th>
             <th style="width: 16%">Calificación</th>
             <th style="width: 15%">Hallazgo</th>
-            <th style="width: 10%">Evidencia/Anexo</th>
+            <th style="width: 10%"><i class="fa fa-archive"></i> Evidencia/Anexo</th>
             <th style="width: 1%"></th>
         </tr>
         </thead>

@@ -35,6 +35,11 @@
     .bg-otro{
         background-color: #5B8A5A;
     }
+
+    .table th{
+        text-align: center;
+    }
+
     </style>
 
 </head>
@@ -92,7 +97,7 @@
             <div class="col-md-4">
                 <g:select name="anteriores_name" class="form-control"
                           from="${anteriores}" id="anteriores"
-                          optionValue="${{it?.tipo?.descripcion + " - Período: " + it?.periodo?.inicio?.format("yyyy") + " - " + it?.periodo?.fin?.format("yyyy")}}" optionKey="id"/>
+                          optionValue="${{it?.tipo?.descripcion + " - Período: " + it?.periodo?.inicio?.format("yyyy") + " - " + it?.periodo?.fin?.format("yyyy")}}" optionKey="id" disabled="${plan.size() > 0 ? 'true' : 'false'}"/>
                 <a href="#" id="btnSeleccionarPlan" class="btn btn-info ${plan.size() >0 ? 'disabled' : ''}" title="" style="margin-bottom: 20px; margin-top: 10px">
                     <i class="fa fa-check"></i> Seleccionar PMA
                 </a>
@@ -110,7 +115,8 @@
                 <a href="#" id="btnEditarPlan" class="btn btn-primary btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
                     <i class="fa fa-pencil"></i> Editar PMA
                 </a>
-                <a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
+                %{--<a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">--}%
+                <a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm" title="">
                     <i class="fa fa-trash"></i> Borrar PMA
                 </a>
             </div>
@@ -125,7 +131,7 @@
         <th style="width: 31%">Descripción</th>
         <th style="width: 16%">Calificación</th>
         <th style="width: 15%">Hallazgo</th>
-        <th style="width: 10%">Evidencia/Anexo</th>
+        <th style="width: 10%"><i class="fa fa-folder-open-o"></i> Evidencia/Anexo</th>
         <th style="width: 1%"></th>
     </tr>
     </thead>
@@ -137,6 +143,35 @@
 
 
 <script type="text/javascript">
+
+    $("#btnSeleccionarPlan").click(function () {
+        var anterior = $("#anteriores").val();
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-warning text-shadow'></i> Está seguro que desea seleccionar este PMA(anterior) para la Evaluación Ambiental?", function (result){
+         if(result){
+             $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'planManejoAmbiental', action: 'asociarPlanEvam_ajax')}',
+                data:{
+                    id: anterior,
+                    actual: ${pre?.id}
+                },
+                 success: function (msg){
+                     var parts = msg.split("_");
+                     if(parts[0] == 'ok'){
+                         log(parts[1],'success');
+                        cargarTablaEvaPlan();
+                         $("#btnCrearPlan").addClass('disabled');
+                         $("#btnEditarPlan").addClass('disabled');
+                         $("#btnSeleccionarPlan").addClass('disabled');
+                     }else{
+                         log(parts[1],'error');
+                     }
+                 }
+             });
+         }
+        })
+    });
+
 
 
     //función que asigna el PMA por defecto y redirecciona a dicha pantalla
@@ -160,6 +195,26 @@
     $("#btnEditarPlan").click(function () {
         location.href="${createLink(controller: 'planManejoAmbiental', action: 'planManejoAmbiental')}?id=" + ${pre?.id} + "&band=" + true
     })
+
+
+
+    cargarTablaEvaPlan();
+
+    //función para cargar la tabla con los items a ser evaluados (PMA)
+    function  cargarTablaEvaPlan () {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'evaluacion', action: 'tablaEvaPlan_ajax')}',
+            data: {
+                id: ${pre?.id}
+            },
+            success: function (msg) {
+                $("#divTablaPlan").html(msg)
+            }
+        });
+    }
+
+
 </script>
 
 </body>
