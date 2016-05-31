@@ -115,9 +115,9 @@
                 <a href="#" id="btnEditarPlan" class="btn btn-primary btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
                     <i class="fa fa-pencil"></i> Editar PMA
                 </a>
-                %{--<a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">--}%
-                <a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm" title="">
-                    <i class="fa fa-trash"></i> Borrar PMA
+                <a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
+                %{--<a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm" title="Remover PMA para seleccionar otro">--}%
+                    <i class="fa fa-trash"></i> Remover PMA
                 </a>
             </div>
     </div>
@@ -143,6 +143,32 @@
 
 
 <script type="text/javascript">
+
+    $("#btnBorrarPlan").click(function () {
+//        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de remover este PMA (anterior) de la Evaluación Ambiental, <br><br> toda la información asociada <b>(calificación, hallazgos, anexos)</b> se borrará también, desea continuar?", function (result){
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de remover este PMA (anterior) de la Evaluación Ambiental?", function (result){
+            if(result){
+                $.ajax({
+                    type: 'POST',
+                    url: "${createLink(controller: 'planManejoAmbiental', action: 'removerPlanAnterior_ajax')}",
+                    data:{
+                        id: ${pre?.id}
+
+                    },
+                    success: function (msg){
+                        if(msg == 'ok'){
+                            log("PMA (anterior) removido correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true)
+                            }, 1500);
+                        }else{
+                            log("No se puede remover este PMA (anterior), ya se encuentra en proceso de evaluación!","error")
+                        }
+                    }
+                });
+            }
+        });
+    });
 
     $("#btnSeleccionarPlan").click(function () {
         var anterior = $("#anteriores").val();
@@ -180,7 +206,8 @@
             type: 'POST',
             url: '${createLink(controller: 'evaluacion', action:  'asignarPlanAnterior_Ajax')}',
             data:{
-                id: ${pre?.id}
+                id: ${pre?.id},
+                band: 'true'
             },
             success: function(msg){
                 if(msg == 'ok'){

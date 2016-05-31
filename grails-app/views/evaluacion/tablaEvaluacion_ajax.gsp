@@ -158,7 +158,7 @@
                             label     : 'Aceptar',
                             className : 'btn-primary',
                             callback  : function () {
-
+                                cargarTablaEva();
                             }
                         }
                     }

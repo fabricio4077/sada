@@ -216,6 +216,8 @@ class EvaluacionController extends Seguridad.Shield {
         def evaluacion = Evaluacion.get(params.id)
         def listaHallazgos
 
+
+
         if(evaluacion.marcoNorma){
             if(evaluacion.marcoNorma.literal){
                 listaHallazgos = Hallazgo.findAllByLiteral(evaluacion.marcoNorma.literal)
@@ -241,17 +243,19 @@ class EvaluacionController extends Seguridad.Shield {
 
     def guardarHallazgo_ajax () {
 
-//        println("params guardar hallazgo " + params)
+        println("params guardar hallazgo " + params)
 
         def cali = Calificacion.get(params.calificacion)
         def evaluacion = Evaluacion.get(params.id)
         def ref
         def hallazgo = new Hallazgo()
 
-        if(evaluacion.marcoNorma.literal){
-             hallazgo.literal = evaluacion.marcoNorma.literal
-        }else{
-             hallazgo.articulo = evaluacion.marcoNorma.articulo
+        if(evaluacion.marcoNorma){
+            if(evaluacion.marcoNorma.literal){
+                hallazgo.literal = evaluacion.marcoNorma.literal
+            }else{
+                hallazgo.articulo = evaluacion.marcoNorma.articulo
+            }
         }
 
         hallazgo.calificacion = cali
@@ -259,11 +263,19 @@ class EvaluacionController extends Seguridad.Shield {
 
         try{
             hallazgo.save(flush: true)
+            evaluacion.hallazgo = hallazgo
+            evaluacion.calificacion = hallazgo.calificacion
+            evaluacion.save(flush: true)
             render "ok"
         }catch (e){
             render "no"
             println("error al guardar nuevo hallazgo")
         }
+
+
+
+
+
     }
 
     def guardarSeleccionado_ajax () {
@@ -509,7 +521,7 @@ class EvaluacionController extends Seguridad.Shield {
         def evaluacion = Evaluacion.get(params.id)
         def anexos = Anexo.findAllByEvaluacion(evaluacion)
 
-        println("lista anexos " + anexos)
+//        println("lista anexos " + anexos)
         return [existentes: anexos]
     }
 
@@ -609,6 +621,8 @@ class EvaluacionController extends Seguridad.Shield {
     }
 
     def asignarPlanAnterior_Ajax (){
+        println("asignar plan " + params)
+
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
@@ -616,11 +630,17 @@ class EvaluacionController extends Seguridad.Shield {
         def apam = AspectoAmbiental.list()
         def aupm
         def error = ''
+        def per
+        if(params.band == 'true'){
+            per = 'ANT'
+        }else{
+            per = 'ACT'
+        }
 
         apam.each { a->
 
             aupm = new PlanAuditoria()
-            aupm.periodo = 'ANT'
+            aupm.periodo = per
             aupm.aspectoAmbiental = a
             aupm.detalleAuditoria = detalleAuditoria
 

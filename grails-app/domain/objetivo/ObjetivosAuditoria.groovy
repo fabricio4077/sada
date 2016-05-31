@@ -7,6 +7,7 @@ class ObjetivosAuditoria {
     static auditable = true
     Objetivo objetivo
     Auditoria auditoria
+    int completado = 0
 
     static mapping = {
         table 'obau'
@@ -17,9 +18,11 @@ class ObjetivosAuditoria {
             id column: 'obau__id'
             objetivo column: 'objt__id'
             auditoria column: 'audt__id'
+            completado column: 'obaucmpt'
        }
     }
 
     static constraints = {
+
     }
 }

@@ -63,6 +63,9 @@
                     $("#tablaCrearHallazgo").html('');
                     $('.selectpicker').selectpicker('refresh');
                     cargarComboHallazgo(${evaluacion?.id});
+                    bootbox.hideAll();
+                    cargarTablaEvaPlan();
+                    cargarTablaEva();
                 }else{
                     log("Error al crear el hallazgo","error")
                 }

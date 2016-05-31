@@ -117,7 +117,7 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
 
     def planManejoAmbiental () {
 
-//        println("params pma " + params)
+        println("params pma " + params)
 
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
@@ -136,13 +136,13 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
 
     def tablaPlan_ajax() {
 
-//        println("params tabla plan " + params)
+        println("params tabla plan " + params)
 
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
         def per
-        if(params.band){
+        if(params.band == 'true'){
             per = 'ANT'
         }else{
             per = 'ACT'
@@ -241,6 +241,8 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
     }
 
     def comprobarPlan_ajax () {
+
+        println("params comprobar " + params)
 
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
@@ -364,7 +366,7 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
                     }
                 }
             }else{
-                render "no_La auditoría (anterior) seleccionada, no contiene un PMA"
+                render "no_La auditoría seleccionada, no contiene un PMA!"
             }
         }
 
@@ -389,7 +391,7 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         def anexo = Anexo.findAllByEvaluacion(evam)
 
         if(evam){
-            if(evam.calificacion || evam.hallazgo || anexo){
+            if(anexo || evam.planAccion){
                 render "no"
             }else{
                 evam.delete(flush: true)
@@ -400,6 +402,74 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
             aupm.delete(flush: true)
             render "ok"
         }
+    }
+
+    def removerPlanAnterior_ajax (){
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        def per = 'ANT'
+        def todos
+        def plan
+        def aupms
+        def anexos
+        def evam
+        def error = ''
+
+        aupms = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria,per)
+
+        plan = Evaluacion.findAllByPlanAuditoriaInListAndPlanAccionIsNotNull(aupms)
+        todos = Evaluacion.findAllByPlanAuditoriaInList(aupms)
+        anexos = Anexo.findAllByEvaluacionInList(todos)
+
+//        println("anexos " + anexos)
+
+        if (anexos || plan){
+            render "no"
+        }else{
+
+            todos.each {p->
+                try{
+                    p.delete(flush: true)
+                }catch (e){
+                   println("error al borrar un evam de borrar todo el PMA " + p.errors)
+                    error += errors
+                }
+            }
+
+            aupms.each { a->
+                try{
+                    a.delete(flush: true)
+                }catch (e){
+                    println("error al borrar un aupms de borrar todo el PMA " + a.errors)
+                    error += error
+                }
+            }
+
+            if(error == ''){
+                render "ok"
+            }else{
+                render "no"
+            }
+        }
+    }
+
+    def cargarPlanActual () {
+
+        def pre = Preauditoria.get(params.id)
+        def periodoActual = pre.periodo.inicio
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+
+        def anteriores = Preauditoria.withCriteria {
+            eq('estacion', pre?.estacion)
+            periodo{
+                lt('fin',periodoActual)
+            }
+        }
+
+        return [pre:pre, anteriores: anteriores]
+
     }
 
 }

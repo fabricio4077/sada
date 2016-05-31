@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="layout" content="mainSada">
-    <title>PMA - Plan de Manejo Ambiental (${band ? 'Anterior' : 'Actual'})</title>
+    <title>PMA - Plan de Manejo Ambiental (${band == 'true' ? 'Anterior' : 'Actual'})</title>
 
     <style>
     .table th{
@@ -20,35 +20,38 @@
 
 <body>
 
-<div class="panel panel-warning">
-    <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center"><i class="fa fa-gear"></i> Acciones</h3>
-    </div>
-    <div class="panel-body" style="height: 100px">
-        <div class="col-md-8">
-            <p>
-                <i class='fa fa-exclamation-triangle fa-3x text-info text-shadow'></i>
-                <strong>Una vez ha seleccionado todos los aspectos ambientales de los que consta su PMA, click en en el botón "Aceptar"</strong>
-            </p>
-            <p>
-                <i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i>
-                <strong>Todos los aspectos ambientales deben teber asignada una "Medida Propuesta"</strong>
-            </p>
+<g:if test="${band == 'true'}">
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <h3 class="panel-title" style="text-align: center"><i class="fa fa-gear"></i> Acciones</h3>
         </div>
+        <div class="panel-body" style="height: 100px">
+            <div class="col-md-8">
+                <p>
+                    <i class='fa fa-exclamation-triangle fa-3x text-info text-shadow'></i>
+                    <strong>Una vez ha seleccionado todos los aspectos ambientales de los que consta su PMA, click en en el botón "Aceptar"</strong>
+                </p>
+                <p>
+                    <i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i>
+                    <strong>Todos los aspectos ambientales deben teber asignada una "Medida Propuesta"</strong>
+                </p>
+            </div>
 
-        <div class="btn-group" style="float: right">
+            <div class="btn-group" style="float: right">
 
-            <a href="#" id="btnAceptarPlan" class="btn btn-success" title="Aceptar PMA">
-                <i class="fa fa-check"></i> Aceptar
-            </a>
+                <a href="#" id="btnAceptarPlan" class="btn btn-success" title="Aceptar PMA">
+                    <i class="fa fa-check"></i> Aceptar
+                </a>
 
-            <a href="#" id="btnRegresarEvaluacion" class="btn btn-primary" title="Regresar a Evaluación Ambiental">
-                <i class="fa fa-angle-double-left"></i> Regresar
-            </a>
+                <a href="#" id="btnRegresarEvaluacion" class="btn btn-primary" title="Regresar a Evaluación Ambiental">
+                    <i class="fa fa-angle-double-left"></i> Regresar
+                </a>
 
+            </div>
         </div>
     </div>
-</div>
+</g:if>
+
 
 
 
@@ -89,7 +92,7 @@
 
 <div class="panel panel-info">
     <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-leaf"></i> PMA (${band ? 'Anterior' : 'Actual'})</h3>
+        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-leaf"></i> PMA (${band == 'true' ? 'Anterior' : 'Actual'})</h3>
     </div>
 
     <table class="table table-condensed table-bordered table-striped">
@@ -261,12 +264,6 @@
             })
         }
     });
-
-
-
-
-
-
 
 </script>
 </body>

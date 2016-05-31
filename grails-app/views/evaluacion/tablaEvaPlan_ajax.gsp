@@ -164,7 +164,7 @@
                             label     : 'Aceptar',
                             className : 'btn-primary',
                             callback  : function () {
-
+                                cargarTablaEvaPlan();
                             }
                         }
                     }
