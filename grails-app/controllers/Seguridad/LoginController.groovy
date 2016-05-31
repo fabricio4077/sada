@@ -90,29 +90,15 @@ class LoginController {
 
     def doLogin(perfil) {
         session.perfil = perfil
-//        cargarPermisos()
-//        def count = Alerta.countByPersonaAndFechaRecibidoIsNull(session.usuario)
-//        if (count > 0) {
-//            redirect(controller: 'alerta', action: 'list')
-//            return
-//        } else {
             if (session.an && session.cn) {
                 redirect(controller: session.cn, action: session.an, params: session.pr)
             } else {
                 redirect(controller: "inicio", action: "index")
             }
-//            return
-//        }
     }
 
     def perfiles() {
         def usuarioLog = session.usuario
-//        def perfilesUsr = Sesn.findAllByUsuario(usuarioLog, [sort: 'perfil'])
-//        def perfiles = []
-//        perfilesUsr.each { p ->
-//            perfiles.add(p)
-//        }
-
         def perfiles = Sesn.withCriteria {
             eq("usuario", usuarioLog)
             perfil {
@@ -131,51 +117,6 @@ class LoginController {
         doLogin(perfil)
     }
 
-//    def savePer() {
-//        def sesn = Sesn.get(params.prfl)
-//        def perf = sesn.perfil
-//
-//        if (perf) {
-//
-//            def permisos = Prpf.findAllByPerfil(perf)
-//            permisos.each {
-//                def perm = PermisoUsuario.findAllByPersonaAndPermisoTramite(session.usuario, it.permiso)
-//                perm.each { pr ->
-//                    if (pr.estaActivo) {
-//                        session.usuario.permisos.add(pr.permisoTramite)
-//                    }
-//                }
-//            }
-//
-//            session.perfil = perf
-//            cargarPermisos()
-//
-//            def count = 0
-//            if (session.usuario.esTriangulo()) {
-//                count = Alerta.countByDepartamentoAndFechaRecibidoIsNull(session.departamento)
-//            } else {
-//                count = Alerta.countByPersonaAndFechaRecibidoIsNull(session.usuario)
-//            }
-//
-//            if (count > 0)
-//                redirect(controller: 'alerta', action: 'list')
-//            else {
-//                if (session.usuario.getPuedeDirector()) {
-//                    redirect(controller: "retrasadosWeb", action: "reporteRetrasadosConsolidadoDir", params: [dpto: Persona.get(session.usuario.id).departamento.id, inicio: "1", dir: "1"])
-//                } else {
-//                    if (session.usuario.getPuedeJefe()) {
-//                        redirect(controller: "retrasadosWeb", action: "reporteRetrasadosConsolidado", params: [dpto: Persona.get(session.usuario.id).departamento.id, inicio: "1"])
-//                    } else {
-//                        redirect(controller: "inicio", action: "index")
-//                    }
-//
-//                }
-//            }
-////            }
-//        } else {
-//            redirect(action: "login")
-//        }
-//    }
 
     def logout() {
         session.usuario = null
@@ -192,17 +133,4 @@ class LoginController {
 
     }
 
-//    def cargarPermisos() {
-//        def permisos = Prms.findAllByPerfil(session.perfil)
-//        def hp = [:]
-//        permisos.each {
-//            if (hp[it.accion.control.nombre.toLowerCase()]) {
-//                hp[it.accion.control.nombre.toLowerCase()].add(it.accion.nombre.toLowerCase())
-//            } else {
-//                hp.put(it.accion.control.nombre.toLowerCase(), [it.accion.nombre.toLowerCase()])
-//            }
-//
-//        }
-//        session.permisos = hp
-//    }
 }

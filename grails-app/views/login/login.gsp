@@ -12,58 +12,63 @@
     <title>Ingreso Sada</title>
     <link href="${resource(dir: 'css', file: 'login.css')}" rel="stylesheet"/>
 
-    <style type="text/css">
-
-    .bbody {
-        margin-top: 100px;
+    <style>
+    .tamano {
+        font-size: 170%;
     }
-
     </style>
+
 </head>
+
+
 
 <body>
 
-<elm:message tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:message>
 
-
-
-
-<div class="row bbody">
-
-    <div class="col-md-6 col-md-offset-3">
-        <div class="tdn-tab tdn-tab-left tdn-tab-primary " style="background: none">
-            <div class="tdn-tab-body" style="">
-
-            </div>
+%{--<div style="text-align: center; margin-top: 20px; height: ${(flash.message) ? '680' : '530'}px;" class="well">--}%
+<div style="text-align: center; margin-top: 20px; height:530px;" class="well">
+    <div class="panel panel-success" style="height: 500px">
+        <div class="panel-heading tamano">
+            <h1 class="panel-title tamano">Sistema de auditoría ambiental para estaciones de servicio de combustible</h1>
         </div>
-    </div>
+        <div class="panel-body">
+            <elm:flashMessage tipo="${flash.tipo}" icon="${flash.icon}"
+                              clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
-
-
-    <div class="col-md-3 col-md-offset-9 col-sm-4 col-sm-offset-8 col-xs-6">
-        <div class="tdn-tab tdn-tab-left tdn-tab-primary " style="background: none">
-            <div class="tdn-tab-body" style="background: border-box">
-                <img class="img-login" src="${resource(dir: 'images/inicio', file: 'logo_sada3.png')}"/>
-                <g:form name="frmLogin" action="validar">
-                    <div class="input-group input-login">
-                        <g:textField name="user" class="form-control required noEspacios" placeholder="Usuario"/>
-                        <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                    </div>
-
-                    <div class="input-group input-login">
-                        <g:passwordField name="pass" class="form-control required noEspacios" placeholder="Contraseña"/>
-                        <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
-                    </div>
-
-                    <div class="text-center">
-                        <a href="#" id="btn-login" class="btn btn-primary">Validar <i class="fa fa-unlock"></i>
-                        </a>
-                    </div>
-                </g:form>
+            <div class="col-md-4">
+                <img src="${resource(dir: 'images/inicio', file: 'estacion.jpg')}" style="padding: 10px; height: 330px"/>
             </div>
+            <div class="col-md-3 col-md-offset-4">
+                <div class="tdn-tab tdn-tab-left tdn-tab-primary " style="background: none">
+                    <div class="tdn-tab-body" style="background: border-box">
+                        <img class="img-login" src="${resource(dir: 'images/inicio', file: 'logo_sada3.png')}"/>
+                        <g:form name="frmLogin" action="validar">
+                            <div class="input-group input-login">
+                                <g:textField name="user" class="form-control required noEspacios" placeholder="Usuario"/>
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                            </div>
+
+                            <div class="input-group input-login">
+                                <g:passwordField name="pass" class="form-control required noEspacios" placeholder="Contraseña"/>
+                                <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span>
+                            </div>
+
+                            <div class="text-center">
+                                <a href="#" id="btn-login" class="btn btn-primary">Validar <i class="fa fa-unlock"></i>
+                                </a>
+                            </div>
+                        </g:form>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+
+<p class="text-info pull-right" style="font-size: 10px; margin-top: 20px">
+    Versión ${message(code: 'version', default: '2.1.0x')}
+</p>
 
 <script type="text/javascript">
     var $frm = $("#frmLogin");

@@ -64,10 +64,10 @@ class MenuTagLib {
             html += "<div class='banner-top ${large}'>"
 //            html += "<div class='banner-esquina'>"
 //            html += "</div>"
-            html += "<div class='banner-title' style='margin-top:10px; margin-left: 20px; font-size: 10px'>" +
+            html += "<div class='col-md-3 banner-title' style='margin-top:10px; margin-left: 20px; font-size: 10px'>" +
                     "</div>"
 //                    "<img src='${resource(dir: 'images/inicio', file: 'logo_sada2.png')}' style='float: right'/></div>"
-            html += "<div class='banner-page-title' style='margin-top:12px; margin-bottom: 10px; text-align: center;'><strong>${attrs.title ?: '' }</strong></div>"
+            html += "<div class='col-md-6 banner-page-title' style='margin-top:12px; margin-bottom: 10px; text-align: center;'><strong>${attrs.title ?: '' }</strong></div>"
 
         }
 
@@ -254,12 +254,12 @@ class MenuTagLib {
             strItems += '</li>'
         }
 
-        def html = "<nav class=\"navbar navbar-default navbar-prb\" role=\"navigation\" >"
+        def html = "<nav class=\"navbar navbar-default navbar-prb affix\" role=\"navigation\" >"
 
         html += "<div class=\"container-fluid\">"
 
         // Brand and toggle get grouped for better mobile display
-        html += '<div class="navbar-header">'
+        html += '<div class="navbar-header affix">'
         html += '<button type="button" class="navbar-toggle" data-toggle="collapse" id="bs-example-navbar-collapse-1">'
 //        html += '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">'
         html += '<span class="sr-only">Toggle navigation</span>'

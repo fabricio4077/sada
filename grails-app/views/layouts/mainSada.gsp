@@ -13,6 +13,8 @@
         <!-- Bootstrap core CSS 3.1.1 -->
         <elm:bootstrapCss/>
 
+
+
         <!-- FontAwsome, mFizz y octicons: las fuentes con dibujitos para los iconos -->
         <link href="${resource(dir: 'font-awesome-4.2.0/css', file: 'font-awesome.min.css')}" rel="stylesheet">
         <link href="${resource(dir: 'font-mfizz-1.2', file: 'font-mfizz.css')}" rel="stylesheet">
@@ -86,6 +88,8 @@
         <link href="${resource(dir: 'css', file: 'custom/wizard.css')}" rel="stylesheet">
         <link href='${resource(dir: "css", file: "varios.css")}' rel='stylesheet' type='text/css'>
         <link href='${resource(dir: "css", file: "custom/pnotify.css")}' rel='stylesheet' type='text/css'>
+        <link href='${resource(dir: "css", file: "custom/menu.css")}' rel='stylesheet' type='text/css'>
+        %{--<link href='${resource(dir: "css", file: "custom/menuV.css")}' rel='stylesheet' type='text/css'>--}%
         %{--Buscador--}%
         <link href='${resource(dir: 'css', file: 'buscador.css')}' rel='stylesheet'>
 
@@ -132,6 +136,7 @@
          </div>
 
 
+
         <div class="container" style="min-width: 1000px !important; margin-top: 50px">
             <g:layoutBody/>
         </div> <!-- /container -->
@@ -148,7 +153,6 @@
     <!-- funciones de ui (tooltips, maxlength, bootbox, contextmenu, validacion en keydown para los numeros) -->
         <script type="text/javascript" src="${resource(dir: 'js', file: 'ui.js')}"></script>
         <script type="text/javascript">
-
 
             var ot = document.title;
             function resetTimer() {
@@ -264,6 +268,23 @@
 //                    $(this).parent().parent().hide("explode")
 //                })
 //            });
+
+
+//            var affixElement = '#navbar-main';
+//
+//            $(affixElement).affix({
+//                offset: {
+//                    // Distance of between element and top page
+//                    top: function () {
+//                        return (this.top = $(affixElement).offset().top)
+//                    },
+//                    // when start #footer
+//                    bottom: function () {
+//                        return (this.bottom = $('#footer').outerHeight(true))
+//                    }
+//                }
+//            });
+
 
         </script>
 
