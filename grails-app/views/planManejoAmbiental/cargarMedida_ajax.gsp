@@ -48,7 +48,7 @@
     $('.selectpicker').selectpicker({
         width      : "350px",
         limitWidth : true,
-        style      : "btn-sm",
+        style      : "btn-sm"
     });
 
     function cargarTabla (id,au){

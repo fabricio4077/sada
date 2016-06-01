@@ -300,4 +300,108 @@ class MenuTagLib {
     }
 
 
+    def menuObjetivos = { attrs ->
+
+        def items = [:]
+        def usuario, perfil
+        if (session.usuario) {
+            usuario = session.usuario
+            perfil = session.perfil
+        }
+
+        def strItems = ""
+        if (!attrs.title) {
+            attrs.title = "SADA"
+        }
+        if (usuario) {
+
+            if(perfil?.codigo ==  'ADMI'){
+
+                items = ["<i class=\"fa fa-info\"></i> Inicio": ["Inicio", "${createLink(controller: 'inicio', action: 'index')}", "Manual de usuario", "linkTest"],
+                         "<i class=\"fa fa-gear\"></i> Administración": ["<i class=\"fa fa-group\"></i> Usuarios", "${createLink(controller: 'persona', action: 'list')}",
+                                                                         "<i class=\"fa fa-gears\"></i> Parámetros", "${createLink(controller: 'tipo', action: 'parametros')}"],
+                         "<i class=\"fa fa-bank\"></i> Marco Legal": ["<i class=\"fa fa-legal\"></i> Leyes","${createLink(controller: 'marcoLegal', action: 'arbolLegal')}"],
+//                         "<i class=\"fa fa-book\"></i> Metodología": ["Metodología","${createLink(controller: 'metodologia', action: 'list')}"],
+                         "<i class=\"fa fa-leaf\"></i> Auditoría": ["<i class=\"fa fa-plus\"></i> Iniciar una Auditoría","${createLink(controller: 'preauditoria', action: 'crearAuditoria')}", " <i class=\"fa fa-history\"></i> Continuar una Auditoría", "${createLink(controller: 'preauditoria', action: 'list')}",
+                                                                    "<i class=\"fa fa-navicon\"></i> Listar Auditorías", "${createLink(controller: 'preauditoria', action: 'listaGeneral')}"],
+                "<i class=\"fa fa-check\"></i> Objetivos": ["<i class=\"fa fa-plus\"></i> Áreas de la Estación","${createLink(controller: 'preauditoria', action: 'crearAuditoria')}", " <i class=\"fa fa-history\"></i> Continuar una Auditoría", "${createLink(controller: 'preauditoria', action: 'list')}",
+                                                           "<i class=\"fa fa-navicon\"></i> Listar Auditorías", "${createLink(controller: 'preauditoria', action: 'listaGeneral')}"]]
+
+            }
+            if(perfil?.codigo == 'AUDI'){
+
+                items = ["<i class=\"fa fa-info\"></i> Inicio": ["Inicio", "${createLink(controller: 'inicio', action: 'index')}", "Manual de usuario", "linkTest"],
+                         "<i class=\"fa fa-bank\"></i> Marco Legal": ["<i class=\"fa fa-legal\"></i> Leyes","${createLink(controller: 'marcoLegal', action: 'arbolLegal')}"],
+//                             "<i class=\"fa fa-book\"></i> Metodología": ["Metodología","${createLink(controller: 'metodologia', action: 'list')}"],
+                         "<i class=\"fa fa-leaf\"></i> Auditoría": ["<i class=\"fa fa-plus\"></i> Iniciar una Auditoría","${createLink(controller: 'preauditoria', action: 'crearAuditoria')}", " <i class=\"fa fa-history\"></i> Continuar una Auditoría", "${createLink(controller: 'preauditoria', action: 'list')}"
+                         ]]
+
+            }
+            if(perfil?.codigo == 'ESTA'){
+
+            }
+
+        } else {
+            items = ["Inicio": ["Prueba", "linkPrueba", "Test", "linkTest"]]
+
+        }
+
+        items.each { item ->
+            strItems += '<li class="dropdown">'
+            strItems += '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' + item.key + '<b class="caret"></b></a>'
+            strItems += '<ul class="dropdown-menu">'
+
+            (item.value.size() / 2).toInteger().times {
+                strItems += '<li><a href="' + item.value[it * 2 + 1] + '">' + item.value[it * 2] + '</a></li>'
+            }
+            strItems += '</ul>'
+            strItems += '</li>'
+        }
+
+        def html = "<nav class=\"navbar navbar-default navbar-prb affix\" role=\"navigation\" >"
+
+        html += "<div class=\"container-fluid\">"
+
+        // Brand and toggle get grouped for better mobile display
+        html += '<div class="navbar-header affix">'
+        html += '<button type="button" class="navbar-toggle" data-toggle="collapse" id="bs-example-navbar-collapse-1">'
+//        html += '<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">'
+        html += '<span class="sr-only">Toggle navigation</span>'
+        html += '<span class="icon-bar"></span>'
+        html += '<span class="icon-bar"></span>'
+        html += '<span class="icon-bar"></span>'
+        html += '</button>'
+//        html += '<a class="navbar-brand navbar-logo" href="#"><img src="' + resource(dir: 'images/inicio', file: 'log_menu_s.png') + '" /></a>'
+        html += '</div>'
+
+        // Collect the nav links, forms, and other content for toggling
+        html += '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">'
+//        html += '<div class="collapse navbar-collapse navbar-ex1-collapse">'
+        html += '<ul class="nav navbar-nav">'
+//        html += '<ul class="nav navbar-nav navbar-right">'
+        html += strItems
+        html += '</ul>'
+
+        html += '<ul class="nav navbar-nav navbar-right">'
+        html += '<li class="dropdown">'
+        html += '<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user text-success"></i> ' + usuario?.login + ' (' + session?.perfil?.nombre + ')' + ' <b class="caret"></b></a>'
+        html += '<ul class="dropdown-menu">'
+        html += '<li><a href="' + g.createLink(controller: 'persona', action: 'personal') + '"><i class="fa fa-cogs"></i> Configuración</a></li>'
+        html += '<li class="divider"></li>'
+        html += '<li><a href="' + g.createLink(controller: 'login', action: 'logout') + '"><i class="fa fa-power-off"></i> Salir</a></li>'
+        html += '</ul>'
+        html += '</li>'
+        html += '</ul>'
+
+        html += '</div><!-- /.navbar-collapse -->'
+
+        html += "</div>"
+
+        html += "</nav>"
+
+
+        out << html
+    }
+
+
 }

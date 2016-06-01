@@ -34,8 +34,7 @@
             <div class="tab-content">
                 <div id="home_${no?.id}" class="tab-pane fade in active">
                     <g:if test="${no?.planAccion}">
-                        <h3>Actividades ${no?.id}</h3>
-                        <p>
+                        <p>${no?.planAccion?.actividad}
                         </p>
                     </g:if>
                     <g:else>
@@ -43,20 +42,16 @@
                     </g:else>
                 </div>
                 <div id="menu1_${no?.id}" class="tab-pane fade">
-                    <h3>Menu 1</h3>
-                    <p></p>
+                    <p>${no?.planAccion?.responsable}</p>
                 </div>
                 <div id="menu2_${no?.id}" class="tab-pane fade">
-                    <h3>Menu 2</h3>
-                    <p></p>
+                    <p>${no?.planAccion?.plazo} Días</p>
                 </div>
                 <div id="menu3_${no?.id}" class="tab-pane fade">
-                    <h3>Menu 2</h3>
-                    <p></p>
+                    <p>$ ${no?.planAccion?.costo}</p>
                 </div>
                 <div id="menu4_${no?.id}" class="tab-pane fade">
-                    <h3>Menu 2</h3>
-                    <p></p>
+                    <p>${no?.planAccion?.verficacion}</p>
                 </div>
             </div>
         </div>

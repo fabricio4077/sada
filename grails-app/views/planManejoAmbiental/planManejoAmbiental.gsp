@@ -53,8 +53,6 @@
 </g:if>
 
 
-
-
 <div class="panel panel-success">
     <div class="panel-heading">
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-gear"></i>Selección: Aspectos Ambientales</h3>
@@ -68,13 +66,11 @@
         </div>
     </div>
 
-
     <div class="row">
         <div class="col-md-4 negrilla control-label">Aspectos Ambientales: </div>
         <div class="col-md-6" id="divAspectos">
 
         </div>
-
 
         <div class="btn-group">
 
@@ -112,9 +108,79 @@
 
     </div>
 
+<g:if test="${band != 'true'}">
+    <header class='masthead' style="margin-top: 120px; position: fixed">
+        <nav>
+            <div class='nav-container'>
+                <div>
+                    <a class='slide' href='#' id="areasMenu">
+                        <span class='element'>Ar</span>
+                        <span class='name'>Áreas Estación</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#'>
+                        <span class='element'>Sa</span>
+                        <span class='name'>Situación Ambiental</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#' id="evaMenu">
+                        <span class='element'>Ev</span>
+                        <span class='name'>Evaluación Ambiental</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#' id="planMenu">
+                        <span class='element'>Pa</span>
+                        <span class='name'>Plan de acción</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#' id="pmaMenu">
+                        <span class='element'>Pm</span>
+                        <span class='name'>PMA</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#'>
+                        <span class='element'>Dc</span>
+                        <span class='name'>Documentación</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#'>
+                        <span class='element'>Cr</span>
+                        <span class='name'>Recomendaciones</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+</g:if>
+
+
+
 </div>
 
 <script type="text/javascript">
+
+    //mini menu
+    $("#areasMenu").click(function () {
+        location.href="${createLink(controller: 'area', action: 'areas')}/" + ${pre?.id}
+    });
+
+    $("#evaMenu").click(function () {
+        location.href="${createLink(controller: 'auditoria', action: 'leyes')}/" + ${pre?.id}
+    });
+
+    $("#planMenu").click(function () {
+        location.href="${createLink(controller: 'planAccion', action: 'planAccionActual')}/" + ${pre?.id}
+    });
+
+    $("#pmaMenu").click(function () {
+        location.href="${createLink(controller: 'planManejoAmbiental', action: 'cargarPlanActual')}/" + ${pre?.id}
+    });
 
     $("#btnCrearAspecto").click(function () {
         var idPlan = $("#pma").val();

@@ -126,53 +126,54 @@
 
     </div>
 
-    %{--<div class="row-fluid"  style="width: 99.7%;height: 500px;overflow-y: auto;float: right;">--}%
-    %{--<div class="span12">--}%
-    %{--<div style="width: 1120px; height: 500px;">--}%
-    %{--<table class="table table-condensed table-bordered table-striped" id="tablaH">--}%
-    %{--<tbody>--}%
-    %{--<g:each in="${leyes}" var="ley" status="j">--}%
-    %{--<tr>--}%
-    %{--<td style="width: 2%">${j+1}</td>--}%
-    %{--<td style="width: 10%; font-size: smaller">${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}</td>--}%
-    %{--<td style="width: 30%; font-size: smaller">${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}</td>--}%
-    %{--<td style="width: 15%">--}%
-
-    %{--<div class="btn-group">--}%
-    %{--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}%
-    %{--Calificar <span class="caret"></span>--}%
-    %{--</button>--}%
-    %{--<ul class="dropdown-menu">--}%
-    %{--<g:each in="${evaluacion.Calificacion.list([sort: 'nombre', order: 'asc'])}" var="cal">--}%
-    %{--<li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacion" data-id="${cal?.id}" data-ley="${ley?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>--}%
-    %{--</g:each>--}%
-    %{--</ul>--}%
-    %{--</div>--}%
-    %{--<div class="divCalificacion_${ley?.id}">--}%
-
-    %{--</div>--}%
-
-    %{--</td>--}%
-    %{--<td style="width: 15%">--}%
-    %{--<a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${ley?.id}" title="Agregar hallazgo" style="float: right">--}%
-    %{--<i class="fa fa-plus"></i>--}%
-    %{--</a>--}%
-    %{--</td>--}%
-    %{--<td style="width: 10%">--}%
-    %{--<a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${ley?.id}" title="Agregar anexo" style="float: right">--}%
-    %{--<i class="fa fa-plus"></i>--}%
-    %{--</a>--}%
-    %{--</td>--}%
-    %{--</tr>--}%
-    %{--</g:each>--}%
-
-    %{--</tbody>--}%
-    %{--</table>--}%
-
-    %{--</div>--}%
-    %{--</div>--}%
-    %{--</div>--}%
-
+    <header class='masthead' style="margin-top: 120px; position: fixed">
+        <nav>
+            <div class='nav-container'>
+                <div>
+                    <a class='slide' href='#' id="areasMenu">
+                        <span class='element'>Ar</span>
+                        <span class='name'>Áreas Estación</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#'>
+                        <span class='element'>Sa</span>
+                        <span class='name'>Situación Ambiental</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#' id="evaMenu">
+                        <span class='element'>Ev</span>
+                        <span class='name'>Evaluación Ambiental</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#' id="planMenu">
+                        <span class='element'>Pa</span>
+                        <span class='name'>Plan de acción</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#' id="pmaMenu">
+                        <span class='element'>Pm</span>
+                        <span class='name'>PMA</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#'>
+                        <span class='element'>Dc</span>
+                        <span class='name'>Documentación</span>
+                    </a>
+                </div>
+                <div>
+                    <a class='slide' href='#'>
+                        <span class='element'>Cr</span>
+                        <span class='name'>Recomendaciones</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
 
 
 
@@ -180,6 +181,46 @@
 </div>
 
 <script type="text/javascript">
+
+    //mini menu
+    $("#areasMenu").click(function () {
+        location.href="${createLink(controller: 'area', action: 'areas')}/" + ${pre?.id}
+    });
+
+    $("#evaMenu").click(function () {
+        location.href="${createLink(controller: 'auditoria', action: 'leyes')}/" + ${pre?.id}
+    });
+
+    $("#planMenu").click(function () {
+        location.href="${createLink(controller: 'planAccion', action: 'planAccionActual')}/" + ${pre?.id}
+    });
+
+    $("#pmaMenu").click(function () {
+        location.href="${createLink(controller: 'planManejoAmbiental', action: 'cargarPlanActual')}/" + ${pre?.id}
+    });
+
+
+    //función cambiar marco legal
+    $("#btnCambiarMarco").click(function () {
+        bootbox.confirm("Está seguro de cambiar el Marco Legal?", function (result) {
+            if(result){
+                $.ajax({
+                    type: 'POST',
+                    url: "${createLink(controller: 'evaluacion', action: 'verificarLegislacion_ajax')}",
+                    data:{
+                        id:${pre?.id}
+                    },
+                    success: function (msg) {
+                        if(msg == 'ok'){
+                            log("No se puede cambiar el Marco Legal, ya se encuentra en Evaluación","error")
+                        }else{
+                            /*TODO hacer el cambio de marco legal en evaluacion de legislacion*/
+                        }
+                    }
+                });
+            }
+        })
+    });
 
     cargarTablaEva();
 

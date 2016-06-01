@@ -41,14 +41,8 @@
                                 </div>
                             </g:else>
                         </td>
-                        %{--<td></td>--}%
-                        %{--<td></td>--}%
-                        %{--<td></td>--}%
                         <td style="width: 5%">
                         <div class="centrar">
-                            %{--<a href="#" id="btnGuardarAupm" class="btn btn-success btn-sm" title="Guardar Aspecto Ambiental">--}%
-                                %{--<i class="fa fa-save"></i>--}%
-                            %{--</a>--}%
                             <a href="#" class="btn btn-danger btn-sm btnBorrarAupm" data-id="${a?.id}" title="Borrar Aspecto Ambiental">
                                 <i class="fa fa-trash"></i>
                             </a>

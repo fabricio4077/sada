@@ -158,7 +158,6 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
     def cargarMedida_ajax() {
 
         def aupm = PlanAuditoria.get(params.id)
-
         def medidasExistentes = PlanAuditoria.findAllByAspectoAmbientalAndMedidaIsNotNull(aupm.aspectoAmbiental).medida
 
 //        println("medidas " + medidasExistentes)
@@ -220,7 +219,7 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         def aspecto = AspectoAmbiental.get(params.aspecto)
         def per
         def aupm
-        if(params.band){
+        if(params.band == 'true'){
             per = 'ANT'
         }else{
             per = 'ACT'
@@ -249,14 +248,14 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
         def per
         def faltantes
-        if(params.band){
+
+        if(params.band == 'true'){
             per = 'ANT'
         }else{
             per = 'ACT'
         }
 
         faltantes = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodoAndMedidaIsNull(detalleAuditoria, per)
-//         println("faltantes " + faltantes)
 
         if(faltantes.size() > 0){
          render "no"
@@ -274,21 +273,18 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         def todos
         def evam
         def error = ''
-        if(params.band){
+        if(params.band == 'true'){
             per = 'ANT'
         }else{
             per = 'ACT'
         }
 
         todos = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria, per)
-
         def todosEvam = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaInList(detalleAuditoria, todos)
 
 //        println("todos evam " + todosEvam)
 
-
         if(todosEvam){
-
           def inter =  todos.intersect(todosEvam.planAuditoria)
           def diferente = todos - inter
 
@@ -330,7 +326,6 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         }
     }
 
-
     def asociarPlanEvam_ajax () {
 
         def preAnterior = Preauditoria.get(params.id)
@@ -339,7 +334,6 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         def per = 'ACT'
         def todosAnteriores = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria, per)
         def evam
-
 
         def preActual = Preauditoria.get(params.actual)
         def auditoriaAct = Auditoria.findByPreauditoria(preActual)
@@ -467,9 +461,19 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
                 lt('fin',periodoActual)
             }
         }
+        return [pre:pre, anteriores: anteriores, detalle: detalleAuditoria]
+    }
 
-        return [pre:pre, anteriores: anteriores]
+    def verificarExistente_ajax () {
+        def detalleAuditoria = DetalleAuditoria.get(params.id)
+        def per = 'ACT'
+        def existentesActuales = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria, per)
 
+        if(existentesActuales.size()>0){
+         render "ok"
+        }else{
+         render "no"
+        }
     }
 
 }

@@ -140,48 +140,120 @@
 
 
 <div style="width: 100%">
-    <mn:menu title="${g.layoutTitle(default: 'Sada')}"/>
+    <mn:menuObjetivos title="${g.layoutTitle(default: 'Sada')}"/>
 </div>
 
 
-<div id="nav" style="position: fixed; margin-top: 200px; margin-left: 20px">
-    <ul id="navList">
-        <li style="text-align: center"><a href="#">Home</a>
-            <!-- This is the sub nav -->
-            <ul class="listTab">
-                <li><a href="#">About This Template Here</a></li>
-                <li><a href="#">Flash</a></li>
-                <li><a href="#">jQuery</a></li>
-            </ul>
-        </li>
-        <li><a href="#">Blog</a>
-            <!-- This is the sub nav -->
-            <ul class="listTab">
-                <li><a href="#">About This Template Here</a></li>
-                <li><a href="#">Flash</a></li>
-                <li><a href="#">jQuery</a>
-                    <ul class="listTab">
-                        <li><a href="#">About This Template Here</a></li>
-                        <li><a href="#">Flash</a></li>
-                        <li><a href="#">jQuery</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-        <li><a href="#">About</a>
-            <!-- This is the sub nav -->
-            <ul class="listTab">
-                <li><a href="#">About This Template Here</a></li>
-                <li><a href="#">Flash</a></li>
-                <li><a href="#">jQuery</a></li>
-            </ul>
-        </li>
-        <li><a href="#">Porfolio</a></li>
-        <li><a href="#">Contact</a></li>
-    </ul>
-</div>
+%{--<div id="nav" style="position: fixed; margin-top: 200px; margin-left: 20px">--}%
+    %{--<ul id="navList">--}%
+        %{--<li style="text-align: center"><a href="#">Home</a>--}%
+            %{--<!-- This is the sub nav -->--}%
+            %{--<ul class="listTab">--}%
+                %{--<li><a href="#">About This Template Here</a></li>--}%
+                %{--<li><a href="#">Flash</a></li>--}%
+                %{--<li><a href="#">jQuery</a></li>--}%
+            %{--</ul>--}%
+        %{--</li>--}%
+        %{--<li><a href="#">Blog</a>--}%
+            %{--<!-- This is the sub nav -->--}%
+            %{--<ul class="listTab">--}%
+                %{--<li><a href="#">About This Template Here</a></li>--}%
+                %{--<li><a href="#">Flash</a></li>--}%
+                %{--<li><a href="#">jQuery</a>--}%
+                    %{--<ul class="listTab">--}%
+                        %{--<li><a href="#">About This Template Here</a></li>--}%
+                        %{--<li><a href="#">Flash</a></li>--}%
+                        %{--<li><a href="#">jQuery</a></li>--}%
+                    %{--</ul>--}%
+                %{--</li>--}%
+            %{--</ul>--}%
+        %{--</li>--}%
+        %{--<li><a href="#">About</a>--}%
+            %{--<!-- This is the sub nav -->--}%
+            %{--<ul class="listTab">--}%
+                %{--<li><a href="#">About This Template Here</a></li>--}%
+                %{--<li><a href="#">Flash</a></li>--}%
+                %{--<li><a href="#">jQuery</a></li>--}%
+            %{--</ul>--}%
+        %{--</li>--}%
+        %{--<li><a href="#">Porfolio</a></li>--}%
+        %{--<li><a href="#">Contact</a></li>--}%
+    %{--</ul>--}%
+%{--</div>--}%
 
+%{--//menu elements--}%
 
+%{--<header class='masthead' style="margin-top: 120px; position: fixed">--}%
+    %{--<div class='brand-container'>--}%
+    %{--<a href='#'>--}%
+    %{--<span class='brand-initials'>Ob</span>--}%
+    %{--<span class='brand-name'>Objetivos</span>--}%
+    %{--</a>--}%
+    %{--</div>--}%
+    %{--<nav>--}%
+        %{--<div class='nav-container'>--}%
+            %{--<div>--}%
+                %{--<input id='slider1' name='slider1' type='checkbox'>--}%
+                %{--<label class='slide has-child' for='slider1'>--}%
+                    %{--<span class='element'>Bg</span>--}%
+                    %{--<span class='name'>Blog</span>--}%
+                %{--</label>--}%
+                %{--<div class='child-menu'>--}%
+                    %{--<a href='#'>Recent</a>--}%
+                    %{--<a href='#'>Archives</a>--}%
+                    %{--<a href='#'>Categories</a>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<div>--}%
+                %{--<a class='slide' href='#'>--}%
+                    %{--<span class='element'>Po</span>--}%
+                    %{--<span class='name'>Portfolio</span>--}%
+                %{--</a>--}%
+            %{--</div>--}%
+            %{--<div>--}%
+                %{--<input id='slider2' name='slider2' type='checkbox'>--}%
+                %{--<label class='slide has-child' for='slider2'>--}%
+                    %{--<span class='element'>Xp</span>--}%
+                    %{--<span class='name'>Laboratory</span>--}%
+                %{--</label>--}%
+                %{--<div class='child-menu'>--}%
+                    %{--<a href='#'>PHP</a>--}%
+                    %{--<a href='#'>Javascript</a>--}%
+                    %{--<a href='#'>Css</a>--}%
+                    %{--<a href='#'>Ruby</a>--}%
+                    %{--<a href='#'>Python</a>--}%
+                    %{--<a href='#'>Design</a>--}%
+                %{--</div>--}%
+            %{--</div>--}%
+            %{--<div>--}%
+                %{--<a class='slide' href='#'>--}%
+                    %{--<span class='element'>Ab</span>--}%
+                    %{--<span class='name'>About</span>--}%
+                %{--</a>--}%
+            %{--</div>--}%
+            %{--<div>--}%
+                %{--<a class='slide' href='#'>--}%
+                    %{--<span class='element'>C</span>--}%
+                    %{--<span class='name'>Contact</span>--}%
+                %{--</a>--}%
+            %{--</div>--}%
+        %{--</div>--}%
+    %{--</nav>--}%
+    %{--<div class='social-container'>--}%
+        %{--<span>--}%
+            %{--<a class='social-roll github' href='#'></a>--}%
+        %{--</span>--}%
+        %{--<span>--}%
+            %{--<a class='social-roll twitter' href='#'></a>--}%
+        %{--</span>--}%
+        %{--<span>--}%
+            %{--<a class='social-roll linkedin' href='#'></a>--}%
+        %{--</span>--}%
+        %{--<span>--}%
+            %{--<a class='social-roll rss' href='#'></a>--}%
+        %{--</span>--}%
+    %{--</div>--}%
+%{--</header>--}%
 
 
 <div class="container" style="min-width: 1000px !important; margin-top: 50px">

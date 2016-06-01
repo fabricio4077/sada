@@ -141,8 +141,76 @@
 
 </div>
 
+<header class='masthead' style="margin-top: 120px; position: fixed">
+    <nav>
+        <div class='nav-container'>
+            <div>
+                <a class='slide' href='#' id="areasMenu">
+                    <span class='element'>Ar</span>
+                    <span class='name'>Áreas Estación</span>
+                </a>
+
+            </div>
+            <div>
+                <a class='slide' href='#' id="evaMenu">
+                    <span class='element'>Ev</span>
+                    <span class='name'>Evaluación Ambiental</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#'>
+                    <span class='element'>Dc</span>
+                    <span class='name'>Documentación</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#'>
+                    <span class='element'>Sa</span>
+                    <span class='name'>Situación Ambiental</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#' id="planMenu">
+                    <span class='element'>Pa</span>
+                    <span class='name'>Plan de acción</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#' id="pmaMenu">
+                    <span class='element'>Pm</span>
+                    <span class='name'>PMA</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#'>
+                    <span class='element'>Cr</span>
+                    <span class='name'>Recomendaciones</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>
+
 
 <script type="text/javascript">
+
+    //mini menu
+    $("#areasMenu").click(function () {
+        location.href="${createLink(controller: 'area', action: 'areas')}/" + ${pre?.id}
+    });
+
+    $("#evaMenu").click(function () {
+        location.href="${createLink(controller: 'auditoria', action: 'leyes')}/" + ${pre?.id}
+    });
+
+    $("#planMenu").click(function () {
+        location.href="${createLink(controller: 'planAccion', action: 'planAccionActual')}/" + ${pre?.id}
+    });
+
+    $("#pmaMenu").click(function () {
+        location.href="${createLink(controller: 'planManejoAmbiental', action: 'cargarPlanActual')}/" + ${pre?.id}
+    });
+
 
     $("#btnBorrarPlan").click(function () {
 //        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de remover este PMA (anterior) de la Evaluación Ambiental, <br><br> toda la información asociada <b>(calificación, hallazgos, anexos)</b> se borrará también, desea continuar?", function (result){

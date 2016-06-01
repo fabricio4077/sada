@@ -98,6 +98,28 @@
             }
         })
     });
+
+    //función para verificar la existencia de al menos un registro de aspecto ambiental actual
+
+    verificarExistente();
+
+    function verificarExistente () {
+        $.ajax({
+           type: 'POST',
+            url: "${createLink(controller: 'planManejoAmbiental', action: 'verificarExistente_ajax')}",
+            data:{
+            id: ${detalle?.id}
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    location.href="${createLink(controller: 'planManejoAmbiental', action: 'planManejoAmbiental')}?id=" + ${pre?.id} + "&band=" + false
+                }else{
+
+                }
+            }
+        });
+    }
+
 </script>
 
 

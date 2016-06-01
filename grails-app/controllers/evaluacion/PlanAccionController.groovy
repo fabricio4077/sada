@@ -125,32 +125,69 @@ class PlanAccionController extends Seguridad.Shield {
     }
 
     def tablaPlan_ajax (){
-
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def listaCalificaciones = ['NC+','nc-','O']
         def calificaciones = Calificacion.findAllBySiglaInList(listaCalificaciones)
         def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalleAuditoria,calificaciones)
-
         return [pre: pre, lista: evaluacionesNo]
     }
 
     def planes_ajax () {
-
         def evam = Evaluacion.get(params.id)
         def listaPlanes = Evaluacion.findAllByHallazgoAndPlanAccionIsNotNull(evam?.hallazgo).planAccion
-
         return[evam: evam, lis: listaPlanes]
-
     }
 
     def bodyPlanes_ajax () {
-
         def evam = Evaluacion.get(params.id)
         def listaPlanes = Evaluacion.findAllByHallazgoAndPlanAccionIsNotNull(evam?.hallazgo).planAccion
-
         return [lista: listaPlanes]
+    }
+
+    def crearActividad_ajax () {
+        def evam = Evaluacion.get(params.id)
+        return [evam: evam]
+    }
+
+    def guardarPlan_ajax (){
+        println("params guardar actividad " + params)
+
+        def eva = Evaluacion.get(params.eva)
+        def plac = new PlanAccion()
+        def error =''
+
+        plac.actividad = params.actividad
+        plac.responsable = params.responsable
+        plac.costo = params.costo
+        plac.plazo = params.plazo.toInteger()
+        plac.verficacion = params.verificacion
+
+        try{
+            plac.save(flush: true)
+        }catch (e){
+            println("error a guardar plac" + plac.errors)
+            error += errors
+        }
+
+        eva.planAccion = plac
+
+        try{
+            eva.save(flush: true)
+        }catch (e){
+            println("error a guardar evam en plac " + eva.errors)
+            error += errors
+        }
+
+        if(error == ''){
+            render 'ok'
+        }else{
+            render 'no'
+        }
+
+
+
     }
 
 }

@@ -669,4 +669,25 @@ class EvaluacionController extends Seguridad.Shield {
         return[planes: planes]
     }
 
+    def verificarLegislacion_ajax(){
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def marcoLegal = auditoria.marcoLegal
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+
+        def evam = Evaluacion.withCriteria {
+                    eq("detalleAuditoria",detalle)
+                    marcoNorma{
+                        eq("marcoLegal",marcoLegal)
+                    }
+        }
+
+        if(evam.size() > 0){
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
 }
