@@ -139,7 +139,7 @@
 
 
 
-        <div class="container" style="min-width: 1000px !important; margin-top: 50px">
+        <div class="container" style="min-width: 1000px !important; margin-top: 60px">
             <g:layoutBody/>
         </div> <!-- /container -->
 
@@ -186,106 +186,23 @@
             }
 
             function highlight(periods) {
-//        if ((periods[5] == 5 && periods[6] == 0) || (periods[5] < 5)) {
-//            document.title = "Fin de sesión en " + (periods[5].toString().lpad('0', 2)) + ":" + (periods[6].toString().lpad('0', 2)) + " - " + ot;
-//            $(".countdown_amount").addClass("highlight");
-//        }
+
             }
 
-//            $(function () {
-////                $(".annoying").show("pulsate")
-//                setInterval(function () {
-//                    $(".annoying").hide()
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 500)
-//                    setTimeout(function () {
-//                        $(".annoying").hide()
-//                    }, 1000)
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 1500)
-//                    setTimeout(function () {
-//                        $(".annoying").hide()
-//                    }, 2000)
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 2500)
-//                    setTimeout(function () {
-//                        $(".annoying").hide()
-//                    }, 3000)
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 3500)
-//                    setTimeout(function () {
-//                        $(".annoying").hide()
-//                    }, 4000)
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 4500)
-//                    setTimeout(function () {
-//                        $(".annoying").hide()
-//                    }, 5000)
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 5500)
-//                    setTimeout(function () {
-//                        $(".annoying").hide()
-//                    }, 6000)
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 6500)
-//                    setTimeout(function () {
-//                        $(".annoying").hide()
-//                    }, 7000)
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 7500)
-//                    setTimeout(function () {
-//                        $(".annoying").hide()
-//                    }, 8000)
-//                    setTimeout(function () {
-//                        $(".annoying").show()
-//                    }, 8500)
-//                }, 60000);
-//
-//                var ahora = new Date();
-//                var fin = ahora.clone().add(5).minute();
-//                fin.add(1).second()
-//
-//                $('#countdown').countdown({
-//                    until    : fin,
-//                    format   : 'MS',
-//                    compact  : true,
-//                    onExpiry : validarSesion,
-//                    onTick   : highlight
-//                });
-//
-//                $(".btn-ajax").click(function () {
-//                    resetTimer();
-//                });
-//
-//                $(".bloqueo").draggable()
-//                $(".cerrar-bloqueo").click(function () {
-//                    $(this).parent().parent().hide("explode")
-//                })
-//            });
+            var affixElement = '#navbar-main';
 
-
-//            var affixElement = '#navbar-main';
-//
-//            $(affixElement).affix({
-//                offset: {
-//                    // Distance of between element and top page
-//                    top: function () {
-//                        return (this.top = $(affixElement).offset().top)
-//                    },
-//                    // when start #footer
-//                    bottom: function () {
-//                        return (this.bottom = $('#footer').outerHeight(true))
-//                    }
-//                }
-//            });
+            $(affixElement).affix({
+                offset: {
+                    // Distance of between element and top page
+                    top: function () {
+                        return (this.top = $(affixElement).offset().top)
+                    },
+                    // when start #footer
+                    bottom: function () {
+                        return (this.bottom = $('#footer').outerHeight(true))
+                    }
+                }
+            });
 
 
         </script>
