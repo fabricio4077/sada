@@ -76,7 +76,7 @@
             },
             success: function (msg){
                     if(msg == 'ok'){
-                        log("Objetivos asignados correctamente","success")
+                        log("Objetivos asignados correctamente","success");
                         setTimeout(function () {
                             location.href="${createLink(controller: 'auditoria', action: 'objetivos')}/" + ${pre?.id}
                         }, 2000);
@@ -101,7 +101,7 @@
                 idA: '${auditoria?.id}'
             },
             success: function (msg){
-                $("#tablaObjetivos").html(msg).effect('blind').show('clip');
+                $("#tablaObjetivos").html(msg).addClass('animated bounceInLeft')
             }
         });
     }

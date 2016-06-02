@@ -35,10 +35,37 @@
             <elm:flashMessage tipo="${flash.tipo}" icon="${flash.icon}"
                               clase="${flash.clase}">${flash.message}</elm:flashMessage>
 
-            <div class="col-md-4">
-                <img src="${resource(dir: 'images/inicio', file: 'estacion.jpg')}" style="padding: 10px; height: 330px"/>
+            <div id="carousel-example-generic" class="carousel slide col-md-6" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <div class="item active">
+                        <img src="${resource(dir: 'images/inicio', file: 'estacion.jpg')}" style="padding: 10px; height: 330px"/>
+                    </div>
+                    <div class="item">
+                        <img src="${resource(dir: 'images/inicio', file: 'ambienteEdificios.jpg')}" style="padding: 10px; height: 330px"/>
+                    </div>
+                    <div class="item">
+                        <img src="${resource(dir: 'images/inicio', file: 'estacionPetro.jpg')}" style="padding: 10px; height: 330px"/>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-            <div class="col-md-3 col-md-offset-4">
+
+
+            <div class="col-md-3 col-md-offset-2">
                 <div class="tdn-tab tdn-tab-left tdn-tab-primary " style="background: none">
                     <div class="tdn-tab-body" style="background: border-box">
                         <img class="img-login" src="${resource(dir: 'images/inicio', file: 'logo_sada3.png')}"/>
@@ -65,6 +92,11 @@
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <p class="text-info pull-right" style="font-size: 10px; margin-top: 20px">
     Versión ${message(code: 'version', default: '2.1.0x')}

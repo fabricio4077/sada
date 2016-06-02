@@ -159,12 +159,6 @@
             </div>
             <div>
                 <a class='slide' href='#'>
-                    <span class='element'>Dc</span>
-                    <span class='name'>Documentación</span>
-                </a>
-            </div>
-            <div>
-                <a class='slide' href='#'>
                     <span class='element'>Sa</span>
                     <span class='name'>Situación Ambiental</span>
                 </a>
@@ -184,6 +178,12 @@
             <div>
                 <a class='slide' href='#'>
                     <span class='element'>Cr</span>
+                    <span class='name'>Cronograma</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#'>
+                    <span class='element'>Rc</span>
                     <span class='name'>Recomendaciones</span>
                 </a>
             </div>
@@ -304,7 +304,7 @@
                 id: ${pre?.id}
             },
             success: function (msg) {
-                $("#divTablaPlan").html(msg)
+                $("#divTablaPlan").html(msg).addClass('animated fadeInDown')
             }
         });
     }

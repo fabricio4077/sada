@@ -90,6 +90,7 @@
         <link href='${resource(dir: "css", file: "custom/pnotify.css")}' rel='stylesheet' type='text/css'>
         <link href='${resource(dir: "css", file: "custom/menu.css")}' rel='stylesheet' type='text/css'>
         <link href='${resource(dir: "css", file: "custom/menuEle.css")}' rel='stylesheet' type='text/css'>
+        <link href='${resource(dir: "css", file: "custom/animate.css")}' rel='stylesheet' type='text/css'>
         %{--<link href='${resource(dir: "css", file: "custom/menuV.css")}' rel='stylesheet' type='text/css'>--}%
         %{--Buscador--}%
         <link href='${resource(dir: 'css', file: 'buscador.css')}' rel='stylesheet'>
