@@ -2,6 +2,7 @@ package auditoria
 
 import objetivo.Objetivo
 import objetivo.ObjetivosAuditoria
+import plan.PlanAuditoria
 
 
 class AuditoriaController extends Seguridad.Shield {
@@ -216,15 +217,27 @@ class AuditoriaController extends Seguridad.Shield {
      }
 
     def leyes () {
-
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
-
         return [pre: pre, auditoria: auditoria]
-
     }
 
+    def cronograma (){
 
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def per = 'ACT'
+
+        def planes = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodoAndMedidaIsNotNull(detalleAuditoria,per)
+        def colores = ['#ef3724','#ffa61a','#1ab1ff',' #fd4fda','#567b24']
+
+//        println("planes " + planes)
+
+
+        return [pre:pre, planes: planes, colores: colores]
+
+    }
 
 
 
