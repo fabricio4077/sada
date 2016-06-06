@@ -71,15 +71,16 @@
                     <strong>Plan de Manejo Ambiental</strong>
                 </p>
             </g:link>
-
-            <g:link controller="evaluacion" action="evaluacionLicencia" id="${pre?.id}" class="list-group-item bgOpcion bg-otro">
-                <h4 class="list-group-item-heading"><span class="icon"></span>
-                    <i class="fa fa-key"></i>
-                </h4>
-                <p class="list-group-item-text">
-                    <strong>Licencia</strong>
-                </p>
-            </g:link>
+            <g:if test="${pre?.tipo?.codigo != 'LCM1'}">
+                <g:link controller="evaluacion" action="evaluacionLicencia" id="${pre?.id}" class="list-group-item bgOpcion bg-otro">
+                    <h4 class="list-group-item-heading"><span class="icon"></span>
+                        <i class="fa fa-key"></i>
+                    </h4>
+                    <p class="list-group-item-text">
+                        <strong>Licencia</strong>
+                    </p>
+                </g:link>
+            </g:if>
         </div>
     </div>
 </div>
@@ -110,7 +111,7 @@
 
             <div class="btn-group">
                 <a href="#" id="btnCrearPlan" class="btn btn-success btn-sm ${plan.size() >0 ? 'disabled' : ''}" title="">
-                    <i class="fa fa-plus"></i> Crear PMA
+                    <i class="fa fa-plus"></i> Cargar PMA
                 </a>
                 <a href="#" id="btnEditarPlan" class="btn btn-primary btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
                     <i class="fa fa-pencil"></i> Editar PMA
@@ -152,15 +153,15 @@
 
             </div>
             <div>
-                <a class='slide' href='#' id="evaMenu">
-                    <span class='element'>Ev</span>
-                    <span class='name'>Evaluación Ambiental</span>
-                </a>
-            </div>
-            <div>
                 <a class='slide' href='#'>
                     <span class='element'>Sa</span>
                     <span class='name'>Situación Ambiental</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#' id="evaMenu">
+                    <span class='element'>Ev</span>
+                    <span class='name'>Evaluación Ambiental</span>
                 </a>
             </div>
             <div>

@@ -15,12 +15,7 @@
     </thead>
     <tbody>
         <tr>
-            %{--<g:if test="${evaluacion?.hallazgo?.descripcion?.size() > 100}">--}%
-                %{--<td>${evaluacion?.hallazgo?.descripcion?.substring(0,100)}...</td>--}%
-            %{--</g:if>--}%
-            %{--<g:else>--}%
-                <td>${evaluacion?.hallazgo?.descripcion}</td>
-            %{--</g:else>--}%
+             <td>${evaluacion?.hallazgo?.descripcion}</td>
             <td style="text-align: center">
                 <a href="#" class="btn btn-danger btn-sm btnBorrar" title="Quitar hallazgo" data-id="${evaluacion?.id}">
                     <i class="fa fa-trash"></i>
@@ -43,8 +38,17 @@
             },
             success: function(msg){
                 if(msg == 'ok'){
-                    $("#divSeleccionado").html('')
-                    cargarTablaEva();
+                    $("#divSeleccionado").html('');
+                    if(${tipo == 'licencia'}){
+                        cargarTablaLicencia();
+                    }else{
+                        if(${tipo == 'plan'}){
+                            cargarTablaEvaPlan();
+                        }else{
+                            cargarTablaEva();
+                        }
+                    }
+                    cargarComboHallazgo(${evaluacion?.id});
                 }else{
                     log("No se puede quitar el hallazgo seleccionado","error")
                 }

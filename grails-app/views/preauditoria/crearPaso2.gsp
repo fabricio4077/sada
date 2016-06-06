@@ -136,20 +136,19 @@
 
     }
 
-
-    %{--$("#btnAyudaEstacion").click(function () {--}%
-        %{--bootbox.alert("Seleccione la estación de servicio de la cual se realizará la auditoría " +--}%
-                %{--"de <strong>${pre?.tipo?.descripcion} </strong> en el período <strong>${pre?.periodo?.inicio?.format("yyyy") + " - " + pre?.periodo?.fin?.format("yyyy")} </strong> ")--}%
-    %{--});--}%
-
     $("#btnAgregarEsta").click(function () {
         var idPre = '${pre?.id}';
         var idE = $(estacionServ).val();
         $("#tabla").removeClass("hide");
-        cargarEStacion(idPre)
-        $("#estacionServ").val('0')
+        cargarEStacion(idPre);
+        $("#estacionServ").val('0');
         $("#btnContinuar").addClass('disabled');
     });
+
+    <g:if test="${pre?.estacion}">
+    cargarEStacion(${pre?.id},${pre?.estacion?.id});
+    </g:if>
+
 
 //función para llamar la tabla con la info de la estación de servicio
     function cargarEStacion (idP, idE){
@@ -161,7 +160,7 @@
                 estacion: idE
             },
             success: function(msg){
-                $("#tablaEstacion").html(msg).effect('blind').show('clip');
+                $("#tablaEstacion").html(msg).addClass('animated fadeInDown')
             }
         });
     }

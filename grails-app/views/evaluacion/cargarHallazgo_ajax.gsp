@@ -79,7 +79,8 @@
           type: 'POST',
           url: '${createLink(controller: 'evaluacion', action: 'crearHallazgo_ajax')}',
           data: {
-              id: ${evaluacion?.id}
+              id: ${evaluacion?.id},
+              tipo: '${tipo}'
           },
           success: function (msg) {
               $("#tablaCrearHallazgo").html(msg)
@@ -126,7 +127,8 @@
             type: 'POST',
             url: '${createLink(controller: 'evaluacion', action: 'tablaHallazgo_ajax')}',
             data: {
-                id: idEva
+                id: idEva,
+                tipo: '${tipo}'
             },
             success: function (msg) {
                 $("#divSeleccionado").html(msg)

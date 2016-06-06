@@ -12,11 +12,10 @@
                 <tbody>
                 <td style="background-color: ${no?.calificacion?.tipo};" class="col-md-2" title="${no?.calificacion?.nombre}">
                     <div class="divCalificacion col-md-4">
-                        ${no?.calificacion?.sigla}
+                    ${no?.calificacion?.sigla}
                     </div>
                 </td>
                 <td class="col-md-8">
-                    %{--${no?.marcoNorma?.literal ? (no?.marcoNorma?.literal?.identificador + ")  " + no?.marcoNorma?.literal?.descripcion) : no?.marcoNorma?.articulo?.descripcion}--}%
                     ${no?.hallazgo?.descripcion}
                 </td>
                 </tbody>
@@ -42,16 +41,21 @@
                     </g:else>
                 </div>
                 <div id="menu1_${no?.id}" class="tab-pane fade">
-                    <p>${no?.planAccion?.responsable}</p>
+                    <h4>${no?.planAccion?.responsable}</h4>
                 </div>
                 <div id="menu2_${no?.id}" class="tab-pane fade">
-                    <p>${no?.planAccion?.plazo} Días</p>
+                    <h4>${no?.planAccion?.plazo} Días</h4>
                 </div>
                 <div id="menu3_${no?.id}" class="tab-pane fade">
-                    <p>$ ${no?.planAccion?.costo}</p>
+                    <g:if test="${no?.planAccion?.costo == '0'}">
+                        <h4>No representa un costo para la E/S.</h4>
+                    </g:if>
+                    <g:else>
+                        <h4>${no?.planAccion?.costo}</h4>
+                    </g:else>
                 </div>
                 <div id="menu4_${no?.id}" class="tab-pane fade">
-                    <p>${no?.planAccion?.verficacion}</p>
+                    <h4>${no?.planAccion?.verficacion}</h4>
                 </div>
             </div>
         </div>

@@ -25,6 +25,9 @@
     </div>
 </div>
 
+
+
+
 <header class='masthead' style="margin-top: 120px; position: fixed">
     <nav>
         <div class='nav-container'>
@@ -79,9 +82,9 @@
 <script type="text/javascript">
 
     //mini menu
-      $("#areasMenu").click(function () {
-         location.href="${createLink(controller: 'area', action: 'areas')}/" + ${pre?.id}
-      });
+    $("#areasMenu").click(function () {
+        location.href="${createLink(controller: 'area', action: 'areas')}/" + ${pre?.id}
+    });
 
     $("#evaMenu").click(function () {
         location.href="${createLink(controller: 'auditoria', action: 'leyes')}/" + ${pre?.id}

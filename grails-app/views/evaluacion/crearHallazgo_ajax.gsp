@@ -64,8 +64,15 @@
                     $('.selectpicker').selectpicker('refresh');
                     cargarComboHallazgo(${evaluacion?.id});
                     bootbox.hideAll();
-                    cargarTablaEvaPlan();
-                    cargarTablaEva();
+                    if(${tipo == 'licencia'}){
+                        cargarTablaLicencia();
+                    }else{
+                        if(${tipo == 'plan'}){
+                            cargarTablaEvaPlan();
+                        }else{
+                            cargarTablaEva();
+                        }
+                    }
                 }else{
                     log("Error al crear el hallazgo","error")
                 }

@@ -16,13 +16,13 @@
 
         var idPre = '${preauditoria?.id}';
         var idEs = $(this).val();
-        $("#tabla").removeClass("hide")
+        $("#tabla").removeClass("hide");
         if(idEs == '0'){
             $("#tabla").addClass("hide");
             $("#btnContinuar").addClass('disabled');
         }else{
             $("#tabla").removeClass("modificado").addClass("original");
-            cargarEStacion(idPre, idEs)
+            cargarEStacion(idPre, idEs);
             $("#btnContinuar").removeClass('disabled');
          }
 

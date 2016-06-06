@@ -200,23 +200,19 @@ class EvaluacionController extends Seguridad.Shield {
     }
 
     def cargarHallazgo_ajax () {
-
         def evaluacion = Evaluacion.get(params.id)
-        return [evaluacion: evaluacion]
+        return [evaluacion: evaluacion, tipo:params.tipo]
     }
 
     def crearHallazgo_ajax() {
-
         def evaluacion = Evaluacion.get(params.id)
-        return [evaluacion: evaluacion]
+        return [evaluacion: evaluacion, tipo: params.tipo]
     }
 
     def comboHallazgo_ajax () {
 
         def evaluacion = Evaluacion.get(params.id)
         def listaHallazgos
-
-
 
         if(evaluacion.marcoNorma){
             if(evaluacion.marcoNorma.literal){
@@ -234,8 +230,17 @@ class EvaluacionController extends Seguridad.Shield {
                                 isNotNull("hallazgo")
             }.hallazgo
         }
+        if(evaluacion.licencia){
+            println("entro")
+            listaHallazgos = Evaluacion.withCriteria {
+                                licencia{
+                                    eq("descripcion",evaluacion.licencia.descripcion )
+                                }
+                isNotNull("hallazgo")
+            }.hallazgo
+        }
 
-//        println("lista hallazgos " + listaHallazgos)
+        println("lista hallazgos " + listaHallazgos)
 
 
         return [listaHallazgos: listaHallazgos]
@@ -298,10 +303,8 @@ class EvaluacionController extends Seguridad.Shield {
 
 
     def tablaHallazgo_ajax () {
-
         def evaluacion = Evaluacion.get(params.id)
-        return [evaluacion: evaluacion]
-
+        return [evaluacion: evaluacion, tipo: params.tipo]
     }
 
     def borrarHallazgo_ajax (){
@@ -339,19 +342,15 @@ class EvaluacionController extends Seguridad.Shield {
     }
 
     def anexo_ajax () {
-
         def eva = Evaluacion.get(params.id)
         return [evas: eva]
-
     }
 
 
     def uploadFile () {
 
-        println("params anexos " + params)
-
+//        println("params anexos " + params)
         def eva = Evaluacion.get(params.id)
-
         def anio = new Date().format("yyyy")
         def path = servletContext.getRealPath("/") + "anexos/estacion_${eva?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${eva?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${eva?.id}" + "/"
         new File(path).mkdirs()
@@ -689,5 +688,14 @@ class EvaluacionController extends Seguridad.Shield {
             render "no"
         }
     }
+
+    def tablaEvaLicencia_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalleAuditoria, [sort: 'licencia.descripcion', order: 'asc'])
+        return [licencias: licencias]
+    }
+
 
 }

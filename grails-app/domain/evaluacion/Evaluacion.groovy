@@ -14,6 +14,7 @@ class Evaluacion {
     MarcoNorma marcoNorma
     PlanAccion planAccion
     PlanAuditoria planAuditoria
+    Licencia licencia
 
     static mapping = {
         table 'evam'
@@ -28,6 +29,7 @@ class Evaluacion {
             marcoNorma column: 'mctp__id'
             planAccion column: 'plac__id'
             planAuditoria column: 'aupm__id'
+            licencia column: 'lcnc__id'
         }
     }
 
@@ -37,6 +39,7 @@ class Evaluacion {
         marcoNorma(nullable: true)
         planAccion(nullable: true)
         planAuditoria(nullable: true)
+        licencia(nullable: true)
 
     }
 }

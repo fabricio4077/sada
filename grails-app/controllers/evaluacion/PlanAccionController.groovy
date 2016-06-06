@@ -130,7 +130,7 @@ class PlanAccionController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def listaCalificaciones = ['NC+','nc-','O']
         def calificaciones = Calificacion.findAllBySiglaInList(listaCalificaciones)
-        def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalleAuditoria,calificaciones)
+        def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalleAuditoria,calificaciones, [sort: 'hallazgo.descripcion', order: "asc"])
         return [pre: pre, lista: evaluacionesNo]
     }
 
@@ -143,7 +143,7 @@ class PlanAccionController extends Seguridad.Shield {
     def bodyPlanes_ajax () {
         def evam = Evaluacion.get(params.id)
         def listaPlanes = Evaluacion.findAllByHallazgoAndPlanAccionIsNotNull(evam?.hallazgo).planAccion
-        return [lista: listaPlanes]
+        return [lista: listaPlanes, evam: evam]
     }
 
     def crearActividad_ajax () {
@@ -185,9 +185,23 @@ class PlanAccionController extends Seguridad.Shield {
         }else{
             render 'no'
         }
+    }
 
 
+    def seleccionarPlan_ajax (){
+//        println("params seleccionar plan " + params)
 
+        def evam = Evaluacion.get(params.eva)
+        def plan = PlanAccion.get(params.plan)
+
+        evam.planAccion = plan
+        try{
+            evam.save(flush: true)
+            render "ok"
+        }catch (e){
+            println("error al asignar plan de accion " + evam.errors)
+            render "no"
+        }
     }
 
 }

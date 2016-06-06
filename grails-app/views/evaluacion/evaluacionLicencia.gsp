@@ -86,7 +86,41 @@
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-key"></i> Evaluación Ambiental: Licencia</h3>
     </div>
     <div class="well" style="text-align: center; height: 200px">
+
+        <div class="row" style="margin-top: 60px">
+            <div class="col-md-4 negrilla control-label">
+                Cargar los puntos de la licencia ambiental a ser evaluados:
+            </div>
+
+            <div class="btn-group">
+                <a href="#" id="btnLicencia" class="btn btn-success btn-sm" title="Cargar puntos de la licencia a ser evaluados">
+                    <i class="fa fa-plus"></i> Cargar Licencia
+                </a>
+            </div>
+        </div>
+
     </div>
+
+
+    <table class="table table-condensed table-bordered table-striped">
+        <thead>
+        <tr>
+            <th style="width: 3%">#</th>
+            <th style="width: 10%">Obligación Ambiental</th>
+            <th style="width: 31%">Descripción</th>
+            <th style="width: 16%">Calificación</th>
+            <th style="width: 15%">Hallazgo</th>
+            <th style="width: 10%"><i class="fa fa-archive"></i> Evidencia/Anexo</th>
+            <th style="width: 1%"></th>
+        </tr>
+        </thead>
+    </table>
+
+    <div id="divTablaLicencia">
+
+    </div>
+
+
 </div>
 
 
@@ -98,24 +132,17 @@
                     <span class='element'>Ar</span>
                     <span class='name'>Áreas Estación</span>
                 </a>
-
-            </div>
-            <div>
-                <a class='slide' href='#' id="evaMenu">
-                    <span class='element'>Ev</span>
-                    <span class='name'>Evaluación Ambiental</span>
-                </a>
-            </div>
-            <div>
-                <a class='slide' href='#'>
-                    <span class='element'>Dc</span>
-                    <span class='name'>Documentación</span>
-                </a>
             </div>
             <div>
                 <a class='slide' href='#'>
                     <span class='element'>Sa</span>
                     <span class='name'>Situación Ambiental</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#' id="evaMenu">
+                    <span class='element'>Ev</span>
+                    <span class='name'>Evaluación Ambiental</span>
                 </a>
             </div>
             <div>
@@ -133,6 +160,12 @@
             <div>
                 <a class='slide' href='#'>
                     <span class='element'>Cr</span>
+                    <span class='name'>Cronograma</span>
+                </a>
+            </div>
+            <div>
+                <a class='slide' href='#'>
+                    <span class='element'>Rc</span>
                     <span class='name'>Recomendaciones</span>
                 </a>
             </div>
@@ -158,6 +191,29 @@
     $("#pmaMenu").click(function () {
         location.href="${createLink(controller: 'planManejoAmbiental', action: 'cargarPlanActual')}/" + ${pre?.id}
     });
+
+    // licencia
+
+    $("#btnLicencia").click(function () {
+       location.href="${createLink(controller: 'licencia', action: 'licencia')}/" + ${pre?.id}
+    });
+
+    cargarTablaLicencia();
+
+    //función para cargar la tabla con las evaluaciones
+    function  cargarTablaLicencia () {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'evaluacion', action: 'tablaEvaLicencia_ajax')}',
+            data: {
+                id: ${pre?.id}
+            },
+            success: function (msg) {
+                $("#divTablaLicencia").html(msg).addClass('animated fadeInDown')
+            }
+        });
+    }
+
 
 </script>
 
