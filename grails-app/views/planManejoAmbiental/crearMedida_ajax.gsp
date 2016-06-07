@@ -8,26 +8,26 @@
 
 <g:form class="form-horizontal" name="frmMedida" role="form" action="guardarMedida" method="POST">
 %{--<div class="form-group ${hasErrors(bean: medidaInstance, field: 'descripcion', 'error')} ">--}%
-  <div class="row">
-      <span class="grupo">
-          <label for="descripcion" class="col-md-2 control-label text-info">
-              Descripción:
-          </label>
-          <div class="col-md-4">
-              <g:textArea name="descripcion" maxlength="500" class="form-control required" style="height: 130px; resize: none"/>
-          </div>
-      </span>
+    <div class="row">
+        <span class="grupo">
+            <label for="descripcion" class="col-md-2 control-label text-info">
+                Descripción:
+            </label>
+            <div class="col-md-4">
+                <g:textArea name="descripcion" maxlength="500" class="form-control required" style="height: 130px; resize: none"/>
+            </div>
+        </span>
 
-      <span class="grupo">
-          <label for="indicadores" class="col-md-1 control-label text-info">
-              Indicadores:
-          </label>
-          <div class="col-md-4">
-              <g:textArea name="indicadores" maxlength="255" class="form-control required" style="height: 130px; resize: none"/>
-          </div>
+        <span class="grupo">
+            <label for="indicadores" class="col-md-1 control-label text-info">
+                Indicadores:
+            </label>
+            <div class="col-md-4">
+                <g:textArea name="indicadores" maxlength="255" class="form-control required" style="height: 130px; resize: none"/>
+            </div>
 
-      </span>
-  </div>
+        </span>
+    </div>
     <div class="row">
         <span class="grupo">
             <label for="verificacion" class="col-md-2 control-label text-info">
@@ -48,21 +48,16 @@
 
         </span>
     </div>
-
-%{--</div>--}%
-
-%{--<div class="form-group ${hasErrors(bean: medidaInstance, field: 'indicadores', 'error')} ">--}%
-
-%{--</div>--}%
-
-%{--<div class="form-group ${hasErrors(bean: medidaInstance, field: 'verificacion', 'error')} ">--}%
-
-%{--</div>--}%
-
-%{--<div class="form-group ${hasErrors(bean: medidaInstance, field: 'plazo', 'error')} ">--}%
-
-%{--</div>--}%
-
+    <div class="row">
+        <span class="grupo">
+            <label for="costo" class="col-md-2 control-label text-info">
+                Costo:
+            </label>
+            <div class="col-md-4">
+                <g:textField name="costo" class="form-control required number noEspacios"/>
+            </div>
+        </span>
+    </div>
 </g:form>
 
 <div class="row">
@@ -97,7 +92,7 @@
                         $("#divCrearMedida").html('');
                         cargarTabla(parts[1],${aupm?.id})
                     } else {
-                      log("Error al guardar la medida","error")
+                        log("Error al guardar la medida","error")
                     }
                 }
             });

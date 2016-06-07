@@ -12,6 +12,7 @@
         <th style="width: 15%">Indicadores</th>
         <th style="width: 15%">Medio de Verificación</th>
         <th style="width: 10%">Plazo</th>
+        <th style="width: 5%">Costo</th>
     </tr>
 </thead>
     <tbody>
@@ -20,6 +21,7 @@
         <td>${medida?.indicadores}</td>
         <td>${medida?.verificacion}</td>
         <td>${medida?.plazo}</td>
+        <td>${medida?.costo}</td>
     </tr>
     </tbody>
 </table>

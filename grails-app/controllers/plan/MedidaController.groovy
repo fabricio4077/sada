@@ -118,6 +118,7 @@ class MedidaController extends Seguridad.Shield {
         medida.indicadores = params.indicadores
         medida.descripcion = params.descripcion
         medida.plazo = params.plazo
+        medida.costo = params.costo.toDouble()
 
         try{
             medida.save(flush: true)
