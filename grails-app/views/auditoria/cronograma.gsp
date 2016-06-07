@@ -49,7 +49,7 @@
                 width  : 650,
                 defaultView: 'year',
                 lang: 'es',
-//    weekends: false,
+//                weekends: false,
                 header: {
                     left: 'prev,next today',
                     center: 'title',
@@ -64,11 +64,32 @@
                         description:'${p?.medida?.descripcion}',
                         costo: "${"COSTO: " + " " + p?.medida?.costo + " USD"}",
                         start  : '${inicio}'
-//            start  : '2016-06-06'
+                        //            start  : '2016-06-06'
+                        //            end: moment([2016,6,6]).add(12,'M')
+
+                        <g:if test="${p?.medida?.plazo == 'Bi Anual'}">
+                        ,
+                        end: (moment('${inicio}').add(24,'M'))
+                        </g:if>
                         <g:if test="${p?.medida?.plazo == 'Anual'}">
                         ,
-//            end: moment([2016,6,6]).add(12,'M')
                         end: (moment('${inicio}').add(12,'M'))
+                        </g:if>
+                        <g:if test="${p?.medida?.plazo == 'Semestral'}">
+                        ,
+                        end: (moment('${inicio}').add(6,'M'))
+                        </g:if>
+                        <g:if test="${p?.medida?.plazo == 'Permanente'}">
+                        ,
+                        <g:if test="${p?.detalleAuditoria?.auditoria?.preauditoria?.tipo?.codigo == 'LCM1'}">
+                        end: (moment('${inicio}').add(12,'M'))
+                        </g:if>
+                        <g:if test="${p?.detalleAuditoria?.auditoria?.preauditoria?.tipo?.codigo == 'INIC'}">
+                        end: (moment('${inicio}').add(12,'M'))
+                        </g:if>
+                        <g:if test="${p?.detalleAuditoria?.auditoria?.preauditoria?.tipo?.codigo == 'CMPM'}">
+                        end: (moment('${inicio}').add(24,'M'))
+                        </g:if>
                         </g:if>
                         ,
                         color: get_random_color()
