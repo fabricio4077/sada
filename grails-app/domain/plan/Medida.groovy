@@ -7,6 +7,7 @@ class Medida {
     String indicadores
     String plazo
     String verificacion
+    BigDecimal costo = 0
 
     static mapping = {
         table 'mdda'
@@ -19,6 +20,7 @@ class Medida {
             indicadores column: 'mddaindi'
             plazo column: 'mddaplzo'
             verificacion column: 'mddavrfc'
+            costo column: 'mddacsto'
         }
     }
 

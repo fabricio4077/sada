@@ -56,7 +56,6 @@
           right: 'year,month,basicWeek,basicDay'
         },
 
-
         events : [
           <g:each in="${planes}" var="p" status="j">
           {
@@ -64,23 +63,26 @@
             title  : '${p?.aspectoAmbiental?.planManejoAmbiental?.nombre}',
             description:'${p?.aspectoAmbiental?.planManejoAmbiental?.nombre + " - " + p?.medida?.descripcion}',
             start  : '${inicio}'
+//            start  : '2016-06-06'
             <g:if test="${p?.medida?.plazo == 'Anual'}">
             ,
 //            end: moment([2016,6,6]).add(12,'M')
-            end: moment('${inicio}').add(12,'M')
+            end: (moment('${inicio}').add(12,'M'))
             </g:if>
             ,
             color: get_random_color()
           },
           </g:each>
-        ],
-
+        ]
+          ,
         eventClick:  function(event, jsEvent, view) {
-//        eventMouseover:  function(event, jsEvent, view) {
           $('#modalTitle').html(event.title);
           $('#modalBody').html(event.description);
           $('#eventUrl').attr('href',event.url);
           $('#calendarModal').modal();
+//            $("#calendarModal").data('bs.modal').$backdrop.css('background-color','orange')
+//            $("#calendarModal").data('bs.modal').$backdrop.css('background-color',event.color)
+            $(".modal-header").css('background-color',event.color)
         }
       })
     });

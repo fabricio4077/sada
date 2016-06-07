@@ -143,7 +143,7 @@
                     </a>
                 </div>
                 <div>
-                    <a class='slide' href='#'>
+                    <a class='slide' href='#' id="cronoMenu">
                         <span class='element'>Cr</span>
                         <span class='name'>Cronograma</span>
                     </a>
@@ -180,6 +180,10 @@
 
     $("#pmaMenu").click(function () {
         location.href="${createLink(controller: 'planManejoAmbiental', action: 'cargarPlanActual')}/" + ${pre?.id}
+    });
+
+    $("#cronoMenu").click(function () {
+        location.href="${createLink(controller: 'auditoria', action: 'cronograma')}/" + ${pre?.id}
     });
 
     $("#btnCrearAspecto").click(function () {
