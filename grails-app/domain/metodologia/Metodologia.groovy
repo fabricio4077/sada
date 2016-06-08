@@ -4,7 +4,6 @@ class Metodologia {
 
     static auditable = true
     String descripcion
-    String codigo
 
     static mapping = {
         table 'mtdl'
@@ -14,14 +13,11 @@ class Metodologia {
         columns {
             id column: 'mtdl__id'
             descripcion column: 'mtdldscr'
-            codigo column: 'mtdlcdgo'
-
         }
     }
 
     static constraints = {
 
-        descripcion(nullable: false, blank: false, size: 1..255)
-        codigo(nullable: false, blank: false, size: 1..4)
+        descripcion(nullable: false, blank: false)
     }
 }

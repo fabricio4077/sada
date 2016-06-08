@@ -222,8 +222,6 @@
 </div>
 
 
-%{--<div class="row" style="margin-bottom: 10px">--}%
-    %{--<div class="col-md-2"></div>--}%
 <nav>
     <ul class="pager">
         <li>
@@ -241,19 +239,7 @@
         </li>
     </ul>
 </nav>
-%{--</div>--}%
 
-%{--<div class="row" style="margin-bottom: 10px">--}%
-    %{--<div class="col-md-2"></div>--}%
-    %{--<a style="float: left" href="#" id="btnRegresar" class="btn btn-primary ${pre ? '' : 'disabled'}" title="Retornar al paso anterior">--}%
-        %{--<i class="fa fa-angle-double-left"></i> Regresar--}%
-    %{--</a>--}%
-    %{--<div class="col-md-5"></div>--}%
-
-    %{--<a href="#" id="btnImprimir" class="btn btn-primary" title="Imprimir la ficha ténica">--}%
-        %{--<i class="fa fa-print"></i> Imprimir--}%
-    %{--</a>--}%
-%{--</div>--}%
 
 <script type="text/javascript">
 

@@ -25,7 +25,7 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="panel panel-info">
+        <div class="panel panel-success">
             <div class="panel-heading">
                 <h3 class="panel-title">Parámetros del Sistema</h3>
             </div>
@@ -161,6 +161,17 @@
                             <p>Aspectos ambientales pertenecientes a los diferentes Planes ambientales</p>
                         </div>
                     </li>
+
+                    <li class="margen">
+                        <g:link controller="metodologia" class="over" action="metodologia">
+                            <i class="fa fa-book"> Metodología</i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4> Metodología </h4>
+
+                            <p>Metodología usada en la auditoría ambiental</p>
+                        </div>
+                    </li>
                 </ul>
             </div>
 
@@ -169,7 +180,7 @@
     </div>
 
     <div class="col-md-4">
-        <div class="panel panel-info right hidden">
+        <div class="panel panel-success right hidden">
             <div class="panel-heading">
                 <h3 class="panel-title"></h3>
             </div>
