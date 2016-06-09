@@ -6,7 +6,6 @@ class DetalleAuditoria {
 
     static auditable = true
     Auditoria auditoria
-    Antecendente antecendente
     String introduccion
     String recomendaciones
 
@@ -18,18 +17,13 @@ class DetalleAuditoria {
         columns {
             id column: 'dtau__id'
             auditoria column: 'audt__id'
-            antecendente column: 'antc__id'
             introduccion column: 'dtauintr'
             recomendaciones column: 'dtauccrr'
         }
     }
 
     static constraints = {
-
-
-        antecendente(nullable: true)
         introduccion(nullable: true, blank: true)
         recomendaciones(nullable: true, blank: true)
-
     }
 }

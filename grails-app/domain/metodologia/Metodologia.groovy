@@ -17,7 +17,6 @@ class Metodologia {
     }
 
     static constraints = {
-
         descripcion(nullable: false, blank: false)
     }
 }

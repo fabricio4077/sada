@@ -11,9 +11,12 @@
     <meta name="layout" content="mainSada">
     <title>Metodologia</title>
     %{--<script src="${resource(dir: 'js/jquery/js', file: 'jquery-1.9.1.js')}"></script>--}%
-    <script src="${resource(dir: 'js/plugins/ckeditor-new', file: 'ckeditor.js')}"></script>
-    %{--<script src="${resource(dir: 'js/plugins/ckeditor-new/adapters', file: 'jquery.js')}"></script>--}%
+    %{--<script src="${resource(dir: 'js/plugins/ckeditor-new', file: 'ckeditor.js')}"></script>--}%
+    <script src="${resource(dir: 'js/plugins/ckeditor4', file: 'ckeditor.js')}"></script>
+    %{--<script src="${resource(dir: 'js/plugins/ckeditor4/adapters', file: 'jquery.js')}"></script>--}%
     %{--<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>--}%
+    %{--<script src="/js/plugins/ckeditor4/ckeditor.js"></script>--}%
+    %{--<script src="/js/plugins/ckeditor4/adapters/jquery.js"></script>--}%
 
 </head>
 
@@ -24,16 +27,27 @@
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-book"></i> Metodología </h3>
     </div>
 
-    <g:form name="formMet" id="meto" method="POST" action="guardarMetodologia_ajax">
-        <div class="row">
-            <div class="col-md-12">
+    %{--<g:form name="formMet" id="meto" method="POST" action="guardarMetodologia_ajax">--}%
+        %{--<div class="row">--}%
+            %{--<div class="col-md-12">--}%
                 %{--<g:textArea name="editor_name" id="editor" />--}%
                 %{--<textarea id="editorTexto" name="editorTexto" class="editor editorTexto" rows="100" cols="80"></textarea>--}%
-                <textarea name="editor1" id="texto"></textarea>
-            </div>
+                %{--<textarea name="editor1" id="texto"></textarea>--}%
+            %{--</div>--}%
 
-        </div>
-    </g:form>
+        %{--</div>--}%
+    %{--</g:form>--}%
+
+    <form>
+        <textarea name="editor1" id="editor1" rows="10" cols="80">
+%{--This is my textarea to be replaced with CKEditor.--}%
+        </textarea>
+        <script>
+            // Replace the <textarea id="editor1"> with a CKEditor
+            // instance, using default configuration.
+            CKEDITOR.replace( 'editor1' );
+        </script>
+    </form>
 
     <div class="row">
         <nav>
@@ -55,13 +69,13 @@
 
 <script>
 
-    window.onload = function() {
-        CKEDITOR.replace( 'editor1', {
-//        language: 'es',
-//        uiColor: '#9AB8F3'
-            customConfig: 'config.js'
-        });
-    };
+//    window.onload = function() {
+//        CKEDITOR.replace( 'editor1', {
+////        language: 'es',
+////        uiColor: '#9AB8F3'
+//            customConfig: 'config.js'
+//        });
+//    };
 
 
 
@@ -82,11 +96,12 @@
     //botón guardar metodologia
 
     $("#btnGuardarMet").click(function () {
+//        alert( CKEDITOR.instances.editor1.getData());
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'metodologia', action: 'guardarMetodologia_ajax')}",
             data: {
-                met: $("#texto").val()
+                met: CKEDITOR.instances.editor1.getData()
             },
             success: function (msg) {
 

@@ -121,6 +121,9 @@ class MetodologiaController extends Seguridad.Shield {
 
     def guardarMetodologia_ajax () {
         println("params guardar metodologia " + params)
+
+
+
     }
 
 }
