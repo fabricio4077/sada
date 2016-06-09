@@ -188,32 +188,32 @@
                     header : true
                 },
                 %{--ver      : {--}%
-                    %{--label  : "Ver",--}%
-                    %{--icon   : "fa fa-search",--}%
-                    %{--action : function ($element) {--}%
-                        %{--var id = $element.data("id");--}%
-                        %{--$.ajax({--}%
-                            %{--type    : "POST",--}%
-                            %{--url     : "${createLink(action:'show_ajax')}",--}%
-                            %{--data    : {--}%
-                                %{--id : id--}%
-                            %{--},--}%
-                            %{--success : function (msg) {--}%
-                                %{--bootbox.dialog({--}%
-                                    %{--title   : "Ver",--}%
-                                    %{--message : msg,--}%
-                                    %{--buttons : {--}%
-                                        %{--ok : {--}%
-                                            %{--label     : "Aceptar",--}%
-                                            %{--className : "btn-primary",--}%
-                                            %{--callback  : function () {--}%
-                                            %{--}--}%
-                                        %{--}--}%
-                                    %{--}--}%
-                                %{--});--}%
-                            %{--}--}%
-                        %{--});--}%
-                    %{--}--}%
+                %{--label  : "Ver",--}%
+                %{--icon   : "fa fa-search",--}%
+                %{--action : function ($element) {--}%
+                %{--var id = $element.data("id");--}%
+                %{--$.ajax({--}%
+                %{--type    : "POST",--}%
+                %{--url     : "${createLink(action:'show_ajax')}",--}%
+                %{--data    : {--}%
+                %{--id : id--}%
+                %{--},--}%
+                %{--success : function (msg) {--}%
+                %{--bootbox.dialog({--}%
+                %{--title   : "Ver",--}%
+                %{--message : msg,--}%
+                %{--buttons : {--}%
+                %{--ok : {--}%
+                %{--label     : "Aceptar",--}%
+                %{--className : "btn-primary",--}%
+                %{--callback  : function () {--}%
+                %{--}--}%
+                %{--}--}%
+                %{--}--}%
+                %{--});--}%
+                %{--}--}%
+                %{--});--}%
+                %{--}--}%
                 %{--},--}%
                 editar   : {
                     label  : "Continuar",
@@ -278,26 +278,51 @@
 
                             }
                         },
-//                        configuración2:{
-//                            label: "Configuración 2",
-//                            icon: "fa fa-pencil-square",
-//                            submenu:{
-                                objetivos: {
-                                    label: "Objetivos",
-                                    icon: "fa fa-check-circle-o",
+
+                        objetivos: {
+                            label: "Objetivos",
+                            icon: "fa fa-check-circle-o",
+                            action: function ($element) {
+                                var id = $element.data("id");
+                                location.href = "${createLink(controller: 'auditoria', action: 'objetivos')}/" + id
+                            }
+                        },
+                        complemento:{
+                            label: "Complementos",
+                            icon: "fa fa-file-text-o",
+                            submenu:{
+                                paso1: {
+                                    label: "Antecedentes",
+                                    icon: "fa fa-file-text",
                                     action: function ($element) {
                                         var id = $element.data("id");
-                                        location.href = "${createLink(controller: 'auditoria', action: 'objetivos')}/" + id
+                                        location.href = "${createLink(controller: 'antecedente', action: 'antecedente')}/" + id
+                                    }
+                                } ,
+                                paso2:{
+                                    label: "Alcance",
+                                    icon: "fa fa-file-text",
+                                    action: function ($element) {
+                                        var id = $element.data("id");
+                                        location.href = "${createLink(controller: 'preauditoria', action: 'crearPaso2')}/" + id
                                     }
                                 },
-//                            }
-//                        },
-                        configuración3:{
+                                paso3:{
+                                    label: "Metodología",
+                                    icon: "fa fa-file-text",
+                                    action: function ($element) {
+                                        var id = $element.data("id");
+                                        location.href = "${createLink(controller: 'preauditoria', action: 'crearPaso3')}/" + id
+                                    }
+                                }
+                            }
+                        },
+                        impresion:{
                             label: "Imprimir",
                             icon: "fa fa-print",
                             submenu:{
                                 1: {
-                                    label: "1",
+                                    label: "Impresión...",
                                     icon: "fa fa-file",
                                     disabled: true
                                 }

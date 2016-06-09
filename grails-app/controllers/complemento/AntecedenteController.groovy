@@ -108,4 +108,31 @@ class AntecedenteController extends Seguridad.Shield {
         render "NO_No se encontró Antecedente."
     } //notFound para ajax
 
+
+    def antecedente () {
+        def ante = Antecedente.get(params.id)
+        return [ante: ante]
+    }
+
+
+    def guardarAntecedente_ajax () {
+        def antecedente
+        if(params.id){
+            antecedente = Antecedente.get(params.id)
+            antecedente.descripcion = params.descripcion
+
+        }else{
+            antecedente = new Antecedente()
+            antecedente.descripcion = params.descripcion
+        }
+
+        try{
+            antecedente.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el antecedente" + antecedente.errors)
+        }
+    }
+
 }

@@ -110,9 +110,10 @@ class MetodologiaController extends Seguridad.Shield {
 
     def metodologia () {
 
-//        def metodologia = Metodologia.list().first()
-//
-//        return[met: metodologia]
+        def metodologia = Metodologia.get(1)
+//        println("met " + metodologia)
+
+        return[met: metodologia]
     }
 
     def verMetodologia (){
@@ -120,8 +121,24 @@ class MetodologiaController extends Seguridad.Shield {
     }
 
     def guardarMetodologia_ajax () {
-        println("params guardar metodologia " + params)
+//        println("params guardar metodologia " + params)
+        def metodologia
 
+        if(params.id){
+            metodologia = Metodologia.get(params.id)
+            metodologia.descripcion = params.met
+        }else{
+            metodologia = new Metodologia()
+            metodologia.descripcion = params.met
+        }
+
+        try{
+            metodologia.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar metodologia - ckeditor " + metodologia.errors)
+        }
 
 
     }
