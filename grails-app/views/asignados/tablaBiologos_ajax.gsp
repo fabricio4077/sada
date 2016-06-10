@@ -50,7 +50,7 @@
               id: ${pre?.id}
             },
             success: function (msg){
-                $("#nombresBiologos").html(msg).effect("drop", "slow").fadeIn();
+                $("#nombresBiologos").html(msg).addClass('animated bounceIn');
             }
         });
     }

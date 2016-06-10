@@ -64,7 +64,7 @@
                 id: ${pre?.id}
             },
             success: function (msg){
-                $("#nombresEspecialistas").html(msg).effect("drop", "slow").fadeIn();
+                $("#nombresEspecialistas").html(msg).addClass('animated bounceIn');
             }
         });
     }

@@ -30,67 +30,60 @@
 <body>
 
 
-
-%{--<div class="wizard-container">--}%
-    %{--<div class="wizard-step wizard-next-step corner-left wizard-current">--}%
-        %{--<i class="fa fa-group"></i> Paso 4: Grupo de trabajo--}%
-        %{--<div class="wizard-form">--}%
-
-
 <div class="panel panel-info">
     <div class="panel-heading">
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-group"></i> Paso 4: Grupo de trabajo</h3>
     </div>
 
-        <i class="fa fa-group fa-5x text-info" style="float: left; margin-left: 60px; margin-top: 10px"></i>
+    <i class="fa fa-group fa-5x text-info" style="float: left; margin-left: 60px; margin-top: 10px"></i>
 
-            <div style="margin-top: 30px; width: 750px; margin-left: 150px; height: 400px" class="vertical-container">
-                <p class="css-vertical-text" style="margin-top: -10px;">Grupo de trabajo</p>
-                <div class="linea"></div>
+    <div style="margin-top: 30px; width: 750px; margin-left: 150px; height: 400px" class="vertical-container">
+        <p class="css-vertical-text" style="margin-top: -10px;">Grupo de trabajo</p>
+        <div class="linea"></div>
 
-                <div class="well" style="text-align: center">
-                    <p>
-                       <strong>Seleccione los profesionales que trabajarán en el proceso de auditoría.</strong>
-                    </p>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 alert alert-info">
-                        <h4>
-                            Personal asignado
-                        </h4>
+        <div class="well" style="text-align: center">
+            <p>
+                <strong>Seleccione los profesionales que trabajarán en el proceso de auditoría.</strong>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-md-6 alert alert-info">
+                <h4>
+                    Personal asignado
+                </h4>
 
-                        <div class="" id="divCoordinador"></div>
-                        <div class="" id="divBiologo"></div>
-                        <div class="" id="divEspecialista"></div>
-                    </div>
-
-                    <div class="col-md-6 alert alert-success" style="height: 294px">
-                        <h4>
-                            Personal disponible
-                            <div id="listados">
-
-                            </div>
-                        </h4>
-
-                        <div class="" id=""></div>
-                    </div>
-                </div>
+                <div class="" id="divCoordinador"></div>
+                <div class="" id="divBiologo"></div>
+                <div class="" id="divEspecialista"></div>
             </div>
 
-            <div class="row" style="margin-bottom: 10px">
-                <div class="col-md-2"></div>
-                <a style="float: left" href="#" id="btnRegresar" class="btn btn-primary ${pre ? '' : 'disabled'}" title="Retornar al paso anterior">
-                    <i class="fa fa-angle-double-left"></i> Regresar
-                </a>
-                <div class="col-md-5"></div>
-                <a href="#" id="btnContinuar" class="btn btn-success disabled" title="Continuar al siguiente paso">
-                    Continuar <i class="fa fa-angle-double-right"></i>
-                </a>
+            <div class="col-md-6 alert alert-success" style="height: 294px">
+                <h4>
+                    Personal disponible
+                    <div id="listados">
+
+                    </div>
+                </h4>
+
+                <div class="" id=""></div>
             </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-bottom: 10px">
+        <div class="col-md-2"></div>
+        <a style="float: left" href="#" id="btnRegresar" class="btn btn-primary ${pre ? '' : 'disabled'}" title="Retornar al paso anterior">
+            <i class="fa fa-angle-double-left"></i> Regresar
+        </a>
+        <div class="col-md-5"></div>
+        <a href="#" id="btnContinuar" class="btn btn-success disabled" title="Continuar al siguiente paso">
+            Continuar <i class="fa fa-angle-double-right"></i>
+        </a>
+    </div>
 
 </div>
-        %{--</div>--}%
-    %{--</div>--}%
+%{--</div>--}%
+%{--</div>--}%
 %{--</div>--}%
 
 <script type="text/javascript">
@@ -108,7 +101,7 @@
                 id: '${pre?.id}'
             },
             success: function (msg) {
-                $("#divCoordinador").html(msg).effect("drop", "slow").fadeIn();
+                $("#divCoordinador").html(msg).addClass('animated bounceInLeft');
                 revisarAsignados();
             }
         })
@@ -123,7 +116,7 @@
                 id: '${pre?.id}'
             },
             success: function (msg) {
-                $("#divBiologo").html(msg).effect("drop", "slow").fadeIn();
+                $("#divBiologo").html(msg).addClass('animated bounceInLeft');
                 revisarAsignados();
             }
         })
@@ -138,7 +131,7 @@
                 id: '${pre?.id}'
             },
             success: function (msg) {
-                $("#divEspecialista").html(msg).effect("drop", "slow").fadeIn();
+                $("#divEspecialista").html(msg).addClass('animated bounceInLeft');
                 revisarAsignados();
             }
         })
@@ -152,13 +145,13 @@
 
     //verificacion para activar el botón de continuar
     <g:if test="${band == 1}">
-        $("#btnContinuar").removeClass('disabled');
+    $("#btnContinuar").removeClass('disabled');
     </g:if>
 
     //boton avanzar al siguiente paso 5
     $("#btnContinuar").click(function () {
-             location.href="${createLink(controller: 'preauditoria', action: 'crearPaso5')}/" + ${pre?.id}
-      });
+        location.href="${createLink(controller: 'preauditoria', action: 'crearPaso5')}/" + ${pre?.id}
+    });
 
     //funcion para revisar la cantidad de asignados de una auditoria
     function revisarAsignados () {

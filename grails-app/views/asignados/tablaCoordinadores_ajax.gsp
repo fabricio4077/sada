@@ -57,7 +57,7 @@
                 id: ${pre?.id}
             },
             success: function (msg){
-                $("#nombresCoordinadores").html(msg).effect("drop", "slow").fadeIn();
+                $("#nombresCoordinadores").html(msg).addClass('animated bounceIn');
             }
         });
     }

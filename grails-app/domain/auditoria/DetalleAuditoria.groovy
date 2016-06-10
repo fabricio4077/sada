@@ -1,6 +1,5 @@
 package auditoria
 
-import detalle.Antecendente
 
 class DetalleAuditoria {
 

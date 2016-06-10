@@ -28,15 +28,33 @@ class PreauditoriaController extends Seguridad.Shield {
         if (params.search) {
             def c = Preauditoria.createCriteria()
             lista = c.list(params) {
-                or {
-                    /* TODO: cambiar aqui segun sea necesario */
-                    ilike("codigo", "%" + params.search + "%")
-                    ilike("descripcion", "%" + params.search + "%")
+//                or {
+//                    /* TODO: cambiar aqui segun sea necesario */
+//                    ilike("tipo", "%" + params.search + "%")
+//                    ilike("descripcion", "%" + params.search + "%")
+//                }
+
+
+                or{
+                    estacion{
+                        ilike("nombre", "%" + params.search + "%")
+                    }
+
+                    tipo{
+                        ilike("descripcion", "%" + params.search + "%")
+                    }
                 }
+//
+//                estacion{
+//                    ilike("nombre", "%" + params.search + "%")
+//                }
+
+
             }
         } else {
             lista = Preauditoria.list(params)
         }
+
         return lista
     }
 
@@ -313,29 +331,32 @@ class PreauditoriaController extends Seguridad.Shield {
         def listaCoordinadores = Persona.findAllByCargo("Coordinador")
         def listaEspecialistas = Persona.findAllByCargo("Especialista")
         def listaBiologos = Persona.findAllByCargo("Biologo")
-
         return[pre: pre, asignados: asignados, coordinador: coordinador, biologo: biologo, band: band]
 
     }
 
     def crearPaso5 () {
-
         def pre = Preauditoria.get(params.id)
         def actividades = ActiAudi.findAllByPreauditoria(pre)
-
         return [pre: pre, actividades: actividades]
     }
 
     def fichaTecnica () {
-
         def pre = Preauditoria.get(params.id)
         def coordenadas = Coordenadas.findAllByEstacion(pre?.estacion)
         def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
         def coordinador = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Coordinador"));
         def biologo = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Biologo"));
-
         return [pre: pre, coordenadas: coordenadas, especialista: especialista?.persona, coordinador: coordinador?.persona, biologo: biologo?.persona]
+    }
 
+    def revisarEstacion_ajax () {
+        def pre = Preauditoria.get(params.id)
+        if(pre?.estacion){
+            render false
+        }else{
+            render true
+        }
     }
 
 

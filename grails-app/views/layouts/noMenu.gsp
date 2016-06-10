@@ -24,8 +24,6 @@
     <link href="${resource(dir: 'font-awesome-4.2.0/css', file: 'font-awesome.min.css')}" rel="stylesheet">
     <link href="${resource(dir: 'font-mfizz-1.2', file: 'font-mfizz.css')}" rel="stylesheet">
 
-    <link rel="shortcut icon" href="${resource(dir: 'images/inicio', file: 'favicon.ico')}" type="image/x-icon">
-
     <!-- JQuery -->
     <script src="${resource(dir: 'js/jquery/js', file: 'jquery-1.9.1.js')}"></script>
     <script src="${resource(dir: 'js/jquery/js', file: 'jquery-ui-1.10.3.custom.min.js')}"></script>
@@ -93,6 +91,8 @@
     <link href='${resource(dir: "css", file: "custom/pnotify.css")}' rel='stylesheet' type='text/css'>
     %{--Buscador--}%
     <link href='${resource(dir: 'css', file: 'buscador.css')}' rel='stylesheet'>
+
+    <link rel="shortcut icon" href="${resource(dir: 'images/inicio', file: 'favicon.ico')}" type="image/x-icon">
 
     <script type="text/javascript">
         var spinner24Url = "${resource(dir:'images/spinners', file:'spinner_24.GIF')}";

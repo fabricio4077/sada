@@ -41,12 +41,6 @@
     <div class="row">
         <nav>
             <ul class="pager">
-                <li>
-                    <a href="#" id="btnRegresar" class="btn btn-primary" title="Retornar a parámetros">
-                        <i class="fa fa-angle-double-left"></i> Regresar </a>
-                </li>
-
-
                 <a href="#" id="btnGuardarMet" class="btn btn-success" title="Guardar texto">
                     <i class="fa fa-save"></i> Guardar
                 </a>

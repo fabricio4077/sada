@@ -42,7 +42,7 @@
                 id: ${pre?.id}
             },
             success: function (msg) {
-                $("#listados").html(msg).effect("drop", "slow").fadeIn();
+                $("#listados").html(msg).addClass('animated fadeInDown');
             }
         })
     }
