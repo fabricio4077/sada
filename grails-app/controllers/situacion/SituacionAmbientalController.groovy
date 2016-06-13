@@ -143,6 +143,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
             }
         }else{
             println(" nada que hacer en grabar")
+
         }
 
         return [pre: pre, situaciones: situaciones]
@@ -187,6 +188,21 @@ class SituacionAmbientalController extends Seguridad.Shield {
         }else{
             render "no"
         }
+
+    }
+
+    def generador_ajax () {
+        def emisor = Emisor.get(1)
+
+
+    }
+
+    def guardarGenerador_ajax () {
+
+        println("params guardar generador " + params)
+
+
+
 
     }
 

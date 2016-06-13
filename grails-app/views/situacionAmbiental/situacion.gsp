@@ -38,7 +38,7 @@
 
                         <div class="tab-content">
                             <div id="gaseosas" class="tab-pane fade in active">
-                                <div class="well" style="text-align: center; height: 200px; margin-top: 10px">
+                                <div class="well" style="text-align: center; height: 100px; margin-top: 10px">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="col-md-2 negrilla control-label">Emisor </div>
@@ -52,6 +52,14 @@
                                                     <i class="fa fa-plus"></i> Agregar emisor
                                                 </a>
                                             </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="well" style="text-align: center; height: 100px; margin-top: 10px">
+                                    <div class="row">
+                                        <div class="col-md-12" id="tablaEmisores">
+
 
                                         </div>
                                     </div>
@@ -109,13 +117,6 @@
         });
     }
 
-//    $("#eg").click(function () {
-//            revisarGenerador();
-//    });
-
-
-
-//    function revisarGenerador () {
         $("#eg").click(function () {
         $.ajax({
             type:'POST',
@@ -126,37 +127,65 @@
             success: function (msg){
                 if(msg == 'ok'){
                     $.ajax({
+                        type: 'POST',
+                        url: '${createLink(controller: 'situacionAmbiental', action: 'generador_ajax')}',
+                        data:{
 
+                        },
+                        success: function (msg) {
+                            var b = bootbox.dialog({
+                                id      : "dlgGenerador",
+                                title   : "Emisor - Generador Eléctrico",
+                                message : msg,
+                                buttons : {
+                                    cancelar : {
+                                        label     : "Cancelar",
+                                        className : "btn-primary",
+                                        callback  : function () {
+                                        }
+                                    },
+                                    guardar  : {
+                                        id        : "btnSave",
+                                        label     : "<i class='fa fa-save'></i> Guardar",
+                                        className : "btn-success",
+                                        callback  : function () {
+                                            var si = $("#mantenimientoSi").prop('checked');
+                                            var no = $("#mantenimientoNo").prop("checked");
+                                            if(!si && !no){
+//                                               console.log("ninguno marcado")
+                                                bootbox.alert("  <i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe marcar una de las dos opciones de mantenimiento");
+                                                return false
+                                            }else{
+                                                var $form = $("#frmGenerador");
+                                                if($form.valid()){
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url:"${createLink(controller: 'situacionAmbiental', action: 'guardarGenerador_ajax')}",
+                                                        data:{
+                                                            id: ${pre?.id},
+                                                            hora: $("#horas").val(),
+                                                            si: si,
+                                                            no: no
+                                                        },
+                                                        success: function (msg){
+
+                                                        }
+                                                    })
+                                                }else{
+                                                    return false
+                                                }
+                                            }
+                                        } //callback
+                                    } //guardar
+                                } //buttons
+                            }); //dialog
+                        }
                     });
-
-
-                    var b = bootbox.dialog({
-                        id      : "dlgCreateEdit",
-                        title   : "Emisor - Generador Eléctrico",
-                        message : "Nada",
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
-                            },
-                            guardar  : {
-                                id        : "btnSave",
-                                label     : "<i class='fa fa-save'></i> Guardar",
-                                className : "btn-success",
-                                callback  : function () {
-
-                                } //callback
-                            } //guardar
-                        } //buttons
-                    }); //dialog
                 }else{
-
                 }
             }
         })
-    })
+    });
 //    }
 
 

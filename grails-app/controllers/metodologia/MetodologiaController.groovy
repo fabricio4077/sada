@@ -136,6 +136,7 @@ class MetodologiaController extends Seguridad.Shield {
         }catch (e){
             render "no"
             println("error al guardar metodologia - ckeditor " + metodologia.errors)
+
         }
 
 
