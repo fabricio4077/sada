@@ -1,5 +1,9 @@
 package complemento
 
+import auditoria.Auditoria
+import auditoria.DetalleAuditoria
+import auditoria.Preauditoria
+
 
 class AlcanceController extends Seguridad.Shield {
 
@@ -107,5 +111,38 @@ class AlcanceController extends Seguridad.Shield {
     protected void notFound_ajax() {
         render "NO_No se encontró Alcance."
     } //notFound para ajax
+
+    def alcance () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def alc = Alcance.findByAuditoria(audi)
+        return [pre:pre, alc: alc, audi: audi]
+    }
+
+    def guardarAlcance_ajax () {
+
+        println("params guardar alcance " + params)
+        def auditoria = Auditoria.get(params.audi)
+        def alcance
+
+        if(params.id){
+            alcance = Alcance.get(params.id)
+            alcance.descripcion = params.descripcion
+        }else{
+            alcance = new Alcance()
+            alcance.auditoria = auditoria
+            alcance.descripcion = params.descripcion
+        }
+
+        try{
+            alcance.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el alcance " + alcance.errors)
+        }
+
+
+    }
 
 }

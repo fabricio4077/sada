@@ -31,8 +31,10 @@
         <script>
             // Replace the <textarea id="editor1"> with a CKEditor
             // instance, using default configuration.
+            CKEDITOR.config.customConfig =
             CKEDITOR.replace( 'editor1', {
-               height: "500px"
+               height: "500px",
+                customConfig: 'config.js'
             });
         </script>
     </form>

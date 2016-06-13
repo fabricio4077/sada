@@ -109,15 +109,13 @@ class MetodologiaController extends Seguridad.Shield {
     } //notFound para ajax
 
     def metodologia () {
-
         def metodologia = Metodologia.get(1)
-//        println("met " + metodologia)
-
         return[met: metodologia]
     }
 
     def verMetodologia (){
-
+        def metodologia = Metodologia.get(1)
+        return[met: metodologia, ]
     }
 
     def guardarMetodologia_ajax () {

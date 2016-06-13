@@ -1,22 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 09/06/16
-  Time: 12:54 PM
---%>
-
-<%--
-  Created by IntelliJ IDEA.
-  User: gato
-  Date: 08/06/16
-  Time: 11:01 AM
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta name="layout" content="mainSada">
-    <title>Antecedente</title>
+    <title>Alcance</title>
     <script src="${resource(dir: 'js/plugins/ckeditor-full', file: 'ckeditor.js')}"></script>
 </head>
 
@@ -24,12 +10,12 @@
 
 <div class="panel panel-success ">
     <div class="panel-heading">
-        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-book"></i> Antecedente </h3>
+        <h3 class="panel-title" style="text-align: center"> <i class="fa fa-book"></i> Alcance </h3>
     </div>
 
     <form>
         <textarea name="editor1" id="editor1" rows="30" cols="80">
-        ${ante?.descripcion}
+            ${alc?.descripcion}
         </textarea>
         <script>
             CKEDITOR.replace( 'editor1', {
@@ -57,11 +43,11 @@
 //        alert( CKEDITOR.instances.editor1.getData());
         $.ajax({
             type: 'POST',
-            url: "${createLink(controller: 'antecedente', action: 'guardarAntecedente_ajax')}",
+            url: "${createLink(controller: 'alcance', action: 'guardarAlcance_ajax')}",
             data: {
                 descripcion: CKEDITOR.instances.editor1.getData(),
-                id: '${ante?.id}',
-                det: '${det?.id}'
+                id: '${alc?.id}',
+                audi: '${audi?.id}'
             },
             success: function (msg) {
                 if(msg == 'ok'){

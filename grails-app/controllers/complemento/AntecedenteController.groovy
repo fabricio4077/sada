@@ -1,5 +1,9 @@
 package complemento
 
+import auditoria.Auditoria
+import auditoria.DetalleAuditoria
+import auditoria.Preauditoria
+
 
 class AntecedenteController extends Seguridad.Shield {
 
@@ -110,20 +114,28 @@ class AntecedenteController extends Seguridad.Shield {
 
 
     def antecedente () {
-        def ante = Antecedente.get(params.id)
-        return [ante: ante]
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def ante = Antecedente.findByDetalleAuditoria(detalleAuditoria)
+        return [pre:pre, ante: ante, det: detalleAuditoria]
     }
 
 
     def guardarAntecedente_ajax () {
+
+//        println("params guardar antecedente " + params)
+
+        def detalle = DetalleAuditoria.get(params.det)
         def antecedente
         if(params.id){
             antecedente = Antecedente.get(params.id)
             antecedente.descripcion = params.descripcion
-
         }else{
             antecedente = new Antecedente()
             antecedente.descripcion = params.descripcion
+            antecedente.fechaAprobacion = new Date()
+            antecedente.detalleAuditoria = detalle
         }
 
         try{

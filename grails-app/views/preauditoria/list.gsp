@@ -515,7 +515,7 @@
                                     icon: "fa fa-file-text",
                                     action: function ($element) {
                                         var id = $element.data("id");
-                                        location.href = "${createLink(controller: 'preauditoria', action: 'crearPaso2')}/" + id
+                                        location.href = "${createLink(controller: 'alcance', action: 'alcance')}/" + id
                                     }
                                 },
                                 paso3:{
@@ -523,7 +523,7 @@
                                     icon: "fa fa-file-text",
                                     action: function ($element) {
                                         var id = $element.data("id");
-                                        location.href = "${createLink(controller: 'preauditoria', action: 'crearPaso3')}/" + id
+                                        location.href = "${createLink(controller: 'metodologia', action: 'verMetodologia')}/" + id
                                     }
                                 }
                             }
