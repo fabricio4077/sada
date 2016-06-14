@@ -41,10 +41,10 @@
                 Se ha realizado mantenimiento al generador?
             </label>
             <div class="col-md-2">
-                SI:  <g:checkBox name="mantenimientoSi_name" id="mantenimientoSi" class="form-control"/>
+                SI  <g:checkBox name="mantenimientoSi_name" id="mantenimientoSi" class="form-control"/>
             </div>
             <div class="col-md-2">
-                NO:  <g:checkBox name="mantenimientoNo_name" id="mantenimientoNo" class="form-control"/>
+                NO  <g:checkBox name="mantenimientoNo_name" id="mantenimientoNo" class="form-control"/>
             </div>
         </div>
     </div>

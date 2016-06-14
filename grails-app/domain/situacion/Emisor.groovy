@@ -4,6 +4,7 @@ class Emisor {
 
     static auditable = true
     String nombre
+    String codigo
 
     static mapping = {
         table 'emsr'
@@ -13,9 +14,11 @@ class Emisor {
         columns {
             id column: 'emsr__id'
             nombre column: 'emsrnmbr'
+            codigo column: 'emsrcdgo'
         }
     }
 
     static constraints = {
+        codigo(nullable: true, blank: true)
     }
 }

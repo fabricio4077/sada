@@ -155,12 +155,14 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def componente = ComponenteAmbiental.get(1)
         def situacion = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def existentes = EmisorComponente.findAllBySituacionAmbiental(situacion).emisor.id
+//        println("existentes " + existentes)
+        def listaEmisores = Emisor.list([sort: 'nombre', order: 'asc']).id
+//        println("lista emisores " + listaEmisores)
 
-        def existentes = EmisorComponente.findAllBySituacionAmbiental(situacion)
-        def listaEmisores = Emisor.list()
-
-        def comunes = listaEmisores.intersect(existentes.emisor)
-        def diferentes = listaEmisores.plus(existentes.emisor)
+        def comunes = listaEmisores.intersect(existentes)
+//        println("comunes " + comunes)
+        def diferentes = listaEmisores.plus(existentes)
         diferentes.removeAll(comunes)
 
 //        println("diferentes " + diferentes)
@@ -179,7 +181,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def componente = ComponenteAmbiental.get(1)
         def situacion = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
 
-        def emisor = Emisor.get(1)
+        def emisor = Emisor.findByCodigo('GNRD')
         def exc = EmisorComponente.findByEmisorAndSituacionAmbiental(emisor,situacion)
 
 
@@ -201,9 +203,30 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
         println("params guardar generador " + params)
 
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(1)
+        def situacion = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def emisor = Emisor.findByCodigo('GNRD')
 
+        def em = new EmisorComponente()
+        em.emisor = emisor
+        em.situacionAmbiental = situacion
+        em.hora = params.hora.toInteger()
+        if(params.si == 'true'){
+            em.mantenimiento = 1
+        }else{
+            em.mantenimiento = 0
+        }
 
-
+        try{
+            em.save(flush: true)
+            render 'ok'
+        }catch (e){
+            render 'no'
+            println("error al guardar el generador")
+        }
     }
 
 }

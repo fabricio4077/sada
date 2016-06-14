@@ -168,7 +168,12 @@
                                                             no: no
                                                         },
                                                         success: function (msg){
-
+                                                            if(msg == 'ok'){
+                                                                log("Emisor guardado correctamente","success");
+                                                                cargarComboEmisores();
+                                                            }else{
+                                                                log("Error al guardar el emisor","error");
+                                                            }
                                                         }
                                                     })
                                                 }else{
