@@ -118,7 +118,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
-        def lista = [1,2,3]
+        def lista = [1,2,3,4,5]
         def listaComponentes = ComponenteAmbiental.findAllByIdInList(lista)
         def situaciones = SituacionAmbiental.findAllByDetalleAuditoriaAndComponenteAmbientalInList(detalleAuditoria,listaComponentes, [sort: 'componenteAmbiental', order: "asc"])
 //        println("componentes lista " + listaComponentes)
@@ -146,7 +146,36 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
         }
 
-        return [pre: pre, situaciones: situaciones]
+
+        def biotico = SituacionAmbiental.withCriteria {
+                                    eq("detalleAuditoria",detalleAuditoria)
+
+                                    componenteAmbiental{
+                                        eq("tipo",'Biótico')
+                                    }
+        }
+
+        def fisicoEmisores = SituacionAmbiental.withCriteria {
+            eq("detalleAuditoria",detalleAuditoria)
+
+            componenteAmbiental{
+                eq("tipo",'Físico')
+                eq("nombre","Emisiones Gaseosas")
+            }
+        }
+
+//        def texto
+//        if(fisicoEmisores?.first()?.descripcion){
+//            texto = fisicoEmisores?.first()?.descripcion
+//        }else{
+//            texto = "La estación de servicios ${pre?.estacion?.nombre}" +
+//                    "</br>Al no estar sujeto a monitoreo no se ha realizado un seguimiento de las emisiones del generador. Sin embargo, se asume que no existe una " +
+//                    "alteración significativa de la calidad del aire debido a las pocas horas de uso del mismo. "
+//        }
+
+
+//        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first(), texto: texto]
+        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first()]
     }
 
     def emisor_ajax () {
@@ -194,8 +223,6 @@ class SituacionAmbientalController extends Seguridad.Shield {
     }
 
     def generador_ajax () {
-        def emisor = Emisor.get(1)
-
 
     }
 
@@ -227,6 +254,109 @@ class SituacionAmbientalController extends Seguridad.Shield {
             render 'no'
             println("error al guardar el generador")
         }
+    }
+
+
+    def guardarBiotico_ajax () {
+
+//        println("bioritoc params " + params)
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(4)
+        def situacionBiotico = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+
+        situacionBiotico.descripcion = params.descripcion
+
+        try{
+            situacionBiotico.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el texto del componente biotico" + situacionBiotico.errors)
+        }
+    }
+
+    def guardarSocial_ajax () {
+
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(5)
+        def situacionSocial = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+
+        situacionSocial.descripcion = params.descripcion
+
+        try{
+            situacionSocial.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el texto del componente biotico" + situacionSocial.errors)
+        }
+
+
+
+    }
+
+    def tablaEmisores_ajax () {
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(1)
+        def situacionSocial = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def emisores = EmisorComponente.findAllBySituacionAmbiental(situacionSocial)
+
+//        println("emisores " + emisores)
+        return [emisores: emisores]
+    }
+
+
+    def guardarEmisiones_ajax () {
+
+        println("params guardar emisiones " + params)
+
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(1)
+        def situacionEmisores = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+
+        situacionEmisores.descripcion = params.descripcion
+
+        try{
+            situacionEmisores.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el texto del emisor" + situacionEmisores.errors)
+        }
+    }
+
+    def editorE_ajax () {
+
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(1)
+        def situacionEmisores = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+
+
+        def texto
+        if(situacionEmisores?.descripcion){
+            texto = situacionEmisores?.descripcion
+        }else{
+            texto = "La estación de servicios ${pre?.estacion?.nombre}" +
+                    "</br>Al no estar sujeto a monitoreo no se ha realizado un seguimiento de las emisiones del generador. Sin embargo, se asume que no existe una " +
+                    "alteración significativa de la calidad del aire debido a las pocas horas de uso del mismo. "
+        }
+
+        return[pre: pre, texto: texto]
     }
 
 }
