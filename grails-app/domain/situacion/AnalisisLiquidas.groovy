@@ -27,5 +27,10 @@ class AnalisisLiquidas {
     }
 
     static constraints = {
+        elemento(nullable: true)
+        referencia(nullable: true, blank: true)
+        limite(nullable: true, blank: true)
+        resultado(nullable: true, blank: true)
+        maximo(nullable: true, blank: true)
     }
 }

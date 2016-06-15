@@ -14,7 +14,7 @@
                     Nombre
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="nombre" class="allCaps form-control" value="${elementoInstance?.nombre}"/>
+                    <g:textField name="nombre" class="form-control required" value="${elementoInstance?.nombre}"/>
                 </div>
                 
             </span>
@@ -26,7 +26,7 @@
                     Unidad
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="unidad" class="allCaps form-control" value="${elementoInstance?.unidad}"/>
+                    <g:textField name="unidad" class="form-control required" value="${elementoInstance?.unidad}"/>
                 </div>
                 
             </span>

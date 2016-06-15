@@ -91,12 +91,34 @@
                                             %{--</ul>--}%
                                         %{--</nav>--}%
                                     %{--</div>--}%
+                                </div>
+                            </div>
+                            <div id="liquidas" class="tab-pane fade in active">
+                                <div class="well" style="text-align: center; height: 150px; margin-top: 10px">
+                                    <div class="row">
+                                        <b> Tablas de análisis de descargas líquidas</b>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            Agregar una tabla
+                                        </div>
+                                        <div class="col-md-4">
+                                            <a href="#" id="btnAgregarTabla" class="btn btn-info" title="Agregar tabla">
+                                            <i class="fa fa-plus"></i> Agregar tabla de análisis
+                                            </a>
+                                        </div>
+                                    </div>
+
 
                                 </div>
 
-                            </div>
-                            <div id="liquidas" class="tab-pane fade in active">
-                                <h4>Liquidos</h4>
+
+                                <div class="row" id="divTablaLiquidas" style="margin-top: 20px">
+
+                                </div>
+
+
                             </div>
                             <div id="residuos" class="tab-pane fade">
                                 <h4>Residuos</h4>
@@ -427,6 +449,87 @@
             }
         }
     });
+
+    $("#btnAgregarTabla").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'situacionAmbiental', action: 'agregarTablaLiquidas_ajax')}',
+            data:{
+                id: ${pre?.id}
+            },
+            success: function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgTabla",
+                    title   : "Tabla de análisis",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                var fecha = $("#fechaTabla").val();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "${createLink(controller: 'situacionAmbiental', action: 'crearTabla_ajax')}",
+                                    data:{
+                                        id: ${pre?.id},
+                                        fecha: fecha
+                                    },
+                                    success: function (msg) {
+                                        var partes = msg.split("_");
+                                        if(partes[0] == 'ok'){
+//                                            cargarTablaAnalisis(partes[1])
+                                            cargarTablas();
+                                        }else{
+
+                                        }
+                                    }
+                                })
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+            }
+        });
+    });
+
+
+    cargarTablas();
+
+    function cargarTablas(){
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'situacionAmbiental', action: 'tablaAnalisisV2_ajax')}",
+            data:{
+                id: ${pre?.id}
+            },
+            success: function (msg){
+                $("#divTablaLiquidas").html(msg)
+            }
+        });
+    }
+
+
+    function cargarTablaAnalisis (id) {
+        $.ajax({
+           type: 'POST',
+            url: "${createLink(controller: 'situacionAmbiental', action: 'tablaAnalisis_ajax')}",
+            data:{
+                id: id
+            },
+            success: function (msg){
+                $("#divTablaLiquidas").append(msg)
+            }
+        });
+    }
+
 
 </script>
 

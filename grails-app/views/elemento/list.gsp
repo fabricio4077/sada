@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="layout" content="main">
-        <title>Lista de Elemento</title>
+        <meta name="layout" content="mainSada">
+        <title>Lista de Elementos de Análisis</title>
     </head>
     <body>
 
@@ -14,7 +14,7 @@
         <div class="btn-toolbar toolbar">
             <div class="btn-group">
                 <g:link action="form" class="btn btn-default btnCrear">
-                    <i class="fa fa-file-o"></i> Crear
+                    <i class="fa fa-file-o"></i> Nuevo
                 </g:link>
             </div>
             <div class="btn-group pull-right col-md-3">

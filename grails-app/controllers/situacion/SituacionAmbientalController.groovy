@@ -362,8 +362,91 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
     def agregarEmisor_ajax () {
 
+    }
+
+    def agregarTablaLiquidas_ajax () {
+
+    }
+
+    def crearTabla_ajax (){
+
+        println("params crear tabla " + params)
+
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(2)
+        def situacion= SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def fecha = new Date().parse("dd-MM-yyyy",params.fecha)
+
+        def tabla = new TablaLiquidas()
+        tabla.situacionAmbiental = situacion
+        tabla.fecha = fecha
+        try{
+            tabla.save(flush: true)
+            render "ok_${tabla?.id}"
+        }catch (e){
+            render "no"
+        }
+
+    }
+
+    def tablaAnalisis_ajax () {
+        def tabla = TablaLiquidas.get(params.id)
+        return [tabla: tabla]
+    }
 
 
+    def tablaAnalisisV2_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(2)
+        def situacion= SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+
+        def tablas = TablaLiquidas.findAllBySituacionAmbiental(situacion)
+
+        return [tablas: tablas]
+
+    }
+
+    def datosTablaLiquidas_ajax () {
+
+        def tabla = TablaLiquidas.get(params.id)
+        def datos =  AnalisisLiquidas.findAllByTablaLiquidas(tabla)
+
+        return[datos: datos]
+    }
+
+
+    def agregarDatosTablaLiquidas_ajax () {
+        def tabla = TablaLiquidas.get(params.id)
+
+        def analisis = new AnalisisLiquidas()
+        analisis.tablaLiquidas = tabla
+        analisis.save(flush: true)
+
+        return [tabla: tabla, analisis: analisis]
+    }
+
+    def cargarUnidad_ajax () {
+        def elemento = Elemento.get(params.id)
+        return [elemento: elemento]
+    }
+
+    def borrarFila_ajax () {
+        println("params b " + params)
+
+
+        def analisis = AnalisisLiquidas.get(params.id)
+
+        try{
+            analisis.delete(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al borrar la fila de la tabla de liquidas " + analisis?.errors)
+        }
     }
 
 }
