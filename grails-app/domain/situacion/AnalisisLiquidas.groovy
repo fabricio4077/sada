@@ -8,7 +8,7 @@ class AnalisisLiquidas {
     String limite
     String resultado
     String maximo
-    Date fecha
+    TablaLiquidas tablaLiquidas
 
     static mapping = {
         table 'andl'
@@ -21,7 +21,8 @@ class AnalisisLiquidas {
             referencia column: 'andlrfrc'
             limite column: 'andllimt'
             resultado column: 'andlrstd'
-            maximo column: 'andlfcha'
+            maximo column: 'andlmxmo'
+            tablaLiquidas column: 'tblq__id'
         }
     }
 

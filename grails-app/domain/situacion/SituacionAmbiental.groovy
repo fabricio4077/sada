@@ -8,7 +8,6 @@ class SituacionAmbiental {
     String descripcion
     DetalleAuditoria detalleAuditoria
     ComponenteAmbiental componenteAmbiental
-    AnalisisLiquidas analisisLiquidas
 
     static mapping = {
         table 'cmau'
@@ -18,7 +17,6 @@ class SituacionAmbiental {
         columns {
             id column: 'cmau__id'
             descripcion column: 'cmaudscr'
-            analisisLiquidas column: 'andl__id'
             detalleAuditoria column: 'dtau__id'
             componenteAmbiental column: 'cmpt__id'
         }
@@ -26,7 +24,6 @@ class SituacionAmbiental {
 
     static constraints = {
         descripcion(nullable: true, blank: true)
-        analisisLiquidas(nullable: true)
         componenteAmbiental(nullable: true)
     }
 }

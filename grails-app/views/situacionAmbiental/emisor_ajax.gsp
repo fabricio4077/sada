@@ -7,4 +7,4 @@
 
 <g:select name="emisor_name" id="emisorSituacion"
           from="${diferentes}"
-          class="form-control" optionKey="id" optionValue="nombre"/>
+          class="form-control" optionKey="id" optionValue="nombre" noSelection="[null: 'Seleccione...']"/>

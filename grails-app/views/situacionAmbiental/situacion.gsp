@@ -230,6 +230,8 @@
                                                             if(msg == 'ok'){
                                                                 log("Emisor guardado correctamente","success");
                                                                 cargarComboEmisores();
+                                                                cargarTablaEmisores();
+                                                                cargarEditor();
                                                             }else{
                                                                 log("Error al guardar el emisor","error");
                                                             }
@@ -341,6 +343,90 @@
         %{--})--}%
     %{--});--}%
 
+
+    $("#btnAgregarEmisor").click(function () {
+        var seleccionado = $("#emisorSituacion").val();
+        if(seleccionado != 'null'){
+            if(seleccionado == 1){
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'situacionAmbiental', action: 'generador_ajax')}',
+                    data:{
+                        mensaje: 'no'
+                    },
+                    success: function (msg) {
+                        var b = bootbox.dialog({
+                            id      : "dlgGenerador",
+                            title   : "Emisor - Generador Eléctrico",
+                            message : msg,
+                            buttons : {
+                                cancelar : {
+                                    label     : "Cancelar",
+                                    className : "btn-primary",
+                                    callback  : function () {
+                                    }
+                                },
+                                guardar  : {
+                                    id        : "btnSave",
+                                    label     : "<i class='fa fa-save'></i> Guardar",
+                                    className : "btn-success",
+                                    callback  : function () {
+                                        var si = $("#mantenimientoSi").prop('checked');
+                                        var no = $("#mantenimientoNo").prop("checked");
+                                        if(!si && !no){
+//                                               console.log("ninguno marcado")
+                                            bootbox.alert("  <i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Debe marcar una de las dos opciones de mantenimiento");
+                                            return false
+                                        }else{
+                                            var $form = $("#frmGenerador");
+                                            if($form.valid()){
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url:"${createLink(controller: 'situacionAmbiental', action: 'guardarGenerador_ajax')}",
+                                                    data:{
+                                                        id: ${pre?.id},
+                                                        hora: $("#horas").val(),
+                                                        si: si,
+                                                        no: no
+                                                    },
+                                                    success: function (msg){
+                                                        if(msg == 'ok'){
+                                                            log("Emisor guardado correctamente","success");
+                                                            cargarComboEmisores();
+                                                            cargarTablaEmisores();
+                                                            cargarEditor();
+                                                        }else{
+                                                            log("Error al guardar el emisor","error");
+                                                        }
+                                                    }
+                                                })
+                                            }else{
+                                                return false
+                                            }
+                                        }
+                                    } //callback
+                                } //guardar
+                            } //buttons
+                        }); //dialog
+                    }
+                });
+            }else{
+                $.ajax({
+                    type: 'POST',
+                    url: "${createLink(controller: 'situacionAmbiental', action: 'agregarEmisor_ajax')}",
+                    data:{
+                        id: ${pre?.id},
+                        emisor: seleccionado
+                    },
+                    success: function (msg) {
+                        cargarComboEmisores();
+                        cargarTablaEmisores();
+                        cargarEditor();
+                    }
+                });
+            }
+        }
+    });
 
 </script>
 

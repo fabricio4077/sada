@@ -195,8 +195,10 @@ class SituacionAmbientalController extends Seguridad.Shield {
         diferentes.removeAll(comunes)
 
 //        println("diferentes " + diferentes)
+        def elegibles = Emisor.findAllByIdInList(diferentes)
+//        println("elegibles " + elegibles)
 
-        return [diferentes: diferentes]
+        return [diferentes: elegibles]
     }
 
     def revisarGenerador_ajax () {
@@ -223,7 +225,11 @@ class SituacionAmbientalController extends Seguridad.Shield {
     }
 
     def generador_ajax () {
-
+        def men
+        if(params.mensaje){
+            men = params.mensaje
+        }
+        return [mensaje: men]
     }
 
     def guardarGenerador_ajax () {
@@ -296,9 +302,6 @@ class SituacionAmbientalController extends Seguridad.Shield {
             render "no"
             println("error al guardar el texto del componente biotico" + situacionSocial.errors)
         }
-
-
-
     }
 
     def tablaEmisores_ajax () {
@@ -339,13 +342,11 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
     def editorE_ajax () {
 
-
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def componente = ComponenteAmbiental.get(1)
         def situacionEmisores = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
-
 
         def texto
         if(situacionEmisores?.descripcion){
@@ -357,6 +358,12 @@ class SituacionAmbientalController extends Seguridad.Shield {
         }
 
         return[pre: pre, texto: texto]
+    }
+
+    def agregarEmisor_ajax () {
+
+
+
     }
 
 }

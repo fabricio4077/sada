@@ -4,14 +4,16 @@
   Date: 13/06/16
   Time: 11:10 AM
 --%>
-
-<div class="row" style="margin-top: -10px">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <i class='fa fa-exclamation-triangle fa-3x text-info text-shadow'></i> <b>
-        Actualmente su estación posee un generador eléctrico, <br> complete los datos para agregarlo como emisor de gases.</b>
+<g:if test="${mensaje != 'no'}">
+    <div class="row" style="margin-top: -10px">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <i class='fa fa-exclamation-triangle fa-3x text-info text-shadow'></i> <b>
+            Actualmente su estación posee un generador eléctrico, <br> complete los datos para agregarlo como emisor de gases.</b>
+        </div>
     </div>
-</div>
+</g:if>
+
 <div class="row">
     <div class="col-md-12">
         <label class="col-md-3 control-label text-info">
