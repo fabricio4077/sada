@@ -13,7 +13,7 @@
                           from="${situacion.Elemento.list()}" id="elemento_${d?.id}"
                           optionKey="id" optionValue="nombre" value="${d?.elemento?.id}"/></td>
             <td><g:textField name="metodo_name" id="metodo_${d?.id}" class="form-control" value="${d?.referencia}"/></td>
-            <td><g:textField name="limite_name" id="limite_${d?.id}" class="form-control number" value="${d?.limite}"/></td>
+            <td><g:textField name="limite_name" id="limite_${d?.id}" class="form-control" value="${d?.limite}"/></td>
             <td id="unidad_${d?.id}"></td>
             <td><g:textField name="resultado_name" id="resultado_${d?.id}" class="form-control" value="${d?.resultado}"/></td>
             <td><g:textField name="maximo_name" id="maximo_${d?.id}" class="form-control" value="${d?.maximo}"/></td>

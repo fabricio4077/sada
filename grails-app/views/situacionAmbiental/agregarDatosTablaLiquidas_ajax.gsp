@@ -8,13 +8,16 @@
 <table class="table table-bordered table-condensed table-hover" id="tabla_${analisis?.id}">
     <tbody>
     <tr>
-        <td><g:select name="elemento_name" from="${situacion.Elemento.list()}" id="elemento_${analisis?.id}" optionKey="id" optionValue="nombre"/> </td>
-        <td><g:textField name="metodo_name" id="metodo" class="form-control"/></td>
-        <td><g:textField name="limite_name" id="limite" class="form-control number"/></td>
+        <td><g:select name="elemento_name"
+                      from="${situacion.Elemento.list()}"
+                      id="elemento_${analisis?.id}"
+                      optionKey="id" optionValue="nombre" value="${analisis?.elemento?.id}" class="form-control"/></td>
+        <td><g:textField name="metodo_name" id="metodo_${analisis?.id}" class="form-control" value="${analisis?.referencia}"/></td>
+        <td><g:textField name="limite_name" id="limite_${analisis?.id}" class="form-control" value="${analisis?.limite}"/></td>
         <td id="unidad_${analisis?.id}"></td>
-        <td><g:textField name="resultado_name" id="resultado" class="form-control"/></td>
-        <td><g:textField name="maximo_name" id="maximo" class="form-control"/></td>
-        <td>
+        <td><g:textField name="resultado_name" id="resultado_${analisis?.id}" value="${analisis?.resultado}" class="form-control"/></td>
+        <td><g:textField name="maximo_name" id="maximo_${analisis?.id}" value="${analisis?.resultado}" class="form-control"/></td>
+        <td style="width: 7%">
             <div class="btn-group">
                 <a href="#" id="btnGuardarFila_${analisis?.id}" class="btn btn-success btn-sm" title="Guardar">
                     <i class="fa fa-save"></i>
@@ -70,6 +73,26 @@
             }
         });
     })
+
+    $("#btnGuardarFila_${analisis?.id}").click(function () {
+        var idG = ${analisis?.id}
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'situacionAmbiental', action: 'guardarFila_ajax')}",
+            data:{
+                id: idG,
+                elemento: $("#elemento_${analisis?.id}").val(),
+                referencia: $("#metodo_${analisis?.id}").val(),
+                limite: $("#limite_${analisis?.id}").val(),
+                resultado: $("#resultado_${analisis?.id}").val(),
+                maximo: $("#maximo_${analisis?.id}").val(),
+                tabla: ${tabla?.id}
+            },
+            success: function (msg) {
+
+            }
+        });
+    });
 
 
 
