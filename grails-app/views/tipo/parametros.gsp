@@ -172,6 +172,16 @@
                             <p>Metodología usada en la auditoría ambiental</p>
                         </div>
                     </li>
+                    <li class="margen">
+                        <g:link controller="elemento" class="over" action="list">
+                            <i class="fa fa-book"> Elemento de Análisis</i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4> Elemento de Análisis</h4>
+
+                            <p>Elemento de análsis para descargas líquidas</p>
+                        </div>
+                    </li>
                 </ul>
             </div>
 

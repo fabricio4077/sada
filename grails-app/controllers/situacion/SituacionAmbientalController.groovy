@@ -415,7 +415,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def tabla = TablaLiquidas.get(params.id)
         def datos =  AnalisisLiquidas.findAllByTablaLiquidas(tabla)
 
-        return[datos: datos]
+        return[datos: datos, tabla: tabla]
     }
 
 
@@ -447,6 +447,27 @@ class SituacionAmbientalController extends Seguridad.Shield {
             render "no"
             println("error al borrar la fila de la tabla de liquidas " + analisis?.errors)
         }
+    }
+
+    def guardarFila_ajax () {
+        println("params guardar fila " + params)
+        def tabla = TablaLiquidas.get(params.tabla)
+        def elemento = Elemento.get(params.elemento)
+        def analisis = AnalisisLiquidas.get(params.id)
+        analisis.tablaLiquidas = tabla
+        analisis.limite = params.limite
+        analisis.maximo = params.maximo
+        analisis.referencia = params.referencia
+        analisis.resultado = params.resultado
+        analisis.elemento = elemento
+        try{
+            analisis.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar la fila " + analisis.errors)
+        }
+
     }
 
 }

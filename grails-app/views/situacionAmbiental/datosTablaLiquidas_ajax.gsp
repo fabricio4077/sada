@@ -9,13 +9,15 @@
     <table class="table table-bordered table-condensed table-hover" id="tabla_${d?.id}">
         <tbody>
         <tr>
-            <td><g:select name="elemento_name" from="${situacion.Elemento.list()}" id="elemento_${d?.id}" optionKey="id" optionValue="nombre"/> </td>
-            <td><g:textField name="metodo_name" id="metodo" class="form-control"/></td>
-            <td><g:textField name="limite_name" id="limite" class="form-control number"/></td>
+            <td><g:select name="elemento_name" class="form-control"
+                          from="${situacion.Elemento.list()}" id="elemento_${d?.id}"
+                          optionKey="id" optionValue="nombre" value="${d?.elemento?.id}"/></td>
+            <td><g:textField name="metodo_name" id="metodo_${d?.id}" class="form-control" value="${d?.referencia}"/></td>
+            <td><g:textField name="limite_name" id="limite_${d?.id}" class="form-control number" value="${d?.limite}"/></td>
             <td id="unidad_${d?.id}"></td>
-            <td><g:textField name="resultado_name" id="resultado" class="form-control"/></td>
-            <td><g:textField name="maximo_name" id="maximo" class="form-control"/></td>
-            <td>
+            <td><g:textField name="resultado_name" id="resultado_${d?.id}" class="form-control" value="${d?.resultado}"/></td>
+            <td><g:textField name="maximo_name" id="maximo_${d?.id}" class="form-control" value="${d?.maximo}"/></td>
+            <td style="width: 7%">
                 <div class="btn-group">
                     <a href="#" id="btnG_${d?.id}" class="btn btn-success btn-sm btnGuardarFila1" title="Guardar" data-id="${d?.id}">
                         <i class="fa fa-save"></i>
@@ -40,6 +42,7 @@
                 url: "${createLink(controller: 'situacionAmbiental', action: 'cargarUnidad_ajax')}",
                 data:{
                     id: id
+
                 },
                 success: function (msg) {
                     $("#unidad_${d?.id}").html(msg)
@@ -55,41 +58,48 @@
 
         $("#btnG_${d?.id}").click(function () {
             var idG = $(this).data('id');
-            console.log("-->" + idG);
+            $.ajax({
+               type: 'POST',
+                url: "${createLink(controller: 'situacionAmbiental', action: 'guardarFila_ajax')}",
+                data:{
+                      id: idG,
+                      elemento: $("#elemento_${d?.id}").val(),
+                      referencia: $("#metodo_${d?.id}").val(),
+                      limite: $("#limite_${d?.id}").val(),
+                      resultado: $("#resultado_${d?.id}").val(),
+                      maximo: $("#maximo_${d?.id}").val(),
+                      tabla: ${tabla?.id}
+                },
+                success: function (msg) {
+
+                }
+            });
+        });
+
+        $("#btnB_${d?.id}").click(function () {
+
+            var idF = $(this).data('id');
+//            console.log("-->" + idF);
+            $.ajax({
+                type: 'POST',
+                url: "${createLink(controller: 'situacionAmbiental', action: 'borrarFila_ajax')}",
+                data:{
+                    id: idF
+                },
+                success: function (msg){
+                    if(msg == 'ok'){
+                        log("Fila borrada correctamente","success");
+                        $("#tabla_"+idF).toggle(600);
+                    }else{
+                        log("Error al borrar la fila","error")
+                    }
+                }
+            });
         });
 
 
     </script>
 </g:each>
-
-<script>
-    $(".btnBorrarFila1").click(function () {
-
-        var idF = $(this).data('id');
-        console.log("-->" + idF);
-                %{--$.ajax({--}%
-                    %{--type: 'POST',--}%
-                    %{--url: "${createLink(controller: 'situacionAmbiental', action: 'borrarFila_ajax')}",--}%
-                    %{--data:{--}%
-                        %{--id: idF--}%
-                    %{--},--}%
-                    %{--success: function (msg){--}%
-                        %{--if(msg == 'ok'){--}%
-                            %{--log("Fila borrada correctamente","success");--}%
-                            %{--$("#tabla_"+idF).toggle(600);--}%
-                        %{--}else{--}%
-                            %{--log("Error al borrar la fila","error")--}%
-                        %{--}--}%
-                    %{--}--}%
-                %{--});--}%
-    });
-
-//    $(".btnGuardarFila1").click(function () {
-//        var idG = $(this).data('id');
-//        console.log("-->" + idG);
-//    });
-
-</script>
 
 
 

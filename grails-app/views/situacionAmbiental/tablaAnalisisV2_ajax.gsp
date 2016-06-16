@@ -14,7 +14,7 @@
             <th style="width: 10%">Unidades</th>
             <th style="width: 10%">Resultados</th>
             <th style="width: 10%">Límite máximo permisible</th>
-            <th style="width: 5%">Acciones</th>
+            <th style="width: 10%">Acciones</th>
         </tr>
         </thead>
     </table>
