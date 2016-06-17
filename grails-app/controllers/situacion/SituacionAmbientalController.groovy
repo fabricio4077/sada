@@ -467,6 +467,24 @@ class SituacionAmbientalController extends Seguridad.Shield {
             render "no"
             println("error al guardar la fila " + analisis.errors)
         }
+    }
+
+    def eliminarTabla_ajax () {
+        def tabla = TablaLiquidas.get(params.id)
+        def analisis = AnalisisLiquidas.findAllByTablaLiquidas(tabla)
+
+        println("analisis " + analisis)
+
+        if(analisis.size() > 0){
+            render "no_No se puede eliminar esta tabla, ya contiene filas, <br> elimine las filas y trate de nuevo"
+        }else{
+            try{
+                tabla.delete(flush: true)
+                render "ok"
+            }catch (e){
+                render "no_Error al borrar la tabla de análisis"
+            }
+        }
 
     }
 

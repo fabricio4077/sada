@@ -96,7 +96,7 @@
                             <div id="liquidas" class="tab-pane fade in active">
                                 <div class="well" style="text-align: center; height: 150px; margin-top: 10px">
                                     <div class="row">
-                                        <b> Tablas de análisis de descargas líquidas</b>
+                                        <b> Los resultados de los monitoreos  se muestran en las tablas de análisis de descargas líquidas</b>
                                     </div>
 
                                     <div class="row">
