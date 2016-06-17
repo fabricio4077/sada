@@ -5,19 +5,25 @@
   Time: 12:34 PM
 --%>
 
+<style>
+.centrar {
+    text-align: center;
+}
+</style>
+
 <table class="table table-bordered table-condensed table-hover" id="tabla_${analisis?.id}">
     <tbody>
     <tr>
-        <td><g:select name="elemento_name"
+        <td style="width: 10%"><g:select name="elemento_name"
                       from="${situacion.Elemento.list()}"
                       id="elemento_${analisis?.id}"
                       optionKey="id" optionValue="nombre" value="${analisis?.elemento?.id}" class="form-control"/></td>
-        <td><g:textField name="metodo_name" id="metodo_${analisis?.id}" class="form-control" value="${analisis?.referencia}"/></td>
-        <td><g:textField name="limite_name" id="limite_${analisis?.id}" class="form-control" value="${analisis?.limite}"/></td>
-        <td id="unidad_${analisis?.id}"></td>
-        <td><g:textField name="resultado_name" id="resultado_${analisis?.id}" value="${analisis?.resultado}" class="form-control"/></td>
-        <td><g:textField name="maximo_name" id="maximo_${analisis?.id}" value="${analisis?.resultado}" class="form-control"/></td>
-        <td style="width: 7%">
+        <td style="width: 27%"><g:textField name="metodo_name" id="metodo_${analisis?.id}" class="form-control" value="${analisis?.referencia}"/></td>
+        <td style="width: 10%"><g:textField name="limite_name" id="limite_${analisis?.id}" class="form-control" value="${analisis?.limite}"/></td>
+        <td id="unidad_${analisis?.id}" style="width: 7%"></td>
+        <td style="width: 10%"><g:textField name="resultado_name" id="resultado_${analisis?.id}" value="${analisis?.resultado}" class="form-control"/></td>
+        <td style="width: 10%"><g:textField name="maximo_name" id="maximo_${analisis?.id}" value="${analisis?.resultado}" class="form-control"/></td>
+        <td style="width: 8%" class="centrar">
             <div class="btn-group">
                 <a href="#" id="btnGuardarFila_${analisis?.id}" class="btn btn-success btn-sm" title="Guardar">
                     <i class="fa fa-save"></i>

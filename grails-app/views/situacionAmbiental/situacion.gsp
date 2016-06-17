@@ -20,24 +20,25 @@
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-eye"></i> Situación Ambiental</h3>
     </div>
 
-    <div class="panel-group" style="height: 1000px">
+    <div class="panel-group" style="height: 1100px">
         <div class="col-md-12" style="margin-top: 10px">
             <ul class="nav nav-pills nav-justified">
                 <li class="active col-md-4"><a data-toggle="tab" href="#home"><h4>Físico</h4></a></li>
                 <li class="col-md-4"><a data-toggle="tab" href="#menu1"><h4>Biótico</h4></a></li>
                 <li class="col-md-4"><a data-toggle="tab" href="#menu2"><h4>Social</h4></a></li>
             </ul>
-
             <div class="tab-content">
                 <div id="home" class="tab-pane fade in active">
                     <div class="col-md-12" style="margin-top: 10px">
                         <ul class="nav nav-pills nav-justified">
-                            <li class="col-md-4"><a data-toggle="tab" href="#gaseosas" id="eg"><h5>Emisiones Gaseosas</h5></a></li>
-                            <li class="active col-md-4"><a data-toggle="tab" href="#liquidas"><h5>Descargas Líquidas</h5></a></li>
-                            <li class="col-md-4"><a data-toggle="tab" href="#residuos"><h5>Resíduos Sólidos y Líquidos</h5></a></li>
+                            <li class="col-md-4"><a data-toggle="tab" href="#gaseosas" id="eg"><h5><i class=" glyphicon glyphicon-tree-deciduous"></i> Emisiones Gaseosas</h5></a></li>
+                            <li class="active col-md-4"><a data-toggle="tab" href="#liquidas"><h5><i class=" glyphicon glyphicon-tint"></i> Descargas Líquidas</h5></a></li>
+                            <li class="col-md-4"><a data-toggle="tab" href="#residuos"><h5><i class=" glyphicon glyphicon-filter"></i> Resíduos Sólidos y Líquidos</h5></a></li>
                         </ul>
 
                         <div class="tab-content">
+                            %{--Emisiones gaseosas--}%
+                            %{--------------------------------------------------------}%
                             <div id="gaseosas" class="tab-pane fade">
                                 <div class="well" style="text-align: center; height: 100px; margin-top: 10px">
                                     <div class="row">
@@ -59,9 +60,9 @@
                                 </div>
                                 <div class="well" style="text-align: center; height: 250px; margin-top: 10px">
 
-                                   <div class="row">
-                                      <b> La estación '${pre?.estacion?.nombre}' tiene los siguientes emisores de gases: </b>
-                                   </div>
+                                    <div class="row">
+                                        <b> La estación '${pre?.estacion?.nombre}' tiene los siguientes emisores de gases: </b>
+                                    </div>
 
                                     <div class="row">
                                         <div class="col-md-3"></div>
@@ -70,62 +71,139 @@
                                     </div>
                                 </div>
 
+                                <div class="alert alert-success" role="alert" style="text-align: center; margin-top: 20px">
+                                    <h4> <i class=" glyphicon glyphicon-tree-deciduous"></i> Informe de Emisiones Gaseosas</h4>
+                                </div>
+
                                 <div id="divEditor">
-                                    %{--<textarea name="editor1" id="editorE" rows="30" cols="80">--}%
-                                        %{--${texto}--}%
-                                    %{--</textarea>--}%
-                                    %{--<script>--}%
-                                        %{--CKEDITOR.replace( 'editorE', {--}%
-                                            %{--height: "300px",--}%
-                                            %{--customConfig: 'config.js'--}%
-                                        %{--});--}%
-                                    %{--</script>--}%
 
-                                    %{--<div class="row" style="margin-top: -10px">--}%
-                                        %{--<nav>--}%
-                                            %{--<ul class="pager">--}%
-                                                %{--<a href="#" id="btnGuardarEmisiones" class="btn btn-success" title="Guardar texto">--}%
-                                                    %{--<i class="fa fa-save"></i> Guardar--}%
-                                                %{--</a>--}%
-
-                                            %{--</ul>--}%
-                                        %{--</nav>--}%
-                                    %{--</div>--}%
                                 </div>
                             </div>
+                            %{--Descargas Liquidas--}%
+                            %{--------------------------------------------------------------}%
                             <div id="liquidas" class="tab-pane fade in active">
-                                <div class="well" style="text-align: center; height: 150px; margin-top: 10px">
+                                <div class="well" style="text-align: center; height: 120px; margin-top: 10px">
                                     <div class="row">
                                         <b> Los resultados de los monitoreos  se muestran en las tablas de análisis de descargas líquidas</b>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-4">
-                                            Agregar una tabla
                                         </div>
                                         <div class="col-md-4">
                                             <a href="#" id="btnAgregarTabla" class="btn btn-info" title="Agregar tabla">
-                                            <i class="fa fa-plus"></i> Agregar tabla de análisis
+                                                <i class="fa fa-plus"></i> Agregar tabla de análisis
                                             </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row-fluid"  style="width: 100%;height: 500px;overflow-y: auto;margin-top: -20px">
+                                    <div class="span12">
+                                        <div style="width: 1030px; height: 500px;">
+                                            <div class="row" id="divTablaLiquidas" style="margin-top: 20px">
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-success" role="alert" style="text-align: center; margin-top: 20px">
+                                    <h4> <i class="glyphicon glyphicon-tint"></i> Informe de Descargas Líquidas</h4>
+                                </div>
+                                <div class="row">
+                                    <textarea name="editorL" id="editorL" rows="30" cols="80">
+                                        ${fisicoDescargas?.descripcion}
+                                    </textarea>
+                                    <script>
+                                        CKEDITOR.replace( 'editorL', {
+                                            height: "450px"
+                                        });
+                                    </script>
+
+                                    <div class="row">
+                                        <nav>
+                                            <ul class="pager">
+                                                <a href="#" id="btnGuardarLiquidas" class="btn btn-success" title="Guardar texto">
+                                                    <i class="fa fa-save"></i> Guardar
+                                                </a>
+
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+
+                            </div>
+                            %{--Residuos Solidos y liquidos--}%
+                            %{----------------------------------------------------------}%
+                            <div id="residuos" class="tab-pane fade">
+
+                                <div class="row">
+                                    <div class="well col-md-6" style="height: 294px; margin-top: 10px">
+                                        <div class="col-md-12 alert alert-success" style="height: 50px; text-align: center">
+                                            <h4>
+                                                Desechos Comunes
+                                            </h4>
+                                        </div>
+                                        <div class="col-md-12">
+                                            La estación de servicio "${pre?.estacion?.nombre}", genera desechos comunes del tipo:
+                                        </div>
+
+                                        <div class="col-md-8" style="margin-top: 30px; float: right">
+                                            <ul>
+                                                <li><h4>Órganico</h4></li>
+                                                <li><h4>Inorgánico</h4></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="well col-md-6" style="text-align: center; height: 294px; margin-top: 10px">
+                                        <div class="col-md-12 alert alert-warning" style="height: 50px">
+                                            <h4>
+                                                Desechos Peligrosos
+                                            </h4>
                                         </div>
                                     </div>
 
 
-                                </div>
-
-
-                                <div class="row" id="divTablaLiquidas" style="margin-top: 20px">
 
                                 </div>
 
+                                <div class="alert alert-success" role="alert" style="text-align: center; margin-top: 20px">
+                                    <h4> <i class="glyphicon glyphicon-filter"></i> Informe de Residuos Sólidos y Líquidos</h4>
+                                </div>
 
-                            </div>
-                            <div id="residuos" class="tab-pane fade">
-                                <h4>Residuos</h4>
+                                <div class="row">
+                                    <textarea name="editorR" id="editorR" rows="30" cols="80">
+                                        ${fisicoDescargas?.descripcion}
+                                    </textarea>
+                                    <script>
+                                        CKEDITOR.replace( 'editorR', {
+                                            height: "450px"
+                                        });
+                                    </script>
+
+                                    <div class="row">
+                                        <nav>
+                                            <ul class="pager">
+                                                <a href="#" id="btnGuardarResiduos" class="btn btn-success" title="Guardar texto">
+                                                    <i class="fa fa-save"></i> Guardar
+                                                </a>
+
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+
+
+
                             </div>
                         </div>
                     </div>
                 </div>
+                %{--Bioticos--}%
+                %{------------------------------------------------------}%
                 <div id="menu1" class="tab-pane fade" style="margin-top: 10px">
                     <textarea name="editor1" id="editor1" rows="30" cols="80">
                         ${biotico?.descripcion}
@@ -147,6 +225,8 @@
                         </nav>
                     </div>
                 </div>
+                %{--Social--}%
+                %{------------------------------------------------------}%
                 <div id="menu2" class="tab-pane fade">
                     <g:if test="${pre?.tipo?.codigo != 'LCM1'}">
                         <h4></h4>
@@ -335,10 +415,10 @@
 
     function cargarEditor () {
         $.ajax({
-          type: 'POST',
+            type: 'POST',
             url:"${createLink(controller: 'situacionAmbiental', action: 'editorE_ajax')}",
             data:{
-                    id: ${pre?.id}
+                id: ${pre?.id}
             },
             success: function (msg){
                 $("#divEditor").html(msg)
@@ -347,22 +427,22 @@
     }
 
     %{--$("#btnGuardarEmisiones").click(function () {--}%
-        %{--$.ajax({--}%
-            %{--type: 'POST',--}%
-            %{--url: "${createLink(controller: 'situacionAmbiental', action: 'guardarEmisiones_ajax')}",--}%
-            %{--data: {--}%
-                %{--descripcion: CKEDITOR.instances.editorE.getData(),--}%
-                %{--id: '${pre?.id}'--}%
-            %{--},--}%
-            %{--success: function (msg) {--}%
-                %{--if(msg == 'ok'){--}%
-                    %{--log("Texto guardado correctamente","success")--}%
-                %{--}else{--}%
-                    %{--log("Error al guardar el texto","error")--}%
-                %{--}--}%
+    %{--$.ajax({--}%
+    %{--type: 'POST',--}%
+    %{--url: "${createLink(controller: 'situacionAmbiental', action: 'guardarEmisiones_ajax')}",--}%
+    %{--data: {--}%
+    %{--descripcion: CKEDITOR.instances.editorE.getData(),--}%
+    %{--id: '${pre?.id}'--}%
+    %{--},--}%
+    %{--success: function (msg) {--}%
+    %{--if(msg == 'ok'){--}%
+    %{--log("Texto guardado correctamente","success")--}%
+    %{--}else{--}%
+    %{--log("Error al guardar el texto","error")--}%
+    %{--}--}%
 
-            %{--}--}%
-        %{--})--}%
+    %{--}--}%
+    %{--})--}%
     %{--});--}%
 
 
@@ -519,7 +599,7 @@
 
     function cargarTablaAnalisis (id) {
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: "${createLink(controller: 'situacionAmbiental', action: 'tablaAnalisis_ajax')}",
             data:{
                 id: id
@@ -529,6 +609,26 @@
             }
         });
     }
+
+    $("#btnGuardarLiquidas").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'situacionAmbiental', action: 'guardarTextoLiquidas_ajax')}",
+            data: {
+                descripcion: CKEDITOR.instances.editorL.getData(),
+                id: '${pre?.id}'
+            },
+            success: function (msg) {
+                if(msg == 'ok'){
+                    log("Texto guardado correctamente","success")
+                }else{
+                    log("Error al guardar el texto","error")
+                }
+
+            }
+        })
+    });
+
 
 
 </script>

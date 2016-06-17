@@ -4,6 +4,13 @@
   Date: 15/06/16
   Time: 11:40 AM
 --%>
+
+<style>
+    th{
+        text-align: center;
+    }
+</style>
+
 <g:each in="${tablas}" var="tabla">
     <div class="alert alert-info" role="alert" style="text-align: center; margin-top: 60px">
       Fecha de Análisis: <b><util:fechaConFormato fecha="${tabla?.fecha}"/></b>
@@ -13,9 +20,9 @@
         <thead>
         <tr>
             <th style="width: 10%">Ensayo</th>
-            <th style="width: 35%">Método de Referencia</th>
+            <th style="width: 30%">Método de Referencia</th>
             <th style="width: 10%">Límites de detección</th>
-            <th style="width: 10%">Unidades</th>
+            <th style="width: 8%">Unidades</th>
             <th style="width: 10%">Resultados</th>
             <th style="width: 10%">Límite máximo permisible</th>
             <th style="width: 10%">Acciones

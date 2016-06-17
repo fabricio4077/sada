@@ -164,6 +164,15 @@ class SituacionAmbientalController extends Seguridad.Shield {
             }
         }
 
+        def fisicoDescargas = SituacionAmbiental.withCriteria {
+            eq("detalleAuditoria",detalleAuditoria)
+
+            componenteAmbiental{
+                eq("tipo",'Físico')
+                eq("nombre","Descargas Líquidas")
+            }
+        }
+
 //        def texto
 //        if(fisicoEmisores?.first()?.descripcion){
 //            texto = fisicoEmisores?.first()?.descripcion
@@ -175,7 +184,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
 
 //        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first(), texto: texto]
-        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first()]
+        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first()]
     }
 
     def emisor_ajax () {
@@ -319,9 +328,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
 
     def guardarEmisiones_ajax () {
-
-        println("params guardar emisiones " + params)
-
+//        println("params guardar emisiones " + params)
 
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
@@ -403,29 +410,22 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def componente = ComponenteAmbiental.get(2)
         def situacion= SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
-
         def tablas = TablaLiquidas.findAllBySituacionAmbiental(situacion)
-
         return [tablas: tablas]
-
     }
 
     def datosTablaLiquidas_ajax () {
-
         def tabla = TablaLiquidas.get(params.id)
         def datos =  AnalisisLiquidas.findAllByTablaLiquidas(tabla)
-
         return[datos: datos, tabla: tabla]
     }
 
 
     def agregarDatosTablaLiquidas_ajax () {
         def tabla = TablaLiquidas.get(params.id)
-
         def analisis = new AnalisisLiquidas()
         analisis.tablaLiquidas = tabla
         analisis.save(flush: true)
-
         return [tabla: tabla, analisis: analisis]
     }
 
@@ -435,9 +435,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
     }
 
     def borrarFila_ajax () {
-        println("params b " + params)
-
-
+//        println("params b " + params)
         def analisis = AnalisisLiquidas.get(params.id)
 
         try{
@@ -485,7 +483,24 @@ class SituacionAmbientalController extends Seguridad.Shield {
                 render "no_Error al borrar la tabla de análisis"
             }
         }
+    }
 
+    def guardarTextoLiquidas_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(2)
+        def situacionSocial = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+
+        situacionSocial.descripcion = params.descripcion
+
+        try{
+            situacionSocial.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el texto de descargas liquidas" + situacionSocial.errors)
+        }
     }
 
 }
