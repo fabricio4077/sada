@@ -148,11 +148,11 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
 
         def biotico = SituacionAmbiental.withCriteria {
-                                    eq("detalleAuditoria",detalleAuditoria)
+            eq("detalleAuditoria",detalleAuditoria)
 
-                                    componenteAmbiental{
-                                        eq("tipo",'Biótico')
-                                    }
+            componenteAmbiental{
+                eq("tipo",'Biótico')
+            }
         }
 
         def fisicoEmisores = SituacionAmbiental.withCriteria {
@@ -173,18 +173,17 @@ class SituacionAmbientalController extends Seguridad.Shield {
             }
         }
 
-//        def texto
-//        if(fisicoEmisores?.first()?.descripcion){
-//            texto = fisicoEmisores?.first()?.descripcion
-//        }else{
-//            texto = "La estación de servicios ${pre?.estacion?.nombre}" +
-//                    "</br>Al no estar sujeto a monitoreo no se ha realizado un seguimiento de las emisiones del generador. Sin embargo, se asume que no existe una " +
-//                    "alteración significativa de la calidad del aire debido a las pocas horas de uso del mismo. "
-//        }
+        def fisicoDesechos = SituacionAmbiental.withCriteria {
+            eq("detalleAuditoria",detalleAuditoria)
+
+            componenteAmbiental{
+                eq("tipo",'Físico')
+                eq("nombre","Residuos Sólidos y Líquidos")
+            }
+        }
 
 
-//        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first(), texto: texto]
-        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first()]
+        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first(), fisicoDesechos: fisicoDesechos.first()]
     }
 
     def emisor_ajax () {
@@ -355,13 +354,55 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def componente = ComponenteAmbiental.get(1)
         def situacionEmisores = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
 
+        def emisores = EmisorComponente.findAllBySituacionAmbiental(situacionEmisores)
+        def generador = Emisor.findByCodigo('GNRD')
+        def generadorEstacion = EmisorComponente.findByEmisorAndSituacionAmbiental(generador, situacionEmisores)
         def texto
         if(situacionEmisores?.descripcion){
             texto = situacionEmisores?.descripcion
         }else{
-            texto = "La estación de servicios ${pre?.estacion?.nombre}" +
-                    "</br>Al no estar sujeto a monitoreo no se ha realizado un seguimiento de las emisiones del generador. Sin embargo, se asume que no existe una " +
-                    "alteración significativa de la calidad del aire debido a las pocas horas de uso del mismo. "
+            if(emisores.size() > 0){
+                if(generadorEstacion){
+                    if(generadorEstacion.hora > 300){
+                        texto="La Estación de servicios ${pre?.estacion?.nombre}, cuenta con un generador eléctrico emergente +" +
+                                "<br> Según Registro de Inspección mensual, el generador ha sido utilizado más de 300 horas al año." +
+                                "<br> De acuerdo al cuerdo Ministerial 091 R.O. 403 publicado en 2007 en su artículo 5, " +
+                                "literal d): “Quedan eximidos del monitoreo de emisiones los generadores emergentes, motores " +
+                                "y bombas contra incendios cuya tasa de funcionamiento sea menor a 300 horas por año. " +
+                                "No obstante si dichas unidades no son sujetas a un mantenimiento preventivo estricto, " +
+                                "la Dirección Nacional de Protección Ambiental puede disponer que sean monitoreadas trimestralmente...”. "
+                    }else{
+                        if(generadorEstacion.mantenimiento == 1){
+                            texto="La Estación de servicios ${pre?.estacion?.nombre}, cuenta con un generador eléctrico emergente" +
+                                    "<br>Según el Registro de Inspección mensual, el generador ha sido utilizado menos de 300 horas al año." +
+                                    "<br> De acuerdo al cuerdo Ministerial 091 R.O. 403 publicado en 2007 en su artículo 5, " +
+                                    "literal d): “Quedan eximidos del monitoreo de emisiones los generadores emergentes, motores " +
+                                    "y bombas contra incendios cuya tasa de funcionamiento sea menor a 300 horas por año. " +
+                                    "No obstante si dichas unidades no son sujetas a un mantenimiento preventivo estricto, " +
+                                    "la Dirección Nacional de Protección Ambiental puede disponer que sean monitoreadas trimestralmente...”. " +
+                                    "<br>Sin embargo, de acuerdo a los registros de inspección mensuales que se mantienen dentro del a E/S, " +
+                                    "se puede verificar que durante el periodo ${pre?.periodo?.inicio?.format("yyyy") + "-" + pre?.periodo?.fin?.format("yyyy")}, " +
+                                    "se han realizado mantenimientos al generador emergente a pesar de no ser utilizado con una " +
+                                    "frecuencia mínima "
+                        }else{
+                            texto="La Estación de servicios ${pre?.estacion?.nombre}, cuenta con un generador eléctrico emergente" +
+                                    "<br>Según el Registro de Inspección mensual, el generador ha sido utilizado menos de 300 horas al año." +
+                                    "<br> De acuerdo al cuerdo Ministerial 091 R.O. 403 publicado en 2007 en su artículo 5, " +
+                                    "literal d): “Quedan eximidos del monitoreo de emisiones los generadores emergentes, motores " +
+                                    "y bombas contra incendios cuya tasa de funcionamiento sea menor a 300 horas por año. " +
+                                    "No obstante si dichas unidades no son sujetas a un mantenimiento preventivo estricto, " +
+                                    "la Dirección Nacional de Protección Ambiental puede disponer que sean monitoreadas trimestralmente...”. "
+                        }
+                    }
+                }else{
+                    texto = "La estación de servicios ${pre?.estacion?.nombre}" +
+                            "</br>Al no estar sujeto a monitoreo no se ha realizado un seguimiento de las emisiones del generador. Sin embargo, se asume que no existe una " +
+                            "alteración significativa de la calidad del aire debido a las pocas horas de uso del mismo. "
+                }
+            }else{
+                texto = "Durante la inspección de campo de la estación de servicios ${pre?.estacion?.nombre}, no se evidenció ningún emisor de gases"
+            }
+
         }
 
         return[pre: pre, texto: texto]
@@ -377,7 +418,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
     def crearTabla_ajax (){
 
-        println("params crear tabla " + params)
+//        println("params crear tabla " + params)
 
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
@@ -471,7 +512,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def tabla = TablaLiquidas.get(params.id)
         def analisis = AnalisisLiquidas.findAllByTablaLiquidas(tabla)
 
-        println("analisis " + analisis)
+//        println("analisis " + analisis)
 
         if(analisis.size() > 0){
             render "no_No se puede eliminar esta tabla, ya contiene filas, <br> elimine las filas y trate de nuevo"
@@ -501,6 +542,119 @@ class SituacionAmbientalController extends Seguridad.Shield {
             render "no"
             println("error al guardar el texto de descargas liquidas" + situacionSocial.errors)
         }
+    }
+
+    def desechos_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(3)
+        def situacionSocial = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def listaDesechos = Desechos.list().id
+        def existentes = DesechoComponente.findAllBySituacionAmbiental(situacionSocial)
+
+//        println("existentes " + existentes)
+
+        def comunes = listaDesechos.intersect(existentes.desechos.id)
+        def diferentes = listaDesechos.plus(existentes.id)
+        diferentes.removeAll(comunes)
+        def elegibles = Desechos.findAllByIdInList(diferentes, [sort:'descripcion', order: 'asc'])
+
+//        println("elegibles " + elegibles)
+
+        return[elegibles: elegibles]
+    }
+
+    def tablaDesechos_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(3)
+        def situacionSocial = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def existentes = DesechoComponente.findAllBySituacionAmbiental(situacionSocial)
+
+        return [existentes: existentes]
+    }
+
+    def borrar_ajax () {
+        def desecho = DesechoComponente.get(params.id)
+
+        try{
+            desecho.delete(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al borrar la fila")
+        }
+    }
+
+    def agregarDesecho_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(3)
+        def situacionA = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def desecho = Desechos.get(params.desecho)
+        def dc = new DesechoComponente()
+        dc.situacionAmbiental = situacionA
+        dc.desechos = desecho
+
+        try{
+            dc.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar desechoComponente")
+        }
+    }
+
+    def cargarEditorDesechos_ajax (){
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(3)
+        def situacionDesechos = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def desechos =DesechoComponente.findAllBySituacionAmbiental(situacionDesechos)
+        println("desechos " + desechos)
+        def arr = ''
+        def lis = desechos.each { p->
+            arr += ('<li>' + p?.desechos?.descripcion + '</li>')
+        }
+
+        def texto
+        if(situacionDesechos?.descripcion){
+            texto = situacionDesechos?.descripcion
+        }else{
+            texto = "La Estación de Servicios ${pre?.estacion?.nombre} genera dos tipos de desechos. " +
+                    "Los desechos comunes, y desechos especiales o peligrosos. " +
+                    "<br> En el caso de los desechos comunes, se recogen en recipientes que separan los desechos dependiendo de su naturaleza " +
+                    "(orgánico o inorgánico). " +
+                    "<br> Posteriormente se entregan al gestor municipal en los horarios y recorridos establecidos para " +
+                    "la recolección de desechos." +
+                    "<br> Los desechos especiales por otro lado, " +
+                    "se entregan a gestores ambientales calificados en el Ministerio de Medio Ambiente. " +
+                    "<br> Los desechos peligrosos generados en la Estación son:" +
+                    "<br> <ul> ${arr} </ul>"
+        }
+        return[pre: pre, texto: texto]
+    }
+
+    def guardarTextoDesechos_ajax (){
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(3)
+        def situacionDesechos = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        situacionDesechos.descripcion = params.descripcion
+
+        try{
+            situacionDesechos.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el texto del editor desechos " + situacionDesechos.errors)
+        }
+
     }
 
 }

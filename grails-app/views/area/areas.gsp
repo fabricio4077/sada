@@ -50,15 +50,15 @@
 
             </div>
             <div>
-                <a class='slide' href='#' id="evaMenu">
-                    <span class='element'>Ev</span>
-                    <span class='name'>Evaluación Ambiental</span>
+                <a class='slide' href='#' id="sitMenu">
+                    <span class='element'>Sa</span>
+                    <span class='name'>Situación Ambiental</span>
                 </a>
             </div>
             <div>
-                <a class='slide' href='#'>
-                    <span class='element'>Sa</span>
-                    <span class='name'>Situación Ambiental</span>
+                <a class='slide' href='#' id="evaMenu">
+                    <span class='element'>Ev</span>
+                    <span class='name'>Evaluación Ambiental</span>
                 </a>
             </div>
             <div>
@@ -79,12 +79,12 @@
                     <span class='name'>Cronograma</span>
                 </a>
             </div>
-            <div>
-                <a class='slide' href='#'>
-                    <span class='element'>Rc</span>
-                    <span class='name'>Recomendaciones</span>
-                </a>
-            </div>
+            %{--<div>--}%
+                %{--<a class='slide' href='#'>--}%
+                    %{--<span class='element'>Rc</span>--}%
+                    %{--<span class='name'>Recomendaciones</span>--}%
+                %{--</a>--}%
+            %{--</div>--}%
         </div>
     </nav>
 </header>
@@ -111,6 +111,12 @@
     $("#pmaMenu").click(function () {
         location.href="${createLink(controller: 'planManejoAmbiental', action: 'cargarPlanActual')}/" + ${pre?.id}
     });
+
+    $("#sitMenu").click(function () {
+        location.href="${createLink(controller: 'situacionAmbiental', action: 'situacion')}/" + ${pre?.id}
+    });
+
+
 
 
     //función para cargar el combo de selección de área

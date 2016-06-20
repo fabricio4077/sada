@@ -182,6 +182,16 @@
                             <p>Elemento de análsis para descargas líquidas</p>
                         </div>
                     </li>
+                    <li class="margen">
+                        <g:link controller="desechos" class="over" action="list">
+                            <i class="fa fa-book"> Desechos</i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4> Desechos</h4>
+
+                            <p>Desechos generados en la estación de servicio</p>
+                        </div>
+                    </li>
                 </ul>
             </div>
 

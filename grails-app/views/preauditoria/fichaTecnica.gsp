@@ -254,6 +254,13 @@
         location.href="${createLink(controller: 'auditoria', action: 'objetivos')}/" + ${pre?.id};
     });
 
+    $("#btnImprimir").click(function () {
+        var url = "${createLink(controller: 'preauditoria', action: 'fichaTecnica', id: pre?.id)}";
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=fichaTecnica.pdf";
+        return false
+    });
+
+
 </script>
 
 </body>

@@ -19,5 +19,6 @@ class Desechos {
     }
 
     static constraints = {
+        tipo inList: ['Comunes','Peligrosos']
     }
 }
