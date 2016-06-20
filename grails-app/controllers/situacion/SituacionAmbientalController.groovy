@@ -410,6 +410,29 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
     def agregarEmisor_ajax () {
 
+
+        println("params agregar emisor " + params)
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def componente = ComponenteAmbiental.get(1)
+        def situacion = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)
+        def emisor = Emisor.get(params.emisor)
+
+        def em = new EmisorComponente()
+        em.emisor = emisor
+        em.situacionAmbiental = situacion
+
+        try{
+            em.save(flush: true)
+            render 'ok'
+        }catch (e){
+            render 'no'
+            println("error al guardar el emisor")
+        }
+
+
+
     }
 
     def agregarTablaLiquidas_ajax () {

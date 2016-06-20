@@ -1,3 +1,5 @@
+package pdf
+
 import com.lowagie.text.FontFactory
 import com.lowagie.text.pdf.BaseFont
 import org.xhtmlrenderer.pdf.ITextFontResolver

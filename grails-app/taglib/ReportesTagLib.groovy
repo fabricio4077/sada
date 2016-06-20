@@ -173,10 +173,10 @@ class ReportesTagLib {
 
 //        println "attrs.title: ${attrs.title}, titulo: ${attrs.titulo}"
 
-        if(attrs.unidad){
-            unidadEjecutora= UnidadEjecutora.get(attrs.unidad.id)
-            unidadAutonoma = firmasService.requirentes(unidadEjecutora)
-        }
+//        if(attrs.unidad){
+//            unidadEjecutora= UnidadEjecutora.get(attrs.unidad.id)
+//            unidadAutonoma = firmasService.requirentes(unidadEjecutora)
+//        }
 
 //        println "....3"
 
@@ -185,10 +185,6 @@ class ReportesTagLib {
 //        println("anio " + attrs.anio)
 
 
-        def gaf = UnidadEjecutora.findByCodigo("GAF")
-        def direccionesGaf = UnidadEjecutora.findAllByPadre(gaf).codigo
-
-//        println("direcciones gaf " + direccionesGaf)
 
 
         def subtitulo = attrs.subtitulo ?: ""
@@ -196,26 +192,20 @@ class ReportesTagLib {
         def estilo = attrs.estilo ?: "center"
 
         def form
-        if(attrs.title.contains("permanente")) {
-            form = attrs.form ?: 'GAF-001'
-        }  else {
-            form = attrs.form ?: 'GPE-DPI-01'
-        }
+//        if(attrs.title.contains("permanente")) {
+//            form = attrs.form ?: 'GAF-001'
+//        }  else {
+//            form = attrs.form ?: 'GPE-DPI-01'
+//        }
 
         def h = 55
 
-        def logoPath = resource(dir: 'images', file: 'logo-pdf-header.png')
+        def logoPath = resource(dir: 'images/inicio', file: 'logo_sada2.png')
         def html = ""
 
         html += '<div id="header">' + "\n"
         html += "<img src='${logoPath}' style='height:${h}px;'/>" + "\n"
         html += '</div>' + "\n"
-
-//        html += "<div class='tituloRprt'>"
-//        html += "<div class='tituloReporteSinLinea'>"
-//        html += "Empresa pública YACHAY EP"
-//        html += '</div>'
-//        html += '</div>'
 
         html += "<div class='tituloRprt tituloReporteSinLinea'>"
         html += "Empresa pública YACHAY EP"
@@ -258,29 +248,27 @@ class ReportesTagLib {
 //                println "atrr: ${attrs.title.trim().toLowerCase()}"
                 if(attrs.title.trim().toLowerCase() in ['aval de poa', 'reforma al poa']) {
 
-                    html += "<td style='background: #008080;'>${attrs.anio}-GPE</td>" + "\n"
+                    html += "<td style='background: #008080;'></td>" + "\n"
                 }
                 if(attrs.title.trim().toLowerCase() in ['solicitud de reforma al poa', 'solicitud de aval de poa']) {
-                    html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+                    html += "<td style='background: #008080;'> </td>" + "\n"
                 }
 
                 if(attrs.title.trim().toLowerCase() in ['aval de poa de gasto permanente', 'ajuste al poa de gasto permanente', 'reforma al poa de gasto permanente']){
-                    html += "<td style='background: #008080;'>${attrs.anio}-GAF</td>" + "\n"
+                    html += "<td style='background: #008080;'></td>" + "\n"
                 }
 
                 if(attrs.title.toLowerCase() in ['solicitud de aval de poa permanente', 'solicitud de reforma al poa de gasto permanente']) {
-                    if(direccionesGaf.contains(unidadEjecutora.codigo)){
-                        html += "<td style='background: #008080;'>${attrs.anio}-${unidadEjecutora?.codigo}</td>" + "\n"
-                    }else{
-                        html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
-                    }
+//                    if(direccionesGaf.contains(unidadEjecutora.codigo)){
+                        html += "<td style='background: #008080;'></td>" + "\n"
+//                    }else{
+//                        html += "<td style='background: #008080;'>${attrs.anio}-${unidadAutonoma?.codigo}</td>" + "\n"
+//                    }
 
                 } else {
-//                    html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
                 }
 
             }else{
-//                html += "<td style='background: #008080;'>${attrs.anio}</td>" + "\n"
             }
 
             html += "<td style='background: #008080;'>No. ${attrs.numero != null ? attrs.numero.toString().padLeft(3, '0') : ''}</td>" + "\n"
@@ -298,7 +286,7 @@ class ReportesTagLib {
     def footerReporte = { attrs ->
         def html = ""
         def h = 50
-        def logoPath = resource(dir: 'images', file: 'logo-pdf-footer.png')
+        def logoPath = resource(dir: 'images/inicio', file: 'logo_sada2.png')
 
         html += '<div id="footer">'
 //        html += "<div class='fechaReporte' style='font-size: 8.5pt; margin-bottom: 15px;'>Impreso el ${new Date().format('dd-MM-yyyy HH:mm')}</div>"

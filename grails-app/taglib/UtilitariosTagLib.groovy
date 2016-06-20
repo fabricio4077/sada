@@ -4,52 +4,52 @@ class UtilitariosTagLib {
 
     static namespace = "util"
 
-//    Closure clean = { attrs ->
-//        def replace = [
-//                "&aacute;": "á",
-//                "&eacute;": "é",
-//                "&iacute;": "í",
-//                "&oacute;": "ó",
-//                "&uacute;": "ú",
-//                "&ntilde;": "ñ",
-//
-//                "&Aacute;": "Á",
-//                "&Eacute;": "É",
-//                "&Iacute;": "Í",
-//                "&Oacute;": "Ó",
-//                "&Uacute;": "Ú",
-//                "&Ntilde;": "Ñ",
-//
-//                "&nbsp;"  : " ",
-//
-//                "&lt;"    : "<",
-//                "&gt;"    : ">",
-//
-//                "&amp;"   : "&",
-//
-//                "&quot;"  : '"',
-//
-//                "&lsquo;" : '‘',
-//                "&rsquo;" : '’',
-//                "&ldquo;" : '“',
-//                "&rdquo;" : '”',
-//
-//                "&lsaquo;": '‹',
-//                "&rsaquo;": '›',
-//                "&laquo;" : '«',
-//                "&raquo;" : '»',
-//
-//                "&permil;": '‰',
-//
-//                "&hellip;": '...'
-//        ]
-//        def str = attrs.str
-//
-//        replace.each { busca, nuevo ->
-//            str = str.replaceAll(busca, nuevo)
-//        }
-//        out << str
-//    }
+    Closure clean = { attrs ->
+        def replace = [
+                "&aacute;": "á",
+                "&eacute;": "é",
+                "&iacute;": "í",
+                "&oacute;": "ó",
+                "&uacute;": "ú",
+                "&ntilde;": "ñ",
+
+                "&Aacute;": "Á",
+                "&Eacute;": "É",
+                "&Iacute;": "Í",
+                "&Oacute;": "Ó",
+                "&Uacute;": "Ú",
+                "&Ntilde;": "Ñ",
+
+                "&nbsp;"  : " ",
+
+                "&lt;"    : "<",
+                "&gt;"    : ">",
+
+                "&amp;"   : "&",
+
+                "&quot;"  : '"',
+
+                "&lsquo;" : '‘',
+                "&rsquo;" : '’',
+                "&ldquo;" : '“',
+                "&rdquo;" : '”',
+
+                "&lsaquo;": '‹',
+                "&rsaquo;": '›',
+                "&laquo;" : '«',
+                "&raquo;" : '»',
+
+                "&permil;": '‰',
+
+                "&hellip;": '...'
+        ]
+        def str = attrs.str
+
+        replace.each { busca, nuevo ->
+            str = str.replaceAll(busca, nuevo)
+        }
+        out << str
+    }
 //
 //    Closure capitalize = { attrs, body ->
 //        def str = body()

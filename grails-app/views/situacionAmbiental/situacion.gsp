@@ -632,9 +632,13 @@
                         emisor: seleccionado
                     },
                     success: function (msg) {
-                        cargarComboEmisores();
-                        cargarTablaEmisores();
-//                        cargarEditor();
+                        if(msg == 'ok'){
+                            log("Emisor agregado correctamente","success");
+                            cargarComboEmisores();
+                            cargarTablaEmisores();
+                        }else{
+                            log("Error al agregar emisor","error")
+                        }
                     }
                 });
             }
