@@ -5,4 +5,4 @@
   Time: 23:28
 --%>
 
-<img id="foto" src="${resource(dir: 'images/logos/', file: consultora?.logotipo)}" style="width: 100px; height: 100px"/>
+<img id="foto" src="${resource(dir: 'images/logos/', file: consultora?.logotipo)}" style="width: 200px; height: 100px"/>

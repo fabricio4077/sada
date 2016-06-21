@@ -56,6 +56,19 @@
                               </p>
                         </div>
                     </li>
+
+                    <li class="margen">
+                        <g:link controller="comercializadora" class="over" action="list">
+                            <i class="fa fa-globe"> Comercializadora </i>
+                        </g:link>
+                        <div class="descripcion hidden">
+                            <h4>Comercializadora</h4>
+
+                            <p>Comercializadora de combustibles a la cual pertenece una estación de servicios
+                            </p>
+                        </div>
+                    </li>
+
                     <li class="margen">
                             <g:link controller="provincia" class="over" action="list">
                                 <i class="fa fa-map-marker"> Provincia </i>

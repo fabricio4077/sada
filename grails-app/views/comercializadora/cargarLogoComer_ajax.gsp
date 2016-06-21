@@ -1,5 +1,12 @@
 <%--
   Created by IntelliJ IDEA.
+  User: gato
+  Date: 21/06/16
+  Time: 10:19 AM
+--%>
+
+<%--
+  Created by IntelliJ IDEA.
   User: Fabricio
   Date: 20/06/2016
   Time: 22:33
@@ -31,6 +38,7 @@
 
         </div>
     </div>
+
 </div>
 
 <div class="col-md-2"></div>
@@ -40,8 +48,9 @@
 
 <script>
 
-    <g:if test="${consultora?.logotipo}">
-    cargarImagen(${consultora?.id});
+
+    <g:if test="${comercializadora?.logotipo}">
+    cargarImagen(${comercializadora?.id});
     </g:if>
 
 
@@ -50,7 +59,7 @@
     function cargarImagen (idO) {
         $.ajax({
             type    : "POST",
-            url     : "${createLink(action: 'consultoraLogo_ajax')}",
+            url     : "${createLink(action: 'comercializadoraLogo_ajax')}",
             data:{
                 id: idO
             },
@@ -64,7 +73,7 @@
 
     $(function () {
         $('#file').fileupload({
-            url              : '${createLink(controller: 'consultora', action:'uploadFile', id: consultora?.id)}',
+            url              : '${createLink(controller: 'comercializadora', action:'uploadFile', id: comercializadora?.id)}',
             dataType         : 'json',
             maxNumberOfFiles : 1,
             acceptFileTypes  : /(\.|\/)(jpe?g|png)$/i,
@@ -109,7 +118,7 @@
                     progress + '%'
             ).show();
         }).on('fileuploaddone', function (e, data) {
-            cargarImagen(${consultora?.id});
+            cargarImagen(${comercializadora?.id});
             setTimeout(function () {
                 $('#progress .progress-bar').css(
                         'width',
