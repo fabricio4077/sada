@@ -8,6 +8,7 @@ class Comercializadora {
     String mail
     String direccion
     String representante
+    String logotipo
 
 
     static mapping = {
@@ -22,6 +23,7 @@ class Comercializadora {
             mail column: 'cmlzmail'
             direccion column: 'cmlzdire'
             representante column: 'cmlzrplg'
+            logotipo column: 'cmlzlgtp'
         }
     }
 
@@ -31,6 +33,7 @@ class Comercializadora {
         nombre(nullable: false, blank: false, size: 1..31)
         direccion(nullable: false, blank: false, size: 1..255)
         representante(nullable: false, blank: false, size: 1..31)
+        logotipo(nullable: true, blank: true)
 
     }
 }

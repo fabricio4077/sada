@@ -531,13 +531,17 @@
                         impresion:{
                             label: "Imprimir",
                             icon: "fa fa-print",
-                            submenu:{
-                                1: {
-                                    label: "Impresión...",
-                                    icon: "fa fa-file",
-                                    disabled: true
-                                }
+                            action: function ($element) {
+                                var id = $element.data("id");
+                                location.href = "${createLink(controller: 'reportes', action: 'imprimirUI')}/" + id
                             }
+//                            submenu:{
+//                                1: {
+//                                    label: "Impresión...",
+//                                    icon: "fa fa-file",
+//                                    disabled: true
+//                                }
+//                            }
                         }
                     }
                 }

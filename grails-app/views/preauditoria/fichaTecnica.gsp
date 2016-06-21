@@ -254,7 +254,6 @@
     });
 
     $("#btnImprimir").click(function () {
-        %{--var url = "${createLink(controller: 'preauditoria', action: 'fichaTecnica', id: pre?.id)}";--}%
         var url = "${createLink(controller: 'reportes', action: 'fichaTecnicaPdf', id: pre?.id)}";
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=fichaTecnica.pdf";
         return false

@@ -11,6 +11,7 @@ class Consultora {
     String mail
     String pagina
     String direccion
+    String logotipo
 
     static mapping = {
         table 'cnra'
@@ -27,6 +28,7 @@ class Consultora {
             pagina column: 'cnrapweb'
             direccion column: 'cnradire'
             registro column: 'cnrargst'
+            logotipo column: 'cnralgtp'
         }
     }
 
@@ -34,5 +36,6 @@ class Consultora {
     static constraints = {
         nombre (nullable: false, blank: false, size: 1..31)
         administrador (nullable: false, blank: false, size: 1..63)
+        logotipo(nullable: true, blank: true)
     }
 }
