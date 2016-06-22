@@ -11,7 +11,7 @@
 <head>
     <title>POA por Área de gestión</title>
 
-    <rep:estilos orientacion="p" pagTitle="${"Prueba"}"/>
+    <rep:estilosNuevos orientacion="p" pagTitle="${"."}"/>
 
     <style type="text/css">
     .table {
@@ -73,11 +73,8 @@
 </head>
 
 <body>
-<rep:headerFooter title="${"titulo"}" subtitulo="${'subtitulo'}"/>
+<rep:headerFooterNuevo title="${"Ficha Técnica"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
 
-%{--<p>--}%
-%{--Fecha del reporte: ${new java.util.Date().format("dd-MM-yyyy HH:mm")}--}%
-%{--</p>--}%
 
 <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
     <thead>
