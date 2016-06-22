@@ -370,7 +370,7 @@ class ReportesTagLib {
         html += '</div>' + "\n"
 
         html += "<div class='tituloRprt tituloReporteSinLinea'>"
-        html += "Empresa pública YACHAY EP"
+        html += ""
         html += '</div>'
 
         if (titulo) {
@@ -466,6 +466,7 @@ class ReportesTagLib {
         def estilo = attrs.estilo ?: "center"
         def form
         def h = 55
+        def wi = 150
 
         def logoComer = Preauditoria.get(attrs.auditoria).estacion.comercializadora.logotipo
 
@@ -474,7 +475,7 @@ class ReportesTagLib {
         def html = ""
 
         html += '<div id="header">' + "\n"
-        html += "<img src='${logoPath}' style='height:${h}px;'/>" + "\n"
+        html += "<img src='${logoPath}' style='height:${h}px; width:${wi}px'/>" + "\n"
         html += '</div>' + "\n"
 
         html += '<div id="header2">' + "\n"

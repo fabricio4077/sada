@@ -51,8 +51,8 @@
         <div class="list-group">
             <li class="list-group-item list-group-item-info"> Orden</li>
             <g:select name="orden_name" id="ordenFicha" from="${arr}" class="form-control"/>
-            <g:select name="pp" from="${arr}" class="form-control"/>
-            <g:select name="pp" from="${arr}" class="form-control"/>
+            <g:select name="orden2_name" id="ordenMet" from="${arr}" class="form-control"/>
+            <g:select name="orden3_name" id="ordenObj" from="${arr}" class="form-control"/>
             <g:select name="pp" from="${arr}" class="form-control"/>
         </div>
     </div>
@@ -60,9 +60,9 @@
         <div class="list-group">
             <li class="list-group-item list-group-item-success"><i class="glyphicon glyphicon-print"></i>  <b>Auditoría</b></li>
             <a href="#" class="list-group-item" id="imprimirFicha"><i class="fa fa-print"></i> Ficha Técnica</a>
-            <a href="#" class="list-group-item">Morbi leo risus</a>
-            <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-            <a href="#" class="list-group-item">Vestibulum at eros</a>
+            <a href="#" class="list-group-item" id="imprimirMet"><i class="fa fa-print"></i> Metodología </a>
+            <a href="#" class="list-group-item" id="imprimirObj"> <i class="fa fa-print"></i> Objetivos </a>
+            <a href="#" class="list-group-item" id="">Vestibulum at eros</a>
         </div>
     </div>
 </div>
@@ -70,14 +70,30 @@
 <script>
 
     $("#imprimirFicha").click(function () {
-        var orden = $("#ordenFicha").val()
+        var orden = $("#ordenFicha").val();
         var url = "${createLink(controller: 'reportes', action: 'fichaTecnicaPdf', id: pre?.id)}?orden=" + orden;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=fichaTecnica.pdf";
         return false
     });
 
+    $("#imprimirMet").click(function () {
+        var orden = $("#ordenMet").val();
+        var url = "${createLink(controller: 'reportes', action: 'metodologiaPdf', id: pre?.id)}?orden=" + orden;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=metodologia_${pre?.id}.pdf";
+        return false
+    });
 
+    $("#imprimirObj").click(function () {
+        var orden = $("#ordenObj").val();
+        var url = "${createLink(controller: 'reportes', action: 'objetivosPdf', id: pre?.id)}?orden=" + orden;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=fichaTecnica.pdf";
+        return false
+    });
+
+
+    <g:if test="${especialista?.persona?.consultora?.logotipo}">
     cargarLogoConsultora(${especialista?.persona?.consultora?.id});
+    </g:if>
 
     function cargarLogoConsultora (idO) {
         $.ajax({
@@ -92,7 +108,10 @@
         });
     }
 
+    <g:if test="${pre?.estacion?.comercializadora?.logotipo}">
     cargarLogoComercializadora(${pre?.estacion?.comercializadora?.id});
+    </g:if>
+
 
     function cargarLogoComercializadora (idO) {
         $.ajax({

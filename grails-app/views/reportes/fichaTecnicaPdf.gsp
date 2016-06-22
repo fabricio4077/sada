@@ -9,7 +9,7 @@
 
 <html>
 <head>
-    <title>POA por Área de gestión</title>
+    <title></title>
 
     <rep:estilosNuevos orientacion="p" pagTitle="${"."}"/>
 
