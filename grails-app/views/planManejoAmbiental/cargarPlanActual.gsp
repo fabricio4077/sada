@@ -38,7 +38,7 @@
 
         <div class="row">
             <div class="col-md-4 negrilla control-label">
-                Opción 2: Crear un Plan de Manejo Ambiental:
+                Crear un Plan de Manejo Ambiental:
             </div>
 
             <div class="col-md-4">

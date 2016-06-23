@@ -56,6 +56,11 @@
 <div class="panel panel-success">
     <div class="panel-heading">
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-gear"></i>Selección: Aspectos Ambientales</h3>
+        <g:if test="${obau?.completado != 1}">
+            <a href="#" id="btnCumplirPma" class="btn btn-success" title="Cumplir objetivo" style="float: right; margin-top: -25px">
+                <i class="fa fa-check-circle-o"></i>
+            </a>
+        </g:if>
     </div>
 
     <div class="row">
@@ -119,7 +124,7 @@
                     </a>
                 </div>
                 <div>
-                    <a class='slide' href='#'>
+                    <a class='slide' href='#' id="sitMenu">
                         <span class='element'>Sa</span>
                         <span class='name'>Situación Ambiental</span>
                     </a>
@@ -148,12 +153,12 @@
                         <span class='name'>Cronograma</span>
                     </a>
                 </div>
-                <div>
-                    <a class='slide' href='#'>
-                        <span class='element'>Rc</span>
-                        <span class='name'>Recomendaciones</span>
-                    </a>
-                </div>
+                %{--<div>--}%
+                    %{--<a class='slide' href='#'>--}%
+                        %{--<span class='element'>Rc</span>--}%
+                        %{--<span class='name'>Recomendaciones</span>--}%
+                    %{--</a>--}%
+                %{--</div>--}%
             </div>
         </nav>
     </header>
@@ -164,6 +169,27 @@
 </div>
 
 <script type="text/javascript">
+
+
+    $("#btnCumplirPma").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'planManejoAmbiental', action: 'completar_ajax')}",
+            data:{
+                id: ${pre?.id}
+            },
+            success: function (msg) {
+                if(msg == 'ok'){
+                    log("Objetivo registrado como completado!", "success");
+                    setTimeout(function () {
+                        location.reload(true)
+                    }, 1500);
+                }else{
+                    log("Error al registar el objetivo como completado","error")
+                }
+            }
+        })
+    });
 
     //mini menu
     $("#areasMenu").click(function () {
@@ -180,6 +206,9 @@
 
     $("#pmaMenu").click(function () {
         location.href="${createLink(controller: 'planManejoAmbiental', action: 'cargarPlanActual')}/" + ${pre?.id}
+    });
+    $("#sitMenu").click(function () {
+        location.href="${createLink(controller: 'situacionAmbiental', action: 'situacion')}/" + ${pre?.id}
     });
 
     $("#cronoMenu").click(function () {

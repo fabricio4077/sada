@@ -112,13 +112,10 @@
         <h3 class="panel-title">Bienvenido a SADA!</h3>
     </div>
     <div class="panel-body">
-
-        SISTEMA  WEB  DE  AUDITORÍA  Y  MONITOREO MEDIO  AMBIENTAL  PARA  ESTACIONES  DE COMERCIALIZACIÓN DE COMBUSTIBLES
-
-        <br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur aliquet commodo urna,
-    vel semper eros placerat quis. Sed gravida nisi vel placerat iaculis. Etiam ac ante iaculis,
-    consequat odio sed, rutrum mauris. Quisque nec eros non nibh convallis aliquam. Nullam mauris diam,
-    dictum nec eros eu, pretium vestibulum purus. Nunc ornare auctor dictum. Suspendisse quis nisl arcu.
+        <b>SISTEMA  WEB  DE  AUDITORÍA  Y  MONITOREO MEDIO  AMBIENTAL  PARA  ESTACIONES  DE COMERCIALIZACIÓN DE COMBUSTIBLES</b>
+        <br>
+        SADA(Sistema Automatizado De Auditoría Ambiental) es un sistema web el
+        cual permite realizar los procesos de una auditoría ambiental de manera rápida y eficiente.
     </div>
 </div>
 

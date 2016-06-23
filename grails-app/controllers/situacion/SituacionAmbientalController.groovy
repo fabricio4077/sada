@@ -5,6 +5,8 @@ import auditoria.DetalleAuditoria
 import auditoria.Preauditoria
 import estacion.Area
 import estacion.Ares
+import objetivo.Objetivo
+import objetivo.ObjetivosAuditoria
 
 
 class SituacionAmbientalController extends Seguridad.Shield {
@@ -118,6 +120,10 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+
+        def objetivo =  Objetivo.findByIdentificador('Situación Ambiental')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+
         def lista = [1,2,3,4,5]
         def listaComponentes = ComponenteAmbiental.findAllByIdInList(lista)
         def situaciones = SituacionAmbiental.findAllByDetalleAuditoriaAndComponenteAmbientalInList(detalleAuditoria,listaComponentes, [sort: 'componenteAmbiental', order: "asc"])
@@ -183,7 +189,9 @@ class SituacionAmbientalController extends Seguridad.Shield {
         }
 
 
-        return [pre: pre, situaciones: situaciones, biotico: biotico.first(), fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first(), fisicoDesechos: fisicoDesechos.first()]
+        return [pre: pre, situaciones: situaciones, biotico: biotico.first(),
+                fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first(),
+                fisicoDesechos: fisicoDesechos.first(), obau: obau]
     }
 
     def emisor_ajax () {
@@ -677,7 +685,20 @@ class SituacionAmbientalController extends Seguridad.Shield {
             render "no"
             println("error al guardar el texto del editor desechos " + situacionDesechos.errors)
         }
+    }
 
+    def completar_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def objetivo =  Objetivo.findByIdentificador('Situación Ambiental')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+        obau.completado = 1
+        try{
+            obau.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+        }
     }
 
 }

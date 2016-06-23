@@ -221,7 +221,7 @@ class MenuTagLib {
                          "<i class=\"fa fa-bank\"></i> Marco Legal": ["<i class=\"fa fa-legal\"></i> Leyes","${createLink(controller: 'marcoLegal', action: 'arbolLegal')}"],
 //                         "<i class=\"fa fa-book\"></i> Metodología": ["Metodología","${createLink(controller: 'metodologia', action: 'list')}"],
                          "<i class=\"fa fa-leaf\"></i> Auditoría": ["<i class=\"fa fa-plus\"></i> Iniciar una Auditoría","${createLink(controller: 'preauditoria', action: 'crearAuditoria')}", " <i class=\"fa fa-history\"></i> Continuar una Auditoría", "${createLink(controller: 'preauditoria', action: 'list')}",
-                                       "<i class=\"fa fa-navicon\"></i> Listar Auditorías", "${createLink(controller: 'preauditoria', action: 'listaGeneral')}"]]
+                                       "<i class=\"fa fa-navicon\"></i> Listar Auditorías", "${createLink(controller: 'preauditoria', action: '')}"]]
 
                 }
                 if(perfil?.codigo == 'AUDI'){

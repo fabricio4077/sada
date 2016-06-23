@@ -212,15 +212,9 @@
                             label     : "<i class='fa fa-save'></i> Guardar",
                             className : "btn-success",
                             callback  : function () {
-                                var fecha1 = $("#inicioDate").val();
-                                console.log("fecha 1" + fecha1);
-//                                if($("#inicioDate").val() > $("#finDate").val()){
-//                                    console.log("--->")
-//                                    bootbox.alert("La fecha de finalización debe ser menor a la fecha de inicio")
-//                                }else{
-//                                    console.log("<<<----")
-////                                    return submitFormPeriodo();
-//                                }
+//                                var fecha1 = $("#inicioDate").val();
+//                                console.log("fecha 1" + fecha1);
+                                    return submitFormPeriodo();
 
                             } //callback
                         } //guardar

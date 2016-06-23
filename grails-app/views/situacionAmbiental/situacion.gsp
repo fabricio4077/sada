@@ -18,6 +18,11 @@
 <div class="panel panel-info">
     <div class="panel-heading">
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-eye"></i> Situación Ambiental</h3>
+        <g:if test="${obau?.completado != 1}">
+            <a href="#" id="btnCumplirSit" class="btn btn-success" title="Cumplir objetivo" style="float: right; margin-top: -25px">
+                <i class="fa fa-check-circle-o"></i>
+            </a>
+        </g:if>
     </div>
 
     <div class="panel-group" style="height: 1100px">
@@ -331,7 +336,7 @@
                 </a>
             </div>
             <div>
-                <a class='slide' href='#'>
+                <a class='slide' href='#' id="cronoMenu">
                     <span class='element'>Cr</span>
                     <span class='name'>Cronograma</span>
                 </a>
@@ -347,6 +352,27 @@
 </header>
 
 <script type="text/javascript">
+
+    $("#btnCumplirSit").click(function () {
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'situacionAmbiental', action: 'completar_ajax')}",
+            data:{
+                id: ${pre?.id}
+            },
+            success: function (msg) {
+                if(msg == 'ok'){
+                    log("Objetivo registrado como completado!", "success");
+                    setTimeout(function () {
+                        location.reload(true)
+                    }, 1500);
+                }else{
+                    log("Error al registar el objetivo como completado","error")
+                }
+            }
+        })
+    });
+
 
     $("#areasMenu").click(function () {
         location.href="${createLink(controller: 'area', action: 'areas')}/" + ${pre?.id}
@@ -367,6 +393,11 @@
     $("#sitMenu").click(function () {
         location.href="${createLink(controller: 'situacionAmbiental', action: 'situacion')}/" + ${pre?.id}
     });
+
+    $("#cronoMenu").click(function () {
+        location.href="${createLink(controller: 'auditoria', action: 'cronograma')}/" + ${pre?.id}
+    });
+
 
 
 

@@ -6,6 +6,7 @@ import consultor.Asignados
 import estacion.Coordenadas
 import estacion.Estacion
 import legal.TipoNorma
+import objetivo.ObjetivosAuditoria
 import tipo.Periodo
 import tipo.Tipo
 
@@ -68,7 +69,52 @@ class PreauditoriaController extends Seguridad.Shield {
         preauditoriaInstanceList = getLista(params, false)
 
         def creador = session.usuario.apellido + "_" + session.usuario.login
-        def listaAuditorias = Preauditoria.findAllByCreador(creador)
+        def listaAuditorias = Preauditoria.findAllByCreador(creador, [sort:"creador", order:'desc'])
+
+        //revisar avance
+
+        def porcentaje
+        def obau
+        def audi
+        listaAuditorias.each {li->
+            porcentaje = 0
+            if(li.estacion){
+                porcentaje += 5
+            }
+            audi = Auditoria.findByPreauditoria(li)
+            obau = ObjetivosAuditoria.findAllByAuditoria(audi)
+
+            obau.each {ob->
+                if(ob?.objetivo?.identificador == 'Evaluar Áreas de la Estación' && ob?.completado == 1){
+                    porcentaje += 15
+                }
+                if(ob?.objetivo?.identificador == 'Evaluación Ambiental' && ob?.completado == 1){
+                    porcentaje += 35
+                }
+                if(ob?.objetivo?.identificador == 'Plan de Acción' && ob?.completado == 1){
+                    porcentaje += 15
+                }
+                if(ob?.objetivo?.identificador == 'Situación Ambiental' && ob?.completado == 1){
+                    porcentaje += 10
+                }
+                if(ob?.objetivo?.identificador == 'PMA' && ob?.completado == 1){
+                    porcentaje += 10
+                }
+                if(ob?.objetivo?.identificador == 'Cronograma' && ob?.completado == 1){
+                    porcentaje += 5
+                }
+                if(ob?.objetivo?.identificador == 'Recomendaciones' && ob?.completado == 1){
+                    porcentaje += 5
+                }
+            }
+
+            li.avance = porcentaje
+            try{
+             li.save(flush: true)
+            }catch (e){
+             println("error al asignar el porcentaje de la auditoria " + li.errors)
+            }
+        }
 
         return [preauditoriaInstanceList: preauditoriaInstanceList, preauditoriaInstanceCount: preauditoriaInstanceCount, params: params,
                 lista: listaAuditorias]

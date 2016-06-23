@@ -1,8 +1,10 @@
 package estacion
 
+import auditoria.Auditoria
 import auditoria.Preauditoria
 import groovy.json.JsonBuilder
-
+import objetivo.Objetivo
+import objetivo.ObjetivosAuditoria
 
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
@@ -121,11 +123,11 @@ class AreaController extends Seguridad.Shield {
     } //notFound para ajax
 
     def areas () {
-
         def pre = Preauditoria.get(params.id)
-
-        return [pre:pre]
-
+        def audi = Auditoria.findByPreauditoria(pre)
+        def objetivo =  Objetivo.findByIdentificador('Evaluar Áreas de la Estación')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+        return [pre:pre, obau: obau]
     }
 
 
@@ -471,6 +473,24 @@ class AreaController extends Seguridad.Shield {
         extintor.delete(flush: true)
 
        render "ok"
+    }
+
+    def completar_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def objetivo =  Objetivo.findByIdentificador('Evaluar Áreas de la Estación')
+        def objetivoGeo = Objetivo.findByIdentificador('Datos Geográficos')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+        def obau2 = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivoGeo)
+        obau2.completado = 1
+        obau2.save(flush: true)
+        obau.completado = 1
+        try{
+            obau.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+        }
     }
 
 

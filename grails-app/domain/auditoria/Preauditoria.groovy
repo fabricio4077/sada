@@ -14,6 +14,7 @@ class Preauditoria {
     int plazo
     String creador
     Date fechaCreacion
+    int avance = 0
 
     static mapping = {
         table 'prau'
@@ -28,6 +29,7 @@ class Preauditoria {
             plazo column: 'prauplzo'
             creador column: 'praucrea'
             fechaCreacion column: 'praufcha'
+            avance column: 'prauavce'
         }
     }
 

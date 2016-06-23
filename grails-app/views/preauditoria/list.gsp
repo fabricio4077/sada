@@ -70,11 +70,9 @@
 
 <script type="text/javascript">
 
-
-
     //función para cargar el porcentaje de avance de la auditoría
     <g:each in="${lista}" status="i" var="preauditoriaInstance">
-    cargarPorcentaje(${preauditoriaInstance?.id?.toInteger()},${i});
+    cargarPorcentaje(${preauditoriaInstance?.avance?.toInteger()},${i});
     </g:each>
 
     function cargarPorcentaje (porc, id){

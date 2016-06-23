@@ -134,7 +134,7 @@
                 </a>
             </div>
             <div>
-                <a class='slide' href='#'>
+                <a class='slide' href='#' id="sitMenu">
                     <span class='element'>Sa</span>
                     <span class='name'>Situación Ambiental</span>
                 </a>
@@ -158,17 +158,17 @@
                 </a>
             </div>
             <div>
-                <a class='slide' href='#'>
+                <a class='slide' href='#' id="cronoMenu">
                     <span class='element'>Cr</span>
                     <span class='name'>Cronograma</span>
                 </a>
             </div>
-            <div>
-                <a class='slide' href='#'>
-                    <span class='element'>Rc</span>
-                    <span class='name'>Recomendaciones</span>
-                </a>
-            </div>
+            %{--<div>--}%
+            %{--<a class='slide' href='#'>--}%
+            %{--<span class='element'>Rc</span>--}%
+            %{--<span class='name'>Recomendaciones</span>--}%
+            %{--</a>--}%
+            %{--</div>--}%
         </div>
     </nav>
 </header>
@@ -190,6 +190,14 @@
 
     $("#pmaMenu").click(function () {
         location.href="${createLink(controller: 'planManejoAmbiental', action: 'cargarPlanActual')}/" + ${pre?.id}
+    });
+
+    $("#sitMenu").click(function () {
+        location.href="${createLink(controller: 'situacionAmbiental', action: 'situacion')}/" + ${pre?.id}
+    });
+
+    $("#cronoMenu").click(function () {
+        location.href="${createLink(controller: 'auditoria', action: 'cronograma')}/" + ${pre?.id}
     });
 
     // licencia

@@ -3,6 +3,8 @@ package evaluacion
 import auditoria.Auditoria
 import auditoria.DetalleAuditoria
 import auditoria.Preauditoria
+import objetivo.Objetivo
+import objetivo.ObjetivosAuditoria
 
 
 class PlanAccionController extends Seguridad.Shield {
@@ -117,11 +119,13 @@ class PlanAccionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def objetivo =  Objetivo.findByIdentificador('Plan de Acción')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
 //        def listaCalificaciones = ['NC+','nc-','O']
 //        def calificaciones = Calificacion.findAllBySiglaInList(listaCalificaciones)
 //        def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalleAuditoria,calificaciones)
 
-        return [pre: pre]
+        return [pre: pre, obau: obau]
     }
 
     def tablaPlan_ajax (){
@@ -200,6 +204,20 @@ class PlanAccionController extends Seguridad.Shield {
             render "ok"
         }catch (e){
             println("error al asignar plan de accion " + evam.errors)
+            render "no"
+        }
+    }
+
+    def completar_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def objetivo =  Objetivo.findByIdentificador('Plan de Acción')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+        obau.completado = 1
+        try{
+            obau.save(flush: true)
+            render "ok"
+        }catch (e){
             render "no"
         }
     }

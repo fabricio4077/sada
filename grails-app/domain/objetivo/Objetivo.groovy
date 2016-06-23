@@ -9,6 +9,7 @@ class Objetivo {
     String imagen
     String controlador
     String accion
+    String identificador
 
     static mapping = {
         table 'objt'
@@ -23,6 +24,7 @@ class Objetivo {
             imagen column: 'objtimgn'
             controlador column: 'objtcntr'
             accion column: 'objtactn'
+            identificador column: 'objtiden'
         }
     }
 
@@ -31,5 +33,6 @@ class Objetivo {
         imagen(nullable: true)
         controlador(nullable: true, blank: true)
         accion(nullable: true, blank: true)
+        identificador(nullable: true, blank: true)
     }
 }

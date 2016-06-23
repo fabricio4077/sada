@@ -120,16 +120,19 @@
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 36.964, lng: -122.015},
+//            center: {lat: 36.964, lng: -122.015},
+            center: {lat: 0.345986458369604, lng: -78.13752948285801},
 //                center: {lat: 818.649, lng:38.290 },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
+//            mapTypeId: google.maps.MapTypeId.SATELLITE,
             //roadmap, hybrid, terrain, satellite
             zoom: 16
         });
         map.setTilt(45);
 
         var marker = new google.maps.Marker({
-            position: {lat: 36.964, lng: -122.015},
+//            position: {lat: 36.964, lng: -122.015},
+            position: {lat: 0.345986458369604, lng: -78.13752948285801},
             map: map,
             title: 'Hello World!'
         });
@@ -219,6 +222,9 @@
                                             if (msg == "ok") {
                                                 log("Datos de coordenadas guardados correctamente","success");
                                                 cargarTablaCoordenadas(${pre?.id});
+                                                setTimeout(function () {
+                                                    location.reload(true)
+                                                }, 1500);
                                             } else {
                                                 log("Error al guardar la información de las coordenadas","error");
                                             }

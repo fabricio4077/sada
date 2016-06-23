@@ -5,6 +5,8 @@ import auditoria.DetalleAuditoria
 import auditoria.Preauditoria
 import evaluacion.Anexo
 import evaluacion.Evaluacion
+import objetivo.Objetivo
+import objetivo.ObjetivosAuditoria
 
 
 class PlanManejoAmbientalController extends Seguridad.Shield {
@@ -116,14 +118,14 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
     } //notFound para ajax
 
     def planManejoAmbiental () {
-
-        println("params pma " + params)
-
+//        println("params pma " + params)
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        def objetivo =  Objetivo.findByIdentificador('PMA')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(auditoria,objetivo)
         
-        return [pre: pre, band: params.band]
+        return [pre: pre, band: params.band, obau: obau]
     }
 
     def cargarAspectos_ajax () {
@@ -473,6 +475,24 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
          render "ok"
         }else{
          render "no"
+        }
+    }
+
+    def completar_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def objetivo =  Objetivo.findByIdentificador('PMA')
+        def objetivoCrono = Objetivo.findByIdentificador('Cronograma')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+        def obau2 = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi, objetivoCrono)
+        obau2.completado = 1
+        obau2.save(flush: true)
+        obau.completado = 1
+        try{
+            obau.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
         }
     }
 

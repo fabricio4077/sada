@@ -8,6 +8,7 @@ import groovy.json.JsonBuilder
 import legal.MarcoLegal
 import legal.MarcoNorma
 import objetivo.Objetivo
+import objetivo.ObjetivosAuditoria
 import plan.AspectoAmbiental
 import plan.PlanAuditoria
 import tipo.Periodo
@@ -131,11 +132,15 @@ class EvaluacionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        def objetivo =  Objetivo.findByIdentificador('Evaluación Ambiental')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+
+
 //        def leyes = MarcoNorma.findAllByMarcoLegalAndSeleccionado(audi.marcoLegal, 1, [sort:'norma.nombre', order: 'asc'])
 //        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
 
 //        return [pre: pre, auditoria: audi, leyes: leyes]
-        return [pre: pre, auditoria: audi]
+        return [pre: pre, auditoria: audi, obau: obau]
     }
 
     def tablaEvaluacion_ajax () {
@@ -695,6 +700,20 @@ class EvaluacionController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalleAuditoria, [sort: 'licencia.descripcion', order: 'asc'])
         return [licencias: licencias]
+    }
+
+    def completar_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def objetivo =  Objetivo.findByIdentificador('Evaluación Ambiental')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+        obau.completado = 1
+        try{
+            obau.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+        }
     }
 
 
