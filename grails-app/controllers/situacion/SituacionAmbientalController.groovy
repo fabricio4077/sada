@@ -364,6 +364,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
 
         def emisores = EmisorComponente.findAllBySituacionAmbiental(situacionEmisores)
         def generador = Emisor.findByCodigo('GNRD')
+
         def generadorEstacion = EmisorComponente.findByEmisorAndSituacionAmbiental(generador, situacionEmisores)
         def texto
         if(situacionEmisores?.descripcion){
@@ -391,7 +392,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
                                     "<br>Sin embargo, de acuerdo a los registros de inspección mensuales que se mantienen dentro del a E/S, " +
                                     "se puede verificar que durante el periodo ${pre?.periodo?.inicio?.format("yyyy") + "-" + pre?.periodo?.fin?.format("yyyy")}, " +
                                     "se han realizado mantenimientos al generador emergente a pesar de no ser utilizado con una " +
-                                    "frecuencia mínima "
+                                    "frecuencia mínima."
                         }else{
                             texto="La Estación de servicios ${pre?.estacion?.nombre}, cuenta con un generador eléctrico emergente" +
                                     "<br>Según el Registro de Inspección mensual, el generador ha sido utilizado menos de 300 horas al año." +
@@ -399,13 +400,12 @@ class SituacionAmbientalController extends Seguridad.Shield {
                                     "literal d): “Quedan eximidos del monitoreo de emisiones los generadores emergentes, motores " +
                                     "y bombas contra incendios cuya tasa de funcionamiento sea menor a 300 horas por año. " +
                                     "No obstante si dichas unidades no son sujetas a un mantenimiento preventivo estricto, " +
-                                    "la Dirección Nacional de Protección Ambiental puede disponer que sean monitoreadas trimestralmente...”. "
+                                    "la Dirección Nacional de Protección Ambiental puede disponer que sean monitoreadas trimestralmente”. "
                         }
                     }
                 }else{
                     texto = "La estación de servicios ${pre?.estacion?.nombre}" +
-                            "</br>Al no estar sujeto a monitoreo no se ha realizado un seguimiento de las emisiones del generador. Sin embargo, se asume que no existe una " +
-                            "alteración significativa de la calidad del aire debido a las pocas horas de uso del mismo. "
+                            "</br> no cuenta con un generador eléctrico."
                 }
             }else{
                 texto = "Durante la inspección de campo de la estación de servicios ${pre?.estacion?.nombre}, no se evidenció ningún emisor de gases"
@@ -657,9 +657,9 @@ class SituacionAmbientalController extends Seguridad.Shield {
             texto = situacionDesechos?.descripcion
         }else{
             texto = "La Estación de Servicios ${pre?.estacion?.nombre} genera dos tipos de desechos. " +
-                    "Los desechos comunes, y desechos especiales o peligrosos. " +
+                    "Los desechos comunes, y desechos especiales o peligrosos." +
                     "<br> En el caso de los desechos comunes, se recogen en recipientes que separan los desechos dependiendo de su naturaleza " +
-                    "(orgánico o inorgánico). " +
+                    "(orgánico o inorgánico)." +
                     "<br> Posteriormente se entregan al gestor municipal en los horarios y recorridos establecidos para " +
                     "la recolección de desechos." +
                     "<br> Los desechos especiales por otro lado, " +

@@ -191,7 +191,8 @@ class AreaController extends Seguridad.Shield {
         def path = servletContext.getRealPath("/") + "images/areas/"    //web-app/images/areas
         new File(path).mkdirs()
         def dia = new Date().format("dd-MM-yyyy_HH_mm_ss").toString()
-        def estacion = Preauditoria.get(params.pre).estacion.nombre
+        def estacion = Preauditoria.get(params.pre).estacion.id
+        def pre = Preauditoria.get(params.pre).id
         def nombre
         def ares = Ares.get(params.id)
         def f = request.getFile('file')  //archivo = name del input type file
@@ -204,7 +205,7 @@ class AreaController extends Seguridad.Shield {
 
             if (okContents.containsKey(f.getContentType())) {
                 ext = okContents[f.getContentType()]
-                fileName = "area_${params.id}_${estacion}_${dia}" + "." + ext
+                fileName = "area_${params.id}_${estacion}_${pre}_${dia}" + "." + ext
                 def pathFile = path + fileName
                 nombre = fileName
                 println("nombre " + nombre)

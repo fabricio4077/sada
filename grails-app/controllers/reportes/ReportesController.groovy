@@ -2,18 +2,29 @@ package reportes
 
 import Seguridad.Persona
 import auditoria.Auditoria
+import auditoria.DetalleAuditoria
 import auditoria.Preauditoria
+import complemento.Alcance
+import complemento.Antecedente
 import consultor.Asignados
+import estacion.Ares
 import estacion.Canton
 import estacion.Coordenadas
+import estacion.Extintor
 import metodologia.Metodologia
+import objetivo.Objetivo
 import objetivo.ObjetivosAuditoria
+import situacion.AnalisisLiquidas
+import situacion.ComponenteAmbiental
+import situacion.SituacionAmbiental
+import situacion.TablaLiquidas
 
-class ReportesController {
+class ReportesController{
 
     def index() {}
 
     def imprimirUI () {
+
         def pre = Preauditoria.get(params.id)
         def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
         def arr = ['1','2', '3','4','5','6','7','8','9','10','11','12','13','14','15']
@@ -87,9 +98,119 @@ class ReportesController {
                             }
         }
 
-//        println("general " + objetivoGeneral)
+        println("espec "  + objetivosEspecificos)
 
-        return[pre: pre, especialista: especialista?.persona, general: objetivoGeneral.first(), especificos: objetivosEspecificos, orden: params.orden]
+       def gene = corregirTexto(objetivoGeneral?.first()?.objetivo?.descripcion)
+       def espe = ""
 
+        def listaObjetivos = Objetivo.list()
+
+//        objetivosEspecificos.each {
+//            espe += "<p style='text-align:justify'><li>" + corregirTexto(it?.objetivo?.descripcion) + "</li></p>"
+//        }
+//
+        listaObjetivos.each {
+            espe += "<p style='text-align:justify'><li>" + corregirTexto(it?.descripcion) + "</li></p>"
+
+        }
+
+        return[pre: pre, especialista: especialista?.persona, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe]
+
+    }
+
+    def antecedentePdf () {
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def antecedente = Antecedente.findByDetalleAuditoria(detalle)
+        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+
+        def ant = corregirTexto(antecedente?.descripcion)
+
+        return [antecedente: ant, pre: pre, especialista: especialista?.persona, orden: params.orden]
+    }
+
+    def alcancePdf () {
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def alcance = Alcance.findByAuditoria(auditoria)
+        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def alc = corregirTexto(alcance?.descripcion)
+
+        return [alcance: alc, pre: pre, especialista: especialista?.persona, orden: params.orden]
+    }
+
+    def situacionPdf () {
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def componenteEmi = ComponenteAmbiental.get(1)
+        def componenteDescargas = ComponenteAmbiental.get(2)
+        def componenteResiduos = ComponenteAmbiental.get(3)
+        def componenteBiotico = ComponenteAmbiental.get(4)
+        def componenteSocial = ComponenteAmbiental.get(5)
+        def emisiones = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalle, componenteEmi)
+        def descargas = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalle, componenteDescargas)
+        def residuos = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalle, componenteResiduos)
+        def biotico = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalle, componenteBiotico)
+        def social = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalle, componenteSocial)
+
+        def textoEmi = corregirTexto(emisiones?.descripcion)
+        def textoDes = corregirTexto(descargas?.descripcion)
+        def textoRes = corregirTexto(residuos?.descripcion)
+        def textoBio = corregirTexto(biotico?.descripcion)
+        def textoSocial = corregirTexto(social?.descripcion)
+        def tablas = TablaLiquidas.findAllBySituacionAmbiental(descargas)
+
+
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, emi: textoEmi,
+                des: textoDes, res: textoRes, bio: textoBio, soc: textoSocial, tablas: tablas]
+    }
+
+    def areasPdf () {
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def ares = Ares.findAllByEstacion(pre?.estacion, [sort: 'area.nombre', order: 'asc'])
+        def extintores = Extintor.findAllByAresInList(ares)
+
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, ares: ares, extintores: extintores]
+    }
+
+    def evaluacionPdf () {
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden]
+    }
+
+
+    def corregirTexto (texto) {
+        def text = (texto ?: '')
+
+        text = text.replaceAll("&lt;", "*lt*")
+        text = text.replaceAll("&gt;", "*gt*")
+        text = text.replaceAll("&amp;", "*amp*")
+        text = text.replaceAll("<p>&nbsp;</p>", "<br/>")
+        text = text.replaceAll("&nbsp;", " ")
+
+        text = text.decodeHTML()
+
+        text = text.replaceAll("\\*lt\\*", "&lt;")
+        text = text.replaceAll("\\*gt\\*", "&gt;")
+        text = text.replaceAll("\\*amp\\*", "&amp;")
+        text = text.replaceAll("\\*nbsp\\*", " ")
+        text = text.replaceAll(/<tr>\s*<\/tr>/, / /)
+
+        text = text.replaceAll(~"\\?\\_debugResources=y\\&n=[0-9]*", "")
+
+        return text
     }
 }

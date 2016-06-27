@@ -70,8 +70,14 @@
 <body>
 <rep:headerFooterNuevo title="${"Objetivos"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
 
-%{--<util:renderHTML html="${texto}"/>--}%
+<util:renderHTML html="${"<b>Objetivo General</b><br></br>"}"/>
+<util:renderHTML
+        html="${"<p style='text-align:justify'>" + general + " para la estación de servicios " + "'" + pre?.estacion?.nombre + "'" + " en el período auditable " + pre?.periodo?.inicio?.format("yyyy") + " - " + pre?.periodo?.fin?.format("yyyy")+ "." +"</p>"}"/>
 
+<util:renderHTML html="${"<b>Objetivos Específicos</b><br></br>"}"/>
+<util:renderHTML html="${"<ul>"}"/>
+<util:renderHTML html="${espe}"/>
+<util:renderHTML html="${"</ul>"}"/>
 
 </body>
 </html>

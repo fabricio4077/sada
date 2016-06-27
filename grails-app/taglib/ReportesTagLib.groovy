@@ -179,7 +179,7 @@ class ReportesTagLib {
                 top   : 2.5,
                 right : 2,
                 bottom: 2.5,
-                left  : 3
+                left  : 2
         ]
         switch (pOrientacion) {
             case "l":
