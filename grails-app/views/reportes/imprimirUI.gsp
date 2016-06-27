@@ -54,6 +54,7 @@
             <g:select name="orden2_name" id="ordenArea" from="${arr}" class="form-control"/>
             <g:select name="orden3_name" id="ordenSit" from="${arr}" class="form-control"/>
             <g:select name="orden4_name" id="ordenEva" from="${arr}" class="form-control"/>
+            <g:select name="orden4_name" id="ordenAccion" from="${arr}" class="form-control"/>
         </div>
     </div>
     <div class="col-md-3">
@@ -63,6 +64,7 @@
             <a href="#" class="list-group-item" id="imprimirArea"><i class="fa fa-print"></i> Áreas de la estación </a>
             <a href="#" class="list-group-item" id="imprimirSit"> <i class="fa fa-print"></i> Situación Ambiental </a>
             <a href="#" class="list-group-item" id="imprimirEva"><i class="fa fa-print"></i> Evaluación Ambiental</a>
+            <a href="#" class="list-group-item" id="imprimirAccion"><i class="fa fa-print"></i> Plan de Acción</a>
         </div>
     </div>
 
@@ -139,7 +141,14 @@
     $("#imprimirEva").click(function () {
         var orden = $("#ordenEva").val();
         var url = "${createLink(controller: 'reportes', action: 'evaluacionPdf', id: pre?.id)}?orden=" + orden;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=areas_${pre?.id}.pdf";
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=evaluacion_${pre?.id}.pdf";
+        return false
+    });
+
+    $("#imprimirAccion").click(function () {
+        var orden = $("#ordenAccion").val();
+        var url = "${createLink(controller: 'reportes', action: 'planAccionPdf', id: pre?.id)}?orden=" + orden;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=planAccion_${pre?.id}.pdf";
         return false
     });
 

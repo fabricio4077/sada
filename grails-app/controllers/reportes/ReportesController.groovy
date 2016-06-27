@@ -11,6 +11,8 @@ import estacion.Ares
 import estacion.Canton
 import estacion.Coordenadas
 import estacion.Extintor
+import evaluacion.Calificacion
+import evaluacion.Evaluacion
 import metodologia.Metodologia
 import objetivo.Objetivo
 import objetivo.ObjetivosAuditoria
@@ -187,8 +189,44 @@ class ReportesController{
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
         def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalle, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
+        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, leyes: leyes, planes: planes, licencias: licencias]
+    }
+
+    def planAccionPdf () {
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalle, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
+        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
+
+
+        def eval = Evaluacion.findAllByDetalleAuditoria(detalle).size()
+        def total1 = leyes.size() + planes.size() + licencias.size()
+
+        def listaCalificaciones = ['NC+','nc-','O']
+        def calificaciones = Calificacion.findAllBySiglaInList(listaCalificaciones)
+        def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalle,calificaciones, [sort: 'hallazgo.descripcion', order: "asc"])
+
+        def incumplidas = evaluacionesNo.size()
+
+        def porcentaje
+
+
+        if(incumplidas != 0){
+            porcentaje = 100 - ((incumplidas * 100) / eval)
+        }else{
+            porcentaje = 100
+        }
+
+        def por = porcentaje.toDouble().round(2)
+
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por]
     }
 
 

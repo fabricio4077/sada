@@ -93,7 +93,7 @@
     <thead>
     <tr>
         <th style="width: 30%">Infraestructura</th>
-        <th style="width: 30%">descripción</th>
+        <th style="width: 30%">Descripción</th>
         <th style="width: 40%">Fotografía</th>
     </tr>
     </thead>
