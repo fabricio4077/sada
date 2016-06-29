@@ -68,6 +68,11 @@
 
     td {
         text-align: center;
+        font-size: 80%;
+    }
+
+    th{
+       font-size: 80%;
     }
 
     </style>
@@ -84,17 +89,49 @@
 <table class="table table-bordered table-condensed table-hover">
     <thead>
     <tr>
-        <th style="width: 30%">HALLAZGO - EVIDENCIA DE CUMPLIMIENTO/INCUMPLIMIENTO </th>
-        <th style="width: 5%">NC+</th>
-        <th style="width: 5%">nc-</th>
-        <th style="width: 5%">O</th>
-        <th style="width: 30%">DESCRIPCIÓN DE LAS ACTIVIDADES DEL PLAN DE ACCIÓN (Tendientes a absolver las no conformidades encontradas en la AA)</th>
+        <th style="width: 28%">HALLAZGO - EVIDENCIA DE CUMPLIMIENTO/INCUMPLIMIENTO </th>
+        <th style="width: 4%">NC+</th>
+        <th style="width: 4%">nc-</th>
+        <th style="width: 4%">O</th>
+        <th style="width: 35%">DESCRIPCIÓN DE LAS ACTIVIDADES DEL PLAN DE ACCIÓN (Tendientes a absolver las no conformidades encontradas en la AA)</th>
         <th style="width: 10%">RESPONSABLE</th>
         <th style="width: 8%">PLAZO</th>
         <th style="width: 8%">COSTO DE LA MEDIDA</th>
         <th style="width: 10%">MEDIO DE LA VERIFICACIÓN</th>
     </tr>
     </thead>
+    <tbody>
+    <g:each in="${listaNo}" var="lis">
+        <tr>
+            <td style="text-align: justify"><util:renderHTML html="${lis?.hallazgo?.descripcion}"/></td>
+            <g:if test="${lis?.calificacion?.sigla == 'NC+'}">
+                <td style="background-color: #FF0000; color: #000000">${lis?.calificacion?.sigla}</td>
+                <td style=""></td>
+                <td style=""></td>
+            </g:if>
+            <g:if test="${lis?.calificacion?.sigla == 'nc-'}">
+                <td style=""></td>
+                <td style="background-color: #FFC000; color: #000000">${lis?.calificacion?.sigla}</td>
+                <td style=""></td>
+            </g:if>
+            <g:if test="${lis?.calificacion?.sigla == 'O'}">
+                <td style=""></td>
+                <td style=""></td>
+                <td style="background-color: #FFFF00; color: #000000">${lis?.calificacion?.sigla}</td>
+            </g:if>
+            <td style="text-align: justify"><util:renderHTML html="${lis?.planAccion?.actividad}"/></td>
+            <td><util:renderHTML html="${lis?.planAccion?.responsable}"/></td>
+            <td><util:renderHTML html="${lis?.planAccion?.plazo ?  (lis?.planAccion?.plazo + " Días") : ''}"/></td>
+            <g:if test="${lis?.planAccion?.costo == '0'}">
+                <td>No representa un costo para la E/S.</td>
+            </g:if>
+            <g:else>
+                <td>${lis?.planAccion?.costo}</td>
+            </g:else>
+            <td><util:renderHTML html="${lis?.planAccion?.verficacion}"/></td>
+        </tr>
+    </g:each>
+    </tbody>
 </table>
 
 

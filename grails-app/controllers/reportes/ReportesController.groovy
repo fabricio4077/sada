@@ -226,7 +226,7 @@ class ReportesController{
 
         def por = porcentaje.toDouble().round(2)
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo]
     }
 
 
