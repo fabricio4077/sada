@@ -85,14 +85,14 @@
     <thead>
     <tr>
         <th style="width: 30%">HALLAZGO - EVIDENCIA DE CUMPLIMIENTO/INCUMPLIMIENTO </th>
-        <th style="width: 30%">NC+</th>
-        <th style="width: 40%">nc-</th>
-        <th style="width: 40%">O</th>
-        <th style="width: 40%">DESCRIPCIÓN DE LAS ACTIVIDADES DEL PLAN DE ACCIÓN (Tendientes a absolver las no conformidades encontradas en la AA)</th>
-        <th style="width: 40%">RESPONSABLE</th>
-        <th style="width: 40%">PLAZO</th>
-        <th style="width: 40%">COSTO DE LA MEDIDA</th>
-        <th style="width: 40%">MEDIO DE LA VERIFICACIÓN</th>
+        <th style="width: 5%">NC+</th>
+        <th style="width: 5%">nc-</th>
+        <th style="width: 5%">O</th>
+        <th style="width: 30%">DESCRIPCIÓN DE LAS ACTIVIDADES DEL PLAN DE ACCIÓN (Tendientes a absolver las no conformidades encontradas en la AA)</th>
+        <th style="width: 10%">RESPONSABLE</th>
+        <th style="width: 8%">PLAZO</th>
+        <th style="width: 8%">COSTO DE LA MEDIDA</th>
+        <th style="width: 10%">MEDIO DE LA VERIFICACIÓN</th>
     </tr>
     </thead>
 </table>
