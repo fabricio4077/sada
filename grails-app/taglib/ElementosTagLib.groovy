@@ -64,7 +64,7 @@ class ElementosTagLib {
      * pone el favicon
      */
     def favicon = { attrs ->
-        def html = "     <link rel=\"shortcut icon\" href=\"${resource(dir: 'images/inicio', file: 'favicon.ico')}\">"
+        def html = "     <link rel=\"shortcut icon\" href=\"${resource(dir: 'images/inicio', file: 'hojita.png')}\">"
         out << html
     }
 

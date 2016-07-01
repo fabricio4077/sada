@@ -92,7 +92,7 @@
     %{--Buscador--}%
     <link href='${resource(dir: 'css', file: 'buscador.css')}' rel='stylesheet'>
 
-    <link rel="shortcut icon" href="${resource(dir: 'images/inicio', file: 'favicon.ico')}" type="image/x-icon">
+    %{--<link rel="shortcut icon" href="${resource(dir: 'images/inicio', file: 'favicon.ico')}" type="image/x-icon">--}%
 
     <script type="text/javascript">
         var spinner24Url = "${resource(dir:'images/spinners', file:'spinner_24.GIF')}";
