@@ -16,6 +16,7 @@ import evaluacion.Evaluacion
 import metodologia.Metodologia
 import objetivo.Objetivo
 import objetivo.ObjetivosAuditoria
+import plan.PlanAuditoria
 import situacion.AnalisisLiquidas
 import situacion.ComponenteAmbiental
 import situacion.SituacionAmbiental
@@ -227,6 +228,19 @@ class ReportesController{
         def por = porcentaje.toDouble().round(2)
 
         return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo]
+    }
+
+    def manejoAmbientalPdf () {
+
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def planAuditoria = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalle, 'ACT', [sort: 'aspectoAmbiental.planManejoAmbiental.id', order: 'asc'])
+        def unicos = planAuditoria.aspectoAmbiental.planManejoAmbiental.unique()
+
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, unicos: unicos, planes: planAuditoria]
+
     }
 
 
