@@ -52,10 +52,6 @@
         page-break-before : always;
     }
 
-    /*small {*/
-        /*font-size : 70%;*/
-        /*color     : #777;*/
-    /*}*/
 
     .table th {
         background     : #326090;
@@ -88,7 +84,14 @@
         font-size: 70%;
     }
 
-    </style>
+    @page{
+        @bottom-right {
+            content: 'Pág. ' counter(page);
+        }
+    }
+
+
+</style>
 
 </head>
 

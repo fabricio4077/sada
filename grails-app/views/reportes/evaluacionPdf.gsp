@@ -16,6 +16,10 @@
 
 <html>
 <head>
+
+
+
+
     <title></title>
 
     <rep:estilosNuevos orientacion="l" pagTitle="${"."}" pags="${numero}"/>
@@ -78,12 +82,24 @@
     b{
         font-size: 80%;
     }
+
+    @page{
+        @bottom-right {
+            content: 'Pág. ' counter(page);
+        }
+    }
+
+
+
+
     </style>
 
 </head>
 
 <body>
 <rep:headerFooterNuevo title="${"Evaluación Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
+
+
 
 <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
     <thead>

@@ -1,6 +1,6 @@
 package pdf
 
-
+import com.itextpdf.text.pdf.PdfWriter
 
 
 class PdfController extends Seguridad.Shield {
@@ -12,7 +12,9 @@ class PdfController extends Seguridad.Shield {
 
     def pdfLink = {
 
-        println("params pdf link " + params)
+//        println("params pdf link " + params)
+
+        def numeroPaginas = params.numero
 
         try {
             byte[] b
@@ -28,9 +30,14 @@ class PdfController extends Seguridad.Shield {
                 def url = baseUri + params.url
                 println "URL --> " + url
 
-                b = pdfService.buildPdf(url, baseUri)
+//                b = pdfService.buildPdf(url, baseUri)
+                if(numeroPaginas){
+                    b = pdfService.buildPdfNuevo(url, baseUri,numeroPaginas?.toInteger())
+                }else{
+                    b = pdfService.buildPdfNuevo(url, baseUri, 0)
+                }
 
-//                b = pdfService.buildPdf(params.url, baseUri)
+
             }
             response.setContentType("application/pdf")
             response.setHeader("Content-disposition", "attachment; filename=" + (params.filename ?: "document.pdf"))

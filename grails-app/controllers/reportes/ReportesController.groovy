@@ -50,6 +50,9 @@ class ReportesController{
 
     }
 
+    def prueba () {
+
+    }
 
     def metodologiaPdf() {
 

@@ -74,7 +74,14 @@
         text-align: center;
     }
 
-    </style>
+    @page{
+        @bottom-right {
+            content: 'Pág. ' counter(page);
+        }
+    }
+
+
+</style>
 
 </head>
 
