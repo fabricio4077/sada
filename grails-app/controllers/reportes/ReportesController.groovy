@@ -30,10 +30,9 @@ class ReportesController{
 
         def pre = Preauditoria.get(params.id)
         def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def arr = ['1','2', '3','4','5','6','7','8','9','10','11','12','13','14','15']
+        def arr = ['1','2', '3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20']
         return [pre:pre, especialista: especialista, arr: arr]
     }
-
 
     def fichaTecnicaPdf () {
 
@@ -47,7 +46,7 @@ class ReportesController{
         def canton = Canton.get(pre?.estacion?.canton)
         return [pre: pre, coordenadas: coordenadas, especialista: especialista?.persona,
                 coordinador: coordinador?.persona, biologo: biologo?.persona,
-                canton: canton, orden: params.orden]
+                canton: canton, orden: params.orden, numero: params.numero]
 
     }
 
@@ -78,7 +77,7 @@ class ReportesController{
         text = text.replaceAll(~"\\?\\_debugResources=y\\&n=[0-9]*", "")
 
 
-        return[pre:pre, especialista: especialista?.persona, orden: params.orden, metodologia: metodologia, texto: text]
+        return[pre:pre, especialista: especialista?.persona, orden: params.orden, metodologia: metodologia, texto: text,  numero: params.numero]
     }
 
     def objetivosPdf () {
@@ -117,7 +116,7 @@ class ReportesController{
 
         }
 
-        return[pre: pre, especialista: especialista?.persona, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe]
+        return[pre: pre, especialista: especialista?.persona, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe,  numero: params.numero]
 
     }
 
@@ -131,7 +130,7 @@ class ReportesController{
 
         def ant = corregirTexto(antecedente?.descripcion)
 
-        return [antecedente: ant, pre: pre, especialista: especialista?.persona, orden: params.orden]
+        return [antecedente: ant, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero]
     }
 
     def alcancePdf () {
@@ -142,7 +141,7 @@ class ReportesController{
         def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
         def alc = corregirTexto(alcance?.descripcion)
 
-        return [alcance: alc, pre: pre, especialista: especialista?.persona, orden: params.orden]
+        return [alcance: alc, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero]
     }
 
     def situacionPdf () {
@@ -171,7 +170,7 @@ class ReportesController{
 
 
         return [pre: pre, especialista: especialista?.persona, orden: params.orden, emi: textoEmi,
-                des: textoDes, res: textoRes, bio: textoBio, soc: textoSocial, tablas: tablas]
+                des: textoDes, res: textoRes, bio: textoBio, soc: textoSocial, tablas: tablas,  numero: params.numero]
     }
 
     def areasPdf () {
@@ -182,7 +181,7 @@ class ReportesController{
         def ares = Ares.findAllByEstacion(pre?.estacion, [sort: 'area.nombre', order: 'asc'])
         def extintores = Extintor.findAllByAresInList(ares)
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, ares: ares, extintores: extintores]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, ares: ares, extintores: extintores,  numero: params.numero]
     }
 
     def evaluacionPdf () {
@@ -194,7 +193,7 @@ class ReportesController{
         def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
         def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, leyes: leyes, planes: planes, licencias: licencias]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, leyes: leyes, planes: planes, licencias: licencias,  numero: params.numero]
     }
 
     def planAccionPdf () {
@@ -227,7 +226,7 @@ class ReportesController{
 
         def por = porcentaje.toDouble().round(2)
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo,  numero: params.numero]
     }
 
     def manejoAmbientalPdf () {
@@ -239,7 +238,7 @@ class ReportesController{
         def planAuditoria = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalle, 'ACT', [sort: 'aspectoAmbiental.planManejoAmbiental.id', order: 'asc'])
         def unicos = planAuditoria.aspectoAmbiental.planManejoAmbiental.unique()
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, unicos: unicos, planes: planAuditoria]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, unicos: unicos, planes: planAuditoria,  numero: params.numero]
 
     }
 

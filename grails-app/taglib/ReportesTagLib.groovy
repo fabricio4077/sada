@@ -7,7 +7,6 @@ import consultor.Asignados
  */
 class ReportesTagLib {
 
-    def firmasService
 
     static namespace = 'rep'
 
@@ -162,17 +161,14 @@ class ReportesTagLib {
 
     def estilosNuevos = { attrs ->
 
-        def pags = false
-        if (attrs.pags == 1 || attrs.pags == "1" || attrs.pags == "true" || attrs.pags == true || attrs.pags == "si") {
-            pags = true
-        }
-        if (!pags && attrs.pagTitle) {
-            pags = true
-        }
+        println("attrs " + attrs)
+
+        def pags = true
 
         if (!attrs.orientacion) {
             attrs.orientacion = "p"
         }
+
         def pOrientacion = attrs.orientacion.toString().toLowerCase()
         def orientacion = "portrait"
         def margenes = [
@@ -191,6 +187,7 @@ class ReportesTagLib {
         }
 
         def css = "<style type='text/css'>"
+
         css += "* {\n" +
                 "    font-family   : 'PT Sans Narrow';\n" +
                 "    font-size     : 10pt;\n" +
@@ -220,9 +217,11 @@ class ReportesTagLib {
 
         if (pags) {
             css += "@page {\n" +
+                    "counter-increment: page 3;\n" +
                     "    @bottom-right { \n" +
 //                    "        content     : '${attrs.pagTitle ?: ''} Pág.' counter(page) ' de ' counter(pages);\n" +
-                    "        content     : 'Pág.' counter(page) ;\n" +
+//                    "        counter-increment: page;\n" +
+//                    "        content     : 'Pág. ${attrs.pags} '  counter(page) ;\n" +
                     "        font-family : 'PT Sans Narrow';\n" +
                     "        font-size   : 8pt;" +
                     "        font-style  : italic\n" +
@@ -230,6 +229,7 @@ class ReportesTagLib {
                     "        border-bottom  : solid 1px #4F81BD;\n" +
                     "}"
         }
+
         css += "#header{\n" +
                 "    width      : 100%;\n" +
                 "    text-align : right;\n" +
@@ -246,16 +246,14 @@ class ReportesTagLib {
                 "    text-align : left;\n" +
                 "    position   : running(footer);\n" +
                 "    color      : #7D807F;\n" +
-//                "    border-top  : solid 1px #4F81BD;\n" +
                 "}"
         css += "@page{\n" +
                 "    orphans    : 4;\n" +
                 "    widows     : 2;\n" +
                 "}"
 
-
         css += "table {\n" +
-//                "    page-break-inside : avoid;\n" +
+                "    page-break-inside : avoid;\n" +
                 "}"
         css += ".table tr {\n" +
                 "    page-break-inside : avoid;\n" +
@@ -263,6 +261,7 @@ class ReportesTagLib {
         css += ".no-break {\n" +
                 "    page-break-inside : avoid;\n" +
                 "}"
+
         css += ".tituloReporte{\n" +
                 "    text-align     : right;\n" +
                 "    text-transform : uppercase;\n" +
@@ -312,6 +311,7 @@ class ReportesTagLib {
         css += "tbody {\n" +
                 "    display:  table-row-group;\n" +
                 "}"
+
         css += "</style>"
 
         out << raw(css)
@@ -505,46 +505,6 @@ class ReportesTagLib {
                 html += '</div>'
             }
         }
-//        if (titulo) {
-//            html += "<div class='tituloRprt'>"
-//            html += titulo
-//            html += '</div>'
-//        }
-
-        if (attrs.unidad || attrs.numero != null) {
-            html += "<div class='numeracion'>" + "\n"
-            html += "<table border='1' ${estilo == 'right' ? 'style=\'float: right\'' : ''}>" + "\n"
-            html += "<tr>" + "\n"
-            html += "<td style='background: #0F243E;'>Form. ${form}</td>" + "\n"
-            html += "<td style='background: #008080;'>Numeración:</td>" + "\n"
-
-            html += "<td style='background: #008080;'>No. ${attrs.numero != null ? attrs.numero.toString().padLeft(3, '0') : ''}</td>" + "\n"
-            html += "</tr>" + "\n"
-            html += "</table>" + "\n"
-            html += "</div>" + "\n"
-        }
-
-        out << raw(html)
-    }
-
-    /**
-     * Muestra el footer para los reportes
-     */
-    def footerReporte = { attrs ->
-        def html = ""
-        def h = 50
-        def logoPath = resource(dir: 'images/inicio', file: 'logo_sada2.png')
-
-        html += '<div id="footer">'
-//        html += "<div class='fechaReporte' style='font-size: 8.5pt; margin-bottom: 15px;'>Impreso el ${new Date().format('dd-MM-yyyy HH:mm')}</div>"
-        html += "<img src='${logoPath}' style='height:${h}px; float:right; margin-left: 1cm; margin-bottom: 1cm;'/>"
-        html += "<div style='float:right; font-size:8pt;'>"
-        html += "Amazonas N26-146 y La Niña<br/>"
-        html += "Telf. +(593)2304 9100<br/>"
-        html += "Quito - Ecuador<br/>"
-        html += "www.yachay.gob.ec<br/>"
-        html += "</div>"
-        html += "</div>"
 
         out << raw(html)
     }
@@ -567,14 +527,6 @@ class ReportesTagLib {
     /**
      * Muestra header y footer para los reportes
      */
-    def headerFooter = { attrs ->
-        println("header footer attr " + attrs)
-        attrs.title = attrs.title ?: ""
-        def header = headerReporte(attrs)
-        def footer = footerReporte(attrs)
-
-        out << header << footer
-    }
 
     def headerFooterNuevo = { attrs ->
         println("header footer attr " + attrs)
@@ -725,70 +677,5 @@ class ReportesTagLib {
         out << raw(css)
     }
 
-    /**
-     * Muestra el header alterno para los reportes
-     * @param title el título del reporte
-     */
-    def headerReporteAlt = { attrs ->
-        def title = attrs.title ?: ""
 
-        def h = 55
-
-        def logoPath = resource(dir: 'images', file: 'logo-pdf-header.png')
-        def html = ""
-
-        html += '<div id="header">'
-        html += "<img src='${logoPath}' style='height:${h}px;'/>"
-        html += '</div>'
-        html += '<div id="headerInst">'
-        html += "YACHAY EP<br/>" +
-                "GERENCIA DE PLANIFICACIÓN ESTRATÉGICA<br/>" +
-                "DIRECCIÓN DE PLANIFICACIÓN"
-        html += '</div>'
-        html += "<div id='headerForm'>" +
-                "Form. GPE-DPI No. O6" +
-                "</div>"
-        if (title) {
-            html += "<div class='tituloReporte'>"
-            html += title
-            html += '</div>'
-        }
-        html += "<div class='numeracion'>" +
-                "<span>Numeración: ${attrs.codigo}</span>" +
-                "</div>"
-
-        out << raw(html)
-    }
-
-    /**
-     * Muestra el footer alterno para los reportes
-     */
-    def footerReporteAlt = { attrs ->
-        def html = ""
-        def h = 75
-        def logoPath = resource(dir: 'images', file: 'logo-pdf-footer.png')
-
-        html += '<div id="footer">'
-        html += "<img src='${logoPath}' style='height:${h}px; float:right; margin-left: 1cm; margin-bottom: 1cm;'/>"
-        html += "<div style='float:right; font-size:8pt;'>"
-        html += "Amazonas N26-146 y La Niña<br/>"
-        html += "Telf. +(593)2304 9100<br/>"
-        html += "Quito - Ecuador<br/>"
-        html += "www.yachay.gob.ec<br/>"
-        html += "</div>"
-        html += "</div>"
-
-        out << raw(html)
-    }
-
-    /**
-     * Muestra header y footer alternos para los reportes
-     */
-    def headerFooterAlt = { attrs ->
-        attrs.title = attrs.title ?: ""
-        def header = headerReporteAlt(attrs)
-//        def footer = footerReporteAlt(attrs)
-
-        out << header
-    }
 }

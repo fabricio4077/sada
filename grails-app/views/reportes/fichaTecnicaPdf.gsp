@@ -11,7 +11,7 @@
 <head>
     <title></title>
 
-    <rep:estilosNuevos orientacion="p" pagTitle="${"."}"/>
+    <rep:estilosNuevos orientacion="p" pagTitle="${"."}" pags="${numero}"/>
 
     <style type="text/css">
     .table {
@@ -73,6 +73,11 @@
 </head>
 
 <body>
+
+
+
+
+
 <rep:headerFooterNuevo title="${"Ficha Técnica"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
 
 

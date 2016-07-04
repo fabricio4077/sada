@@ -6,7 +6,7 @@
 <head>
   <title>Objetivos</title>
 
-  <rep:estilosNuevos orientacion="p" pagTitle="${"."}"/>
+  <rep:estilosNuevos orientacion="p" pagTitle="${"."}" pags="${numero}"/>
 
   <style type="text/css">
   .table {

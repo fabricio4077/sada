@@ -11,6 +11,9 @@ class PdfController extends Seguridad.Shield {
     def index = { redirect(action: demo) }
 
     def pdfLink = {
+
+        println("params pdf link " + params)
+
         try {
             byte[] b
             def baseUri = request.scheme + "://" + request.serverName + ":" + request.serverPort
@@ -26,6 +29,7 @@ class PdfController extends Seguridad.Shield {
                 println "URL --> " + url
 
                 b = pdfService.buildPdf(url, baseUri)
+
 //                b = pdfService.buildPdf(params.url, baseUri)
             }
             response.setContentType("application/pdf")
@@ -39,7 +43,7 @@ class PdfController extends Seguridad.Shield {
             if (params.pdfController) {
                 redirect(controller: params.pdfController, action: params.pdfAction, params: params)
             } else {
-                redirect(action: "index", controller: "reportes", params: [msn: "Hubo un error en la genración del reporte. Si este error vuelve a ocurrir comuníquelo al administrador del sistema."])
+                redirect(action: "index", controller: "reportes", params: [msn: "Hubo un error en la generación del reporte. Si este error vuelve a ocurrir comuníquelo al administrador del sistema."])
             }
         }
     }

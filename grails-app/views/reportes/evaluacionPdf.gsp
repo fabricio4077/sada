@@ -18,7 +18,7 @@
 <head>
     <title></title>
 
-    <rep:estilosNuevos orientacion="l" pagTitle="${"."}"/>
+    <rep:estilosNuevos orientacion="l" pagTitle="${"."}" pags="${numero}"/>
 
     <style type="text/css">
     .table {
@@ -78,14 +78,12 @@
     b{
         font-size: 80%;
     }
-
     </style>
 
 </head>
 
 <body>
 <rep:headerFooterNuevo title="${"Evaluación Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
-
 
 <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
     <thead>
@@ -368,7 +366,6 @@
 
 
 </g:if>
-
 
 
 </body>
