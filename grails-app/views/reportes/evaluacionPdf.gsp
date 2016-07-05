@@ -91,7 +91,6 @@
 
 
 
-
     </style>
 
 </head>
@@ -210,7 +209,7 @@
             </g:if>
 
             <td style="text-align: left"><util:renderHTML html="${ley?.hallazgo?.descripcion}"/></td>
-            <td></td>
+            <td><util:renderHTML html="${ley?.evidencia}"/></td>
         </tr>
     </g:each>
     </tbody>
@@ -289,9 +288,8 @@
                 <td style="width: 45px"></td>
                 <td style="width: 45px"></td>
             </g:if>
-
             <td style="text-align: left"><util:renderHTML html="${plan?.hallazgo?.descripcion}"/></td>
-            <td></td>
+            <td><util:renderHTML html="${plan?.evidencia}"/></td>
         </tr>
     </g:each>
     </tbody>
@@ -374,16 +372,12 @@
                 </g:if>
 
                 <td style="text-align: left"><util:renderHTML html="${lic?.hallazgo?.descripcion}"/></td>
-                <td></td>
+                <td><util:renderHTML html="${lic?.evidencia}"/></td>
             </tr>
         </g:each>
         </tbody>
     </table>
-
-
 </g:if>
-
-
 </body>
 </html>
 

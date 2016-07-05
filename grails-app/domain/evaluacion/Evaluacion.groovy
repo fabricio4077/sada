@@ -15,6 +15,7 @@ class Evaluacion {
     PlanAccion planAccion
     PlanAuditoria planAuditoria
     Licencia licencia
+    String evidencia
 
     static mapping = {
         table 'evam'
@@ -30,6 +31,7 @@ class Evaluacion {
             planAccion column: 'plac__id'
             planAuditoria column: 'aupm__id'
             licencia column: 'lcnc__id'
+            evidencia column: 'evamevid'
         }
     }
 
@@ -40,6 +42,7 @@ class Evaluacion {
         planAccion(nullable: true)
         planAuditoria(nullable: true)
         licencia(nullable: true)
+        evidencia(nullable: true, blank: true)
 
     }
 }

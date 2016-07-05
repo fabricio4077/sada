@@ -84,6 +84,7 @@
     <div class="col-md-1">
         <div class="list-group">
             <li class="list-group-item list-group-item-info"> Orden</li>
+            <g:select name="orden2_name" id="ordenObj" from="${arr}" class="form-control"/>
             <g:select name="orden2_name" id="ordenMet" from="${arr}" class="form-control"/>
             <g:select name="orden3_name" id="ordenAlc" from="${arr}" class="form-control"/>
             <g:select name="orden4_name" id="ordenAnt" from="${arr}" class="form-control"/>
@@ -92,6 +93,7 @@
     <div class="col-md-2" style="width: 150px">
         <div class="list-group">
             <li class="list-group-item list-group-item-warning" title="Página de inicio de impresión"> Página de inicio</li>
+            <g:textField name="pagina1_name" id="paginaObj" maxlength="3" class="form-control number sin"/>
             <g:textField name="pagina1_name" id="paginaMet" maxlength="3" class="form-control number sin"/>
             <g:textField name="pagina2_name" id="paginaAlc" maxlength="3" class="form-control number sin"/>
             <g:textField name="pagina3_name" id="paginaAnt" maxlength="3" class="form-control number sin"/>
@@ -101,6 +103,7 @@
     <div class="col-md-3">
         <div class="list-group">
             <li class="list-group-item list-group-item-success"><i class="glyphicon glyphicon-print"></i>  <b>Complementos</b></li>
+            <a href="#" class="list-group-item" id="imprimirObj"><i class="fa fa-print"></i> Objetivos </a>
             <a href="#" class="list-group-item" id="imprimirMet"><i class="fa fa-print"></i> Metodología </a>
             <a href="#" class="list-group-item" id="imprimirAlc"> <i class="fa fa-print"></i> Alcance </a>
             <a href="#" class="list-group-item" id="imprimirAnt"><i class="fa fa-print"></i> Antecedentes</a>

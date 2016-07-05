@@ -101,6 +101,19 @@
         }
     }
 
+
+    ul{
+        page-break-after: avoid;
+    }
+
+    /*thead{*/
+        /*page-break-after: avoid;*/
+    /*}*/
+
+    table{
+        page-break-after: always;
+    }
+
 </style>
 
 </head>
@@ -119,16 +132,16 @@
     <table class="table table-bordered table-condensed table-hover">
         <thead>
         <tr>
-            <th style="width: 100%"><util:renderHTML html="${uni?.nombre?.toUpperCase()}"/></th>
+            <th style="width: 100%" colspan="6"><util:renderHTML html="${uni?.nombre?.toUpperCase()}"/></th>
         </tr>
         </thead>
         <thead>
         <tr>
-            <th style="width: 100%"><util:renderHTML html="${"PROGRAMA " + uni?.nombre?.split("Plan")[1].toUpperCase()}"/></th>
+            <th style="width: 100%" colspan="6"><util:renderHTML html="${"PROGRAMA " + uni?.nombre?.split("Plan")[1].toUpperCase()}"/></th>
         </tr>
         </thead>
-    </table>
-    <table class="table table-bordered table-condensed table-hover" style="margin-top: -1px">
+    %{--</table>--}%
+    %{--<table class="table table-bordered table-condensed table-hover" style="margin-top: -1px">--}%
         <tbody>
         <tr>
             <td style="width: 20%">OBJETVIVOS: </td>

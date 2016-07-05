@@ -133,12 +133,18 @@
                 <td>No representa un costo para la E/S.</td>
             </g:if>
             <g:else>
-                <td>${lis?.planAccion?.costo}</td>
+                <td>${lis?.planAccion?.costo ? lis?.planAccion?.costo + ' USD' : ''}</td>
             </g:else>
             <td><util:renderHTML html="${lis?.planAccion?.verficacion}"/></td>
         </tr>
     </g:each>
     </tbody>
+    <tfoot>
+    <tr>
+        <th colspan="7">TOTAL</th>
+        <th colspan="2">${totalCosto} USD</th>
+    </tr>
+    </tfoot>
 </table>
 
 

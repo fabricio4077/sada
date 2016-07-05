@@ -14,6 +14,20 @@
 <script src="${resource(dir: 'js/plugins/jQuery-File-Upload-9.5.6/js', file: 'jquery.fileupload-image.js')}"></script>
 <link href="${resource(dir: 'js/plugins/jQuery-File-Upload-9.5.6/css', file: 'jquery.fileupload.css')}" rel="stylesheet">
 
+<div class="row">
+    <div class="col-md-3">
+        Evidencia:
+    </div>
+    <div class="col-md-6">
+        <g:textField name="evidencia_name" id="evidenciaTexto" value="${evas?.evidencia}" class="form-control" maxlength="255"/>
+    </div>
+    <div class="col-md-2">
+        <a href="#" class="btn btn-primary " id="btnGuardarEvidencia">
+            <i class="fa fa-save">Guardar título</i>
+        </a>
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-md-4">
@@ -47,6 +61,26 @@
 
 
 <script type="text/javascript">
+
+    $("#btnGuardarEvidencia").click(function () {
+        var texto = $("#evidenciaTexto").val()
+        $.ajax({
+            type:'POST',
+            url: "${createLink(controller: 'evaluacion', action: 'guardarEvidencia_ajax')}",
+            data:{
+                id: '${evas?.id}',
+                texto: texto
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    log("Título de la evidencia/anexo guardado correctamente","success")
+                }else{
+                    log("Error al guardar el título de la evidencia/anexo","error")
+                }
+            }
+        })
+
+    });
 
 
     cargarAnexosExistentes();

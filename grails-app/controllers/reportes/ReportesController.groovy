@@ -119,7 +119,7 @@ class ReportesController{
 
         }
 
-        return[pre: pre, especialista: especialista?.persona, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe,  numero: params.numero]
+        return[pre: pre, especialista: especialista?.persona, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe,  numero: params.numero, lista: listaObjetivos]
 
     }
 
@@ -229,7 +229,17 @@ class ReportesController{
 
         def por = porcentaje.toDouble().round(2)
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo,  numero: params.numero]
+        def totalCosto = 0
+
+        evaluacionesNo.each {pl->
+            if(pl?.planAccion && pl?.planAccion?.costo != '0'){
+                totalCosto += pl?.planAccion?.costo?.toDouble()
+            }
+        }
+
+        println("total " + totalCosto)
+
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo,  numero: params.numero, totalCosto: totalCosto]
     }
 
     def manejoAmbientalPdf () {

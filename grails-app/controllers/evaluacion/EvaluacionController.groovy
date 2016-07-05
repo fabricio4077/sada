@@ -351,6 +351,17 @@ class EvaluacionController extends Seguridad.Shield {
         return [evas: eva]
     }
 
+    def guardarEvidencia_ajax () {
+        def eva = Evaluacion.get(params.id)
+        eva.evidencia = params.texto
+        try{
+            eva.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al guardar el titulo de la evidencia" + eva.errors)
+        }
+    }
 
     def uploadFile () {
 

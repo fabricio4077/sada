@@ -255,6 +255,7 @@ class ReportesTagLib {
         css += "table {\n" +
                 "    page-break-inside : avoid;\n" +
                 "}"
+
         css += ".table tr {\n" +
                 "    page-break-inside : avoid;\n" +
                 "}"
