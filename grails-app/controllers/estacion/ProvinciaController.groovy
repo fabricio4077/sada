@@ -78,7 +78,7 @@ class ProvinciaController extends Seguridad.Shield {
         } //update
         provinciaInstance.properties = params
         provinciaInstance.nombre = params.nombre.toUpperCase()
-        provinciaInstance.codigo = params.codigo.toUpperCase()
+//        provinciaInstance.codigo = params.codigo.toUpperCase()
         if (!provinciaInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Provincia."
             msg += renderErrors(bean: provinciaInstance)

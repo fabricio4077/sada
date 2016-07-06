@@ -71,6 +71,8 @@ class PreauditoriaController extends Seguridad.Shield {
         def creador = session.usuario.apellido + "_" + session.usuario.login
         def listaAuditorias = Preauditoria.findAllByCreadorAndEstado(creador, 1, [sort:"creador", order:'desc'])
 
+//        println("creadores " + listaAuditorias.creador)
+
         //revisar avance
 
         def porcentaje
@@ -110,9 +112,9 @@ class PreauditoriaController extends Seguridad.Shield {
 
             li.avance = porcentaje
             try{
-             li.save(flush: true)
+                li.save(flush: true)
             }catch (e){
-             println("error al asignar el porcentaje de la auditoria " + li.errors)
+                println("error al asignar el porcentaje de la auditoria " + li.errors)
             }
         }
 
@@ -131,7 +133,10 @@ class PreauditoriaController extends Seguridad.Shield {
         }
         preauditoriaInstanceList = getLista(params, false)
 
-        return [preauditoriaInstanceList: preauditoriaInstanceList, preauditoriaInstanceCount: preauditoriaInstanceCount, params: params]
+        def listaGeneral = Preauditoria.findAllByEstado(1, [sort: 'creador', order: 'asc'])
+
+//        return [preauditoriaInstanceList: preauditoriaInstanceList, preauditoriaInstanceCount: preauditoriaInstanceCount, params: params]
+        return [preauditoriaInstanceList: listaGeneral, preauditoriaInstanceCount: preauditoriaInstanceCount, params: params]
     }
 
     def show_ajax() {
@@ -322,14 +327,14 @@ class PreauditoriaController extends Seguridad.Shield {
         if(existente){
             render "no_Ya existe una auditoría para esta estación del tipo <strong>${existente?.tipo?.descripcion?.toUpperCase()}</strong>, seleccione otra estación."
         }else{
-               paso.estacion = estacion
-                try{
-                    paso.save(flush: true)
-                    render "ok_${paso?.id}"
-                }catch(e){
-                    render "no_Error al asignar la estación"
-                    println("error al guardar el paso 2 - crearAuditoria");
-                }
+            paso.estacion = estacion
+            try{
+                paso.save(flush: true)
+                render "ok_${paso?.id}"
+            }catch(e){
+                render "no_Error al asignar la estación"
+                println("error al guardar el paso 2 - crearAuditoria");
+            }
         }
 
 
@@ -445,6 +450,104 @@ class PreauditoriaController extends Seguridad.Shield {
             render "no"
             println("error al borrar la auditoría")
         }
+    }
+
+    def revisarObjetivos_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+
+        def obau = ObjetivosAuditoria.findAllByAuditoria(auditoria)
+
+        if(obau){
+            render false
+        }else{
+            render true
+        }
+
+    }
+
+    def tablaAuditoriaUsuario_ajax () {
+
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def listaAuditorias
+
+        if (params.fecha) {
+            params.fechaIni = new Date().parse("dd-MM-yyyy HH:mm:ss", params.fecha + " 00:00:00")
+            params.fechaFin = new Date().parse("dd-MM-yyyy HH:mm:ss", params.fecha + " 23:59:59")
+        }
+
+        println("params tabla " + params)
+
+        if(!params.estacion && !params.tipo){
+            listaAuditorias = Preauditoria.findAllByCreadorAndEstado(creador, 1, [sort:"creador", order:'desc'])
+        }else{
+            def t = Tipo.get(params.tipo)
+
+            listaAuditorias = Preauditoria.withCriteria {
+                eq("tipo", t)
+
+                if(params.estacion){
+                    estacion{
+                        ilike('nombre', '%' + params.estacion + '%')
+                    }
+                }
+
+                if(params.fecha){
+                        gt('fechaCreacion', params.fechaIni)
+                        lt('fechaCreacion', params.fechaFin)
+                }
+            }
+        }
+
+
+
+
+        //revisar avance
+
+        def porcentaje
+        def obau
+        def audi
+        listaAuditorias.each {li->
+            porcentaje = 0
+            if(li.estacion){
+                porcentaje += 5
+            }
+            audi = Auditoria.findByPreauditoria(li)
+            obau = ObjetivosAuditoria.findAllByAuditoria(audi)
+
+            obau.each {ob->
+                if(ob?.objetivo?.identificador == 'Evaluar Áreas de la Estación' && ob?.completado == 1){
+                    porcentaje += 15
+                }
+                if(ob?.objetivo?.identificador == 'Evaluación Ambiental' && ob?.completado == 1){
+                    porcentaje += 35
+                }
+                if(ob?.objetivo?.identificador == 'Plan de Acción' && ob?.completado == 1){
+                    porcentaje += 15
+                }
+                if(ob?.objetivo?.identificador == 'Situación Ambiental' && ob?.completado == 1){
+                    porcentaje += 10
+                }
+                if(ob?.objetivo?.identificador == 'PMA' && ob?.completado == 1){
+                    porcentaje += 10
+                }
+                if(ob?.objetivo?.identificador == 'Cronograma' && ob?.completado == 1){
+                    porcentaje += 5
+                }
+                if(ob?.objetivo?.identificador == 'Recomendaciones' && ob?.completado == 1){
+                    porcentaje += 5
+                }
+            }
+
+            li.avance = porcentaje
+            try{
+                li.save(flush: true)
+            }catch (e){
+                println("error al asignar el porcentaje de la auditoria " + li.errors)
+            }
+        }
+
+        return [lista: listaAuditorias]
     }
 
 

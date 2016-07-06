@@ -150,7 +150,8 @@
 
     //boton avanzar al siguiente paso 5
     $("#btnContinuar").click(function () {
-        location.href="${createLink(controller: 'preauditoria', action: 'crearPaso5')}/" + ${pre?.id}
+        %{--location.href="${createLink(controller: 'preauditoria', action: 'crearPaso5')}/" + ${pre?.id}--}%
+        location.href="${createLink(controller: 'preauditoria', action: 'fichaTecnica')}/" + ${pre?.id}
     });
 
     //funcion para revisar la cantidad de asignados de una auditoria

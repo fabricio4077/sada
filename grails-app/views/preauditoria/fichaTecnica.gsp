@@ -245,7 +245,8 @@
     //botón de regreso al paso anterior 3
 
     $("#btnRegresar").click(function () {
-        location.href="${createLink(action: 'crearPaso5')}/" + ${pre?.id};
+        %{--location.href="${createLink(action: 'crearPaso5')}/" + ${pre?.id};--}%
+        location.href="${createLink(action: 'crearPaso4')}/" + ${pre?.id};
     });
 
     //botón continuar al siguiente paso

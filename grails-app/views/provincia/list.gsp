@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="mainSada">
-        <title>Lista de Provincia</title>
+        <title>Lista de Provincias</title>
     </head>
     <body>
 
@@ -17,16 +17,16 @@
                     <i class="fa fa-file-o"></i> Nueva Provincia
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
-                    <span class="input-group-btn">
-                        <g:link action="list" class="btn btn-default btn-search" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </g:link>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</g:link>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
 
         <table class="table table-condensed table-bordered table-striped">
@@ -35,7 +35,7 @@
                     
                     <g:sortableColumn property="nombre" title="Nombre" />
                     
-                    <g:sortableColumn property="codigo" title="Código" />
+                    %{--<g:sortableColumn property="codigo" title="Código" />--}%
                     
                 </tr>
             </thead>
@@ -45,7 +45,7 @@
                         
                         <td>${fieldValue(bean: provinciaInstance, field: "nombre")}</td>
                         
-                        <td>${fieldValue(bean: provinciaInstance, field: "codigo")}</td>
+                        %{--<td>${fieldValue(bean: provinciaInstance, field: "codigo")}</td>--}%
                         
                     </tr>
                 </g:each>

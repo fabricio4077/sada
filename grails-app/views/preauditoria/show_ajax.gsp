@@ -9,55 +9,52 @@
 
     <g:if test="${preauditoriaInstance?.estacion}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Estacion
+            <div class="col-md-3 text-info">
+                Estación:
             </div>
             
-            <div class="col-md-3">
-                ${preauditoriaInstance?.estacion?.encodeAsHTML()}
+            <div class="col-md-5">
+                ${preauditoriaInstance?.estacion?.nombre?.encodeAsHTML()}
             </div>
             
         </div>
     </g:if>
-    
+
+    <g:if test="${preauditoriaInstance?.tipo}">
+        <div class="row">
+            <div class="col-md-3 text-info">
+                Tipo:
+            </div>
+
+            <div class="col-md-5">
+                ${preauditoriaInstance?.tipo?.descripcion?.toUpperCase()}
+            </div>
+
+        </div>
+    </g:if>
 
     <g:if test="${preauditoriaInstance?.periodo}">
         <div class="row">
-            <div class="col-md-2 text-info">
-                Periodo
+            <div class="col-md-3 text-info">
+                Período:
             </div>
             
-            <div class="col-md-3">
-                ${preauditoriaInstance?.periodo?.encodeAsHTML()}
-            </div>
-            
-        </div>
-    </g:if>
-    
-    <g:if test="${preauditoriaInstance?.plazo}">
-        <div class="row">
-            <div class="col-md-2 text-info">
-                Plazo
-            </div>
-            
-            <div class="col-md-3">
-                <g:fieldValue bean="${preauditoriaInstance}" field="plazo"/>
+            <div class="col-md-5">
+                ${preauditoriaInstance?.periodo?.inicio?.format("yyyy") + " - " + preauditoriaInstance?.periodo?.fin?.format("yyyy")}
             </div>
             
         </div>
     </g:if>
-    
-    <g:if test="${preauditoriaInstance?.tipo}">
-        <div class="row">
-            <div class="col-md-2 text-info">
-                Tipo
-            </div>
-            
-            <div class="col-md-3">
-                ${preauditoriaInstance?.tipo?.encodeAsHTML()}
-            </div>
-            
+
+    <div class="row">
+        <div class="col-md-3 text-info">
+            Usuario creador:
         </div>
-    </g:if>
-    
+
+        <div class="col-md-5">
+            ${preauditoriaInstance?.creador?.split("_")[0] + " (" + preauditoriaInstance?.creador?.split("_")[1] + ")"}
+        </div>
+
+    </div>
+
 </g:else>

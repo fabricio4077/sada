@@ -20,18 +20,18 @@
             </span>
         </div>
         
-        <div class="form-group ${hasErrors(bean: provinciaInstance, field: 'codigo', 'error')} ">
-            <span class="grupo">
-                <label for="codigo" class="col-md-2 control-label text-info">
-                    Código
-                </label>
-                <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required" value="${provinciaInstance?.codigo}"/>
-                </div>
-                
-            </span>
-        </div>
-        
+        %{--<div class="form-group ${hasErrors(bean: provinciaInstance, field: 'codigo', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label for="codigo" class="col-md-2 control-label text-info">--}%
+                    %{--Código--}%
+                %{--</label>--}%
+                %{--<div class="col-md-6">--}%
+                    %{--<g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required" value="${provinciaInstance?.codigo}"/>--}%
+                %{--</div>--}%
+                %{----}%
+            %{--</span>--}%
+        %{--</div>--}%
+        %{----}%
     </g:form>
 
     <script type="text/javascript">
