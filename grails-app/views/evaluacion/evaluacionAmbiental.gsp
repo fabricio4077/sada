@@ -103,13 +103,13 @@
                 <g:textField name="marco_usado" value="${auditoria?.marcoLegal?.descripcion}" readonly="true" class="form-control"/>
             </div>
 
-            <div class="row">
-                <div class="col-md-8" style="margin-top: 30px">
-                    <a href="#" id="btnCambiarMarco" class="btn btn-warning" title="">
-                        Cambiar Marco Legal <i class="fa fa-close"></i>
-                    </a>
-                </div>
-            </div>
+            %{--<div class="row">--}%
+                %{--<div class="col-md-8" style="margin-top: 30px">--}%
+                    %{--<a href="#" id="btnCambiarMarco" class="btn btn-warning" title="">--}%
+                        %{--Cambiar Marco Legal <i class="fa fa-close"></i>--}%
+                    %{--</a>--}%
+                %{--</div>--}%
+            %{--</div>--}%
         </div>
     </div>
 

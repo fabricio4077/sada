@@ -5,16 +5,19 @@
 <head>
     <meta name="layout" content="mainSada">
     <title>Lista de Auditorías</title>
+
+    <style type="text/css">
+    .centrar {
+        text-align: center;
+        /*align-items: center;*/
+        /*width: 100px;*/
+    }
+    </style>
+
+
 </head>
 
-<style type="text/css">
-.centrar {
-    text-align: center;
-    align-items: center;
-    width: 100px;
 
-}
-</style>
 <body>
 
 <elm:flashMessage tipo="${flash.tipo}" clase="${flash.clase}">${flash.message}</elm:flashMessage>
@@ -44,20 +47,18 @@
 <table class="table table-condensed table-bordered table-striped">
     <thead>
     <tr>
-        <g:sortableColumn property="tipo" title="Tipo" />
-        %{--<th>Tipo</th>--}%
-        <th>Período</th>
-        <g:sortableColumn property="estacion" title="Estación" />
-        %{--<th>Estacion</th>--}%
-        <th>Fecha de creación</th>
-        <th style="width: 90px">% de Avance</th>
+        <th class="centrar"><i class='fa fa-list'></i> Tipo</th>
+        <th class="centrar"><i class='fa fa-calendar'></i> Período</th>
+        <th class="centrar"><i class='fa fa-automobile'></i> Estación</th>
+        <th class="centrar"><i class='fa fa-clock-o'></i> Fecha de creación</th>
+        <th style="width: 90px" class="centrar">% de Avance</th>
     </tr>
     </thead>
     <tbody>
     <g:each in="${lista}" status="i" var="preauditoriaInstance" >
         <tr data-id="${preauditoriaInstance.id}">
             <td>${preauditoriaInstance?.tipo?.descripcion}</td>
-            <td style="text-align: center">${preauditoriaInstance?.periodo?.inicio.format("yyyy") + " - " + preauditoriaInstance?.periodo?.fin.format("yyyy")}</td>
+            <td style="text-align: center">${preauditoriaInstance?.periodo?.inicio?.format("yyyy") + " - " + preauditoriaInstance?.periodo?.fin?.format("yyyy")}</td>
             <td>${preauditoriaInstance?.estacion?.nombre}</td>
             <td>${preauditoriaInstance?.fechaCreacion?.format("dd-MM-yyyy")}</td>
             <td id="porcentaje_${i}" style="margin-left: 20px"></td>
@@ -388,7 +389,7 @@
                 },
                 ver      : {
                     label  : "Información",
-                    icon   : "fa fa-search",
+                    icon   : "fa fa-search text-info",
                     action : function ($element) {
                         var id = $element.data("id");
                         $.ajax({
@@ -416,11 +417,11 @@
                 },
                 editar   : {
                     label  : "Continuar",
-                    icon   : "fa fa-pencil",
+                    icon   : "fa fa-pencil text-success",
                     submenu:{
                         configuracion:{
                             label: "Configuración",
-                            icon: "fa fa-pencil-square",
+                            icon: "fa fa-pencil-square text-success",
                             submenu:{
                                 paso1: {
                                     label: "Paso 1 - Tipo y Período",
@@ -480,7 +481,7 @@
                                     label: "Ficha Técnica",
                                     icon: "fa fa-file",
                                     action: function ($element) {
-                                        var id = $element.data("id")
+                                        var id = $element.data("id");
                                         location.href = "${createLink(controller: 'preauditoria', action: 'fichaTecnica')}/" + id
                                     }
                                 }
@@ -490,7 +491,7 @@
 
                         objetivos: {
                             label: "Objetivos",
-                            icon: "fa fa-check-circle-o",
+                            icon: "fa fa-check-circle-o text-success",
                             action: function ($element) {
                                 var id = $element.data("id");
                                 location.href = "${createLink(controller: 'auditoria', action: 'objetivos')}/" + id
@@ -498,11 +499,11 @@
                         },
                         complemento:{
                             label: "Complementos",
-                            icon: "fa fa-file-text-o",
+                            icon: "fa fa-file-text-o text-warning",
                             submenu:{
                                 paso1: {
                                     label: "Antecedentes",
-                                    icon: "fa fa-file-text",
+                                    icon: "fa fa-paste text-warning",
                                     action: function ($element) {
                                         var id = $element.data("id");
                                         location.href = "${createLink(controller: 'antecedente', action: 'antecedente')}/" + id
@@ -510,7 +511,7 @@
                                 } ,
                                 paso2:{
                                     label: "Alcance",
-                                    icon: "fa fa-file-text",
+                                    icon: "fa fa-file-o text-warning",
                                     action: function ($element) {
                                         var id = $element.data("id");
                                         location.href = "${createLink(controller: 'alcance', action: 'alcance')}/" + id
@@ -518,7 +519,7 @@
                                 },
                                 paso3:{
                                     label: "Metodología",
-                                    icon: "fa fa-file-text",
+                                    icon: "fa fa-files-o text-warning",
                                     action: function ($element) {
                                         var id = $element.data("id");
                                         location.href = "${createLink(controller: 'metodologia', action: 'verMetodologia')}/" + id
@@ -528,43 +529,30 @@
                         },
                         impresion:{
                             label: "Imprimir",
-                            icon: "fa fa-print",
+                            icon: "fa fa-print text-info",
                             action: function ($element) {
                                 var id = $element.data("id");
                                 location.href = "${createLink(controller: 'reportes', action: 'imprimirUI')}/" + id
                             }
-//                            submenu:{
-//                                1: {
-//                                    label: "Impresión...",
-//                                    icon: "fa fa-file",
-//                                    disabled: true
-//                                }
-//                            }
                         }
                     }
                 }
+                <g:if test="${session.perfil.codigo == 'ADMI'}">
+                ,
+                eliminar : {
+                    label            : "Eliminar",
+                    icon             : "fa fa-trash-o text-danger",
+                    separator_before : true,
+                    action           : function ($element) {
+                        var id = $element.data("id");
+                        deleteRow(id);
+                    }
+                }
+                </g:if>
+
             };
 
 
-//            var impresion= {
-//                label: "Imprimir",
-//                icon: "fa fa-print"
-//                ,
-//                submenu: {
-//                    1: {
-//                        label: "Impresión...",
-//                        icon: "fa fa-file",
-//                        disabled: true
-//                    }
-//                }
-//            };
-//
-
-
-
-//            if(revisarEstacion(idF)){
-//                items.impresion = impresion
-//            }
 
             return items
         }
@@ -580,6 +568,44 @@
                 }
             });
         });
+
+        function deleteRow(itemId) {
+            bootbox.dialog({
+                title   : "Alerta",
+                message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la auditoría seleccionada? </br> <b>Esta acción no se puede deshacer.</b></p>",
+                buttons : {
+                    cancelar : {
+                        label     : "Cancelar",
+                        className : "btn-primary",
+                        callback  : function () {
+                        }
+                    },
+                    eliminar : {
+                        label     : "<i class='fa fa-trash-o'></i> Eliminar",
+                        className : "btn-danger",
+                        callback  : function () {
+                            $.ajax({
+                                type    : "POST",
+                                url     : '${createLink(action:'borrarAuditoria_ajax')}',
+                                data    : {
+                                    id : itemId
+                                },
+                                success : function (msg) {
+                                    if(msg == 'ok'){
+                                        log("Auditoría borrada correctamente","success");
+                                        setTimeout(function () {
+                                                location.href = "${createLink(controller: "preauditoria", action: "list" )}"
+                                        }, 1500);
+                                    }else{
+                                        log("Error al borrar la auditoría","error")
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        }
 
     });
 </script>

@@ -69,7 +69,7 @@ class PreauditoriaController extends Seguridad.Shield {
         preauditoriaInstanceList = getLista(params, false)
 
         def creador = session.usuario.apellido + "_" + session.usuario.login
-        def listaAuditorias = Preauditoria.findAllByCreador(creador, [sort:"creador", order:'desc'])
+        def listaAuditorias = Preauditoria.findAllByCreadorAndEstado(creador, 1, [sort:"creador", order:'desc'])
 
         //revisar avance
 
@@ -239,6 +239,7 @@ class PreauditoriaController extends Seguridad.Shield {
             paso.periodo = periodo
             paso.fechaCreacion = new Date()
             paso.creador = creador
+            paso.estado = 1
             try{
                 paso.save(flush: true)
                 render "ok_${paso?.id}"
@@ -283,19 +284,45 @@ class PreauditoriaController extends Seguridad.Shield {
         def tipoLic = Tipo.findByCodigo('LCM1')
         def tipoCump = Tipo.findByCodigo('CMPM')
 
-        def inicio = Preauditoria.findByEstacionAndTipoAndIdNotEqual(estacion,tipoIni,paso.id)
+        def inicio = Preauditoria.findByEstacionAndTipoAndIdNotEqual(estacion,paso.tipo,paso.id)
+//        println("inicio " + inicio)
         def licenciamiento = Preauditoria.findByEstacionAndTipoAndIdNotEqual(estacion,tipoLic,paso.id)
+//        println("lice " + licenciamiento)
         def anteriores = Preauditoria.findByEstacionAndTipoAndPeriodoAndIdNotEqual(estacion,tipoCump,paso.periodo,paso.id)
+
+
+        def existente = Preauditoria.findByEstacionAndTipoAndPeriodoAndIdNotEqual(estacion, paso?.tipo, paso?.periodo, paso?.id)
+
+
+//        println("existente " + existente?.tipo?.descripcion)
 
 //        println("anteriores " + anteriores)
 
-        if(inicio || licenciamiento){
-            render "no_Ya existe una auditoría para esta estación del tipo <strong>${inicio ? 'INICIO' : 'LICENCIAMIENTO'}</strong>, seleccione otra estación."
+//        if(inicio){
+//            render "no_Ya existe una auditoría para esta estación del tipo <strong>INICIO</strong>, seleccione otra estación."
+//         }
+//        if(licenciamiento){
+//            render "no_Ya existe una auditoría para esta estación del tipo <strong>LICENCIAMIENTO</strong>, seleccione otra estación."
+//        }
+//        else{
+//            if(anteriores){
+//                render "no_Ya existe una auditoría para esta estación del tipo <strong>CUMPLIMIENTO</strong> en el período ${paso?.periodo?.inicio?.format("yyyy") + " - " + paso?.periodo?.fin?.format("yyyy")}, seleccione otra estación."
+//            }else{
+//                paso.estacion = estacion
+//                try{
+//                    paso.save(flush: true)
+//                    render "ok_${paso?.id}"
+//                }catch(e){
+//                    render "no_Error al asignar la estación"
+//                    println("error al guardar el paso 2 - crearAuditoria");
+//                }
+//            }
+//        }
+
+        if(existente){
+            render "no_Ya existe una auditoría para esta estación del tipo <strong>${existente?.tipo?.descripcion?.toUpperCase()}</strong>, seleccione otra estación."
         }else{
-            if(anteriores){
-                render "no_Ya existe una auditoría para esta estación del tipo <strong>CUMPLIMIENTO</strong> en el período ${paso?.periodo?.inicio?.format("yyyy") + " - " + paso?.periodo?.fin?.format("yyyy")}, seleccione otra estación."
-            }else{
-                paso.estacion = estacion
+               paso.estacion = estacion
                 try{
                     paso.save(flush: true)
                     render "ok_${paso?.id}"
@@ -303,8 +330,9 @@ class PreauditoriaController extends Seguridad.Shield {
                     render "no_Error al asignar la estación"
                     println("error al guardar el paso 2 - crearAuditoria");
                 }
-            }
         }
+
+
     }
 
     def guardarCoordenadas_ajax () {
@@ -402,6 +430,20 @@ class PreauditoriaController extends Seguridad.Shield {
             render false
         }else{
             render true
+        }
+    }
+
+    def borrarAuditoria_ajax () {
+        println("params borrar auditoria" + params)
+
+        def pre = Preauditoria.get(params.id)
+        pre.estado = 0
+        try{
+            pre.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("error al borrar la auditoría")
         }
     }
 
