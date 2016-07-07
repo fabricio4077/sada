@@ -40,14 +40,23 @@ class ObjetivoController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def objetivoInstanceList = getLista(params, false)
-        def objetivoInstanceCount = getLista(params, true).size()
-        if (objetivoInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def objetivoInstanceList = getLista(params, false)
+            def objetivoInstanceCount = getLista(params, true).size()
+            if (objetivoInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            objetivoInstanceList = getLista(params, false)
+            return [objetivoInstanceList: objetivoInstanceList, objetivoInstanceCount: objetivoInstanceCount, params: params]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        objetivoInstanceList = getLista(params, false)
-        return [objetivoInstanceList: objetivoInstanceList, objetivoInstanceCount: objetivoInstanceCount, params: params]
+
+
+
     } //list
 
     def show_ajax() {

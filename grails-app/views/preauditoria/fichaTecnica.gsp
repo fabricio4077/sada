@@ -227,10 +227,6 @@
             <a href="#" id="btnRegresar" class="btn btn-primary ${pre ? '' : 'disabled'}" title="Retornar al paso anterior">
             <i class="fa fa-angle-double-left"></i> Regresar </a>
         </li>
-
-        %{--<a href="#" id="btnImprimir" class="btn btn-default" title="Imprimir la ficha ténica">--}%
-            %{--<i class="fa fa-print"></i> Imprimir</a>--}%
-
         <li>
             <a href="#" id="btnContinuar" class="btn btn-success" title="Objetivos de la auditoría">
                 Objetivos <i class="fa fa-angle-double-right"></i>

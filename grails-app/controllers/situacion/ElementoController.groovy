@@ -32,14 +32,20 @@ class ElementoController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def elementoInstanceList = getLista(params, false)
-        def elementoInstanceCount = getLista(params, true).size()
-        if(elementoInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def elementoInstanceList = getLista(params, false)
+            def elementoInstanceCount = getLista(params, true).size()
+            if(elementoInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            elementoInstanceList = getLista(params, false)
+            return [elementoInstanceList: elementoInstanceList, elementoInstanceCount: elementoInstanceCount, params: params]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        elementoInstanceList = getLista(params, false)
-        return [elementoInstanceList: elementoInstanceList, elementoInstanceCount: elementoInstanceCount, params: params]
+
     } //list
 
     def show_ajax() {

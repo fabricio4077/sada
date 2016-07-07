@@ -109,8 +109,16 @@ class MetodologiaController extends Seguridad.Shield {
     } //notFound para ajax
 
     def metodologia () {
-        def metodologia = Metodologia.get(1)
-        return[met: metodologia]
+
+        if (session.perfil.codigo == 'ADMI') {
+            def metodologia = Metodologia.get(1)
+            return[met: metodologia]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
+        }
+
+
     }
 
     def verMetodologia (){

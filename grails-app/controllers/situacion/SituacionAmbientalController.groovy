@@ -117,6 +117,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
     } //notFound para ajax
 
     def situacion () {
+        def creador = session.usuario.apellido + "_" + session.usuario.login
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
@@ -189,9 +190,21 @@ class SituacionAmbientalController extends Seguridad.Shield {
         }
 
 
-        return [pre: pre, situaciones: situaciones, biotico: biotico.first(),
-                fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first(),
-                fisicoDesechos: fisicoDesechos.first(), obau: obau]
+
+
+
+
+        if (creador == pre?.creador) {
+            return [pre: pre, situaciones: situaciones, biotico: biotico.first(),
+                    fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first(),
+                    fisicoDesechos: fisicoDesechos.first(), obau: obau]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+
+
+
     }
 
     def emisor_ajax () {

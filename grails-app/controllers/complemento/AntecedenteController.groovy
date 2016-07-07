@@ -118,7 +118,15 @@ class AntecedenteController extends Seguridad.Shield {
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def ante = Antecedente.findByDetalleAuditoria(detalleAuditoria)
-        return [pre:pre, ante: ante, det: detalleAuditoria]
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+
+        if (creador == pre?.creador) {
+
+            return [pre:pre, ante: ante, det: detalleAuditoria]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
     }
 
 

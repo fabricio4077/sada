@@ -115,17 +115,21 @@ class PlanAccionController extends Seguridad.Shield {
     } //notFound para ajax
 
     def planAccionActual () {
-
+        def creador = session.usuario.apellido + "_" + session.usuario.login
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def objetivo =  Objetivo.findByIdentificador('Plan de Acción')
         def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
-//        def listaCalificaciones = ['NC+','nc-','O']
-//        def calificaciones = Calificacion.findAllBySiglaInList(listaCalificaciones)
-//        def evaluacionesNo = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalleAuditoria,calificaciones)
 
-        return [pre: pre, obau: obau]
+        if (creador == pre?.creador) {
+            return [pre: pre, obau: obau]
+
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+
     }
 
     def tablaPlan_ajax (){

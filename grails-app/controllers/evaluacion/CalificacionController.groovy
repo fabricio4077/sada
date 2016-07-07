@@ -31,7 +31,9 @@ class CalificacionController extends Seguridad.Shield {
         return lista
     }
 
-    def list() {
+    def list(){
+
+    if (session.perfil.codigo == 'ADMI') {
         params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
         def calificacionInstanceList = getLista(params, false)
         def calificacionInstanceCount = getLista(params, true).size()
@@ -40,6 +42,13 @@ class CalificacionController extends Seguridad.Shield {
         }
         calificacionInstanceList = getLista(params, false)
         return [calificacionInstanceList: calificacionInstanceList, calificacionInstanceCount: calificacionInstanceCount, params: params]
+    } else {
+        flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+        response.sendError(403)
+    }
+
+
+
     } //list
 
     def show_ajax() {

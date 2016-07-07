@@ -32,14 +32,21 @@ class DesechosController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def desechosInstanceList = getLista(params, false)
-        def desechosInstanceCount = getLista(params, true).size()
-        if (desechosInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def desechosInstanceList = getLista(params, false)
+            def desechosInstanceCount = getLista(params, true).size()
+            if (desechosInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            desechosInstanceList = getLista(params, false)
+            return [desechosInstanceList: desechosInstanceList, desechosInstanceCount: desechosInstanceCount, params: params]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        desechosInstanceList = getLista(params, false)
-        return [desechosInstanceList: desechosInstanceList, desechosInstanceCount: desechosInstanceCount, params: params]
+
+
     } //list
 
     def show_ajax() {

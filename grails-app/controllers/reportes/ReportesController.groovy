@@ -31,7 +31,15 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
         def arr = ['1','2', '3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20']
-        return [pre:pre, especialista: especialista, arr: arr]
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+
+        if (creador == pre?.creador) {
+            return [pre:pre, especialista: especialista, arr: arr]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+
     }
 
     def fichaTecnicaPdf () {

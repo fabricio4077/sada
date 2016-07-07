@@ -70,21 +70,23 @@
         </div>
     </div>
 
-    <div class="row" style="margin-bottom: 10px">
-        <div class="col-md-2"></div>
-        <a style="float: left" href="#" id="btnRegresar" class="btn btn-primary ${pre ? '' : 'disabled'}" title="Retornar al paso anterior">
-            <i class="fa fa-angle-double-left"></i> Regresar
-        </a>
-        <div class="col-md-5"></div>
-        <a href="#" id="btnContinuar" class="btn btn-success disabled" title="Continuar al siguiente paso">
-            Continuar <i class="fa fa-angle-double-right"></i>
-        </a>
-    </div>
+
+    <nav>
+        <ul class="pager">
+            <li>
+                <a href="#" id="btnRegresar" class="btn btn-primary ${pre ? '' : 'disabled'}" title="Retornar al paso anterior">
+                    <i class="fa fa-angle-double-left"></i> Regresar </a>
+            </li>
+            <li>
+                <a href="#" id="btnContinuar" class="btn btn-success" title="Continuar al siguiente paso">
+                    Continuar <i class="fa fa-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
 </div>
-%{--</div>--}%
-%{--</div>--}%
-%{--</div>--}%
+
 
 <script type="text/javascript">
 

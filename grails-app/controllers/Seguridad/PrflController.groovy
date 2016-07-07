@@ -32,14 +32,21 @@ class PrflController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def prflInstanceList = getLista(params, false)
-        def prflInstanceCount = getLista(params, true).size()
-        if (prflInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def prflInstanceList = getLista(params, false)
+            def prflInstanceCount = getLista(params, true).size()
+            if (prflInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            prflInstanceList = getLista(params, false)
+            return [prflInstanceList: prflInstanceList, prflInstanceCount: prflInstanceCount, params: params]
+
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        prflInstanceList = getLista(params, false)
-        return [prflInstanceList: prflInstanceList, prflInstanceCount: prflInstanceCount, params: params]
+
     } //list
 
     def show_ajax() {

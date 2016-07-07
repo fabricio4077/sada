@@ -32,18 +32,25 @@ class ArticuloController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def articuloInstanceList = getLista(params, false)
-        def articuloInstanceCount = getLista(params, true).size()
-        if (articuloInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+        if (session.perfil.codigo == 'ADMI') {
+
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def articuloInstanceList = getLista(params, false)
+            def articuloInstanceCount = getLista(params, true).size()
+            if (articuloInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            articuloInstanceList = getLista(params, false)
+
+            def mctp = MarcoNorma.list()
+
+
+            return [articuloInstanceList: articuloInstanceList, articuloInstanceCount: articuloInstanceCount, params: params, mctp: mctp]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        articuloInstanceList = getLista(params, false)
 
-        def mctp = MarcoNorma.list()
-
-
-        return [articuloInstanceList: articuloInstanceList, articuloInstanceCount: articuloInstanceCount, params: params, mctp: mctp]
     } //list
 
     def show_ajax() {

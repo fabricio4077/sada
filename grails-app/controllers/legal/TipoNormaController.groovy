@@ -34,14 +34,23 @@ class TipoNormaController extends Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def tipoNormaInstanceList = getLista(params, false)
-        def tipoNormaInstanceCount = getLista(params, true).size()
-        if(tipoNormaInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def tipoNormaInstanceList = getLista(params, false)
+            def tipoNormaInstanceCount = getLista(params, true).size()
+            if(tipoNormaInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            tipoNormaInstanceList = getLista(params, false)
+            return [tipoNormaInstanceList: tipoNormaInstanceList, tipoNormaInstanceCount: tipoNormaInstanceCount, params: params]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        tipoNormaInstanceList = getLista(params, false)
-        return [tipoNormaInstanceList: tipoNormaInstanceList, tipoNormaInstanceCount: tipoNormaInstanceCount, params: params]
+
+
+
     } //list
 
     def show_ajax() {

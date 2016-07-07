@@ -12,8 +12,9 @@ class ShieldController {
     }
 
     def notFound = {
-        println ""
-        def msn = "Esta tratando de ingresar a una accion no registrada en el sistema. Por favor use las opciones del menu para navegar por el sistema."
+//        println ""
+//        def msn = "Esta tratando de ingresar a una accion no registrada en el sistema. Por favor use las opciones del menu para navegar por el sistema."
+        def msn = "La página solicitada no está disponible."
         return [msn: msn]
     }
 

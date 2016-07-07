@@ -41,14 +41,25 @@ class ConsultoraController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def consultoraInstanceList = getLista(params, false)
-        def consultoraInstanceCount = getLista(params, true).size()
-        if(consultoraInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+
+        if (session.perfil.codigo == 'ADMI') {
+
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def consultoraInstanceList = getLista(params, false)
+            def consultoraInstanceCount = getLista(params, true).size()
+            if(consultoraInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            consultoraInstanceList = getLista(params, false)
+            return [consultoraInstanceList: consultoraInstanceList, consultoraInstanceCount: consultoraInstanceCount, params: params]
+
+
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        consultoraInstanceList = getLista(params, false)
-        return [consultoraInstanceList: consultoraInstanceList, consultoraInstanceCount: consultoraInstanceCount, params: params]
+
+
     } //list
 
     def show_ajax() {

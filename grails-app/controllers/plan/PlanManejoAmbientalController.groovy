@@ -40,14 +40,20 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def planManejoAmbientalInstanceList = getLista(params, false)
-        def planManejoAmbientalInstanceCount = getLista(params, true).size()
-        if(planManejoAmbientalInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def planManejoAmbientalInstanceList = getLista(params, false)
+            def planManejoAmbientalInstanceCount = getLista(params, true).size()
+            if(planManejoAmbientalInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            planManejoAmbientalInstanceList = getLista(params, false)
+            return [planManejoAmbientalInstanceList: planManejoAmbientalInstanceList, planManejoAmbientalInstanceCount: planManejoAmbientalInstanceCount, params: params]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        planManejoAmbientalInstanceList = getLista(params, false)
-        return [planManejoAmbientalInstanceList: planManejoAmbientalInstanceList, planManejoAmbientalInstanceCount: planManejoAmbientalInstanceCount, params: params]
+
     } //list
 
     def show_ajax() {
@@ -463,7 +469,17 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
                 lt('fin',periodoActual)
             }
         }
-        return [pre:pre, anteriores: anteriores, detalle: detalleAuditoria]
+
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+
+        if (creador == pre?.creador) {
+            return [pre:pre, anteriores: anteriores, detalle: detalleAuditoria]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+
+
     }
 
     def verificarExistente_ajax () {

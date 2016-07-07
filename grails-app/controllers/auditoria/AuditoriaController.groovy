@@ -1,5 +1,8 @@
 package auditoria
 
+import Seguridad.Persona
+import consultor.Asignados
+import estacion.Coordenadas
 import objetivo.Objetivo
 import objetivo.ObjetivosAuditoria
 import plan.PlanAuditoria
@@ -114,14 +117,19 @@ class AuditoriaController extends Seguridad.Shield {
 
 
     def objetivos (){
-
-        println("params ob " + params)
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+//        println("params ob " + params)
         def pre = Preauditoria.get(params.id)
         def objetivoGeneral = Objetivo.findByTipo("General")
         def objetivosEspecificos = Objetivo.findAllByTipo("Específico")
         def auditoria = Auditoria.findByPreauditoria(pre)
 
-        return [general: objetivoGeneral, especificos: objetivosEspecificos, pre: pre, auditoria: auditoria]
+        if (creador == pre?.creador) {
+            return [general: objetivoGeneral, especificos: objetivosEspecificos, pre: pre, auditoria: auditoria]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
 
     }
 
@@ -219,7 +227,14 @@ class AuditoriaController extends Seguridad.Shield {
     def leyes () {
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
-        return [pre: pre, auditoria: auditoria]
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+
+        if (creador == pre?.creador) {
+            return [pre: pre, auditoria: auditoria]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
     }
 
     def cronograma (){
@@ -232,10 +247,17 @@ class AuditoriaController extends Seguridad.Shield {
         def planes = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodoAndMedidaIsNotNull(detalleAuditoria,per)
         def colores = ['#ef3724','#ffa61a','#1ab1ff',' #fd4fda','#567b24']
 
-//        println("planes " + planes)
 
+        def creador = session.usuario.apellido + "_" + session.usuario.login
 
-        return [pre:pre, planes: planes, colores: colores]
+        if (creador == pre?.creador) {
+
+            return [pre:pre, planes: planes, colores: colores]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+
 
     }
 

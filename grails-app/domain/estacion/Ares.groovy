@@ -1,5 +1,7 @@
 package estacion
 
+import auditoria.Preauditoria
+
 class Ares {
     static auditable = true
     Estacion estacion
@@ -8,6 +10,7 @@ class Ares {
     String foto2
     String foto3
     String descripcion
+    Preauditoria preauditoria
 
     static mapping = {
         table 'ares'
@@ -22,6 +25,7 @@ class Ares {
             foto1 column: 'aresfto1'
             foto2 column: 'aresfto2'
             foto3 column: 'aresfto3'
+            preauditoria column: 'prau__id'
 
         }
     }

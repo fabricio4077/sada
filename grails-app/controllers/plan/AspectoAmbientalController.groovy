@@ -32,14 +32,20 @@ class AspectoAmbientalController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def aspectoAmbientalInstanceList = getLista(params, false)
-        def aspectoAmbientalInstanceCount = getLista(params, true).size()
-        if (aspectoAmbientalInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def aspectoAmbientalInstanceList = getLista(params, false)
+            def aspectoAmbientalInstanceCount = getLista(params, true).size()
+            if (aspectoAmbientalInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            aspectoAmbientalInstanceList = getLista(params, false)
+            return [aspectoAmbientalInstanceList: aspectoAmbientalInstanceList, aspectoAmbientalInstanceCount: aspectoAmbientalInstanceCount, params: params]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        aspectoAmbientalInstanceList = getLista(params, false)
-        return [aspectoAmbientalInstanceList: aspectoAmbientalInstanceList, aspectoAmbientalInstanceCount: aspectoAmbientalInstanceCount, params: params]
+
     } //list
 
     def show_ajax() {

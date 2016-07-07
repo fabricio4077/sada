@@ -16,96 +16,96 @@
 
 
 <div class="panel panel-info">
-<div class="panel-heading">
-    <h3 class="panel-title" style="text-align: center"><i class="fa fa-pencil-square"></i> Paso 1: Selección del tipo de auditoría y período</h3>
-</div>
+    <div class="panel-heading">
+        <h3 class="panel-title" style="text-align: center"><i class="fa fa-pencil-square"></i> Paso 1: Selección del tipo de auditoría y período</h3>
+    </div>
 
     <i class="fa fa-pencil-square fa-5x text-info" style="float: left; margin-left: 60px;"></i>
 
 
-        <div style="margin-top: 30px; width: 600px; margin-left: 150px" class="vertical-container">
-            <p class="css-vertical-text" style="margin-top: -10px;">Tipo</p>
-            <div class="linea"></div>
-            <div class="row">
-                <div class="col-xs-2 negrilla control-label">Tipo: </div>
-                <div class="col-md-6" style="margin-bottom: 45px">
-                    <g:select id="tipo" name="tipo_name" from="${tipo.Tipo.list([sort: 'descripcion'])}" optionKey="id"
-                              optionValue="descripcion" class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
-                              value="${pre?.tipo?.id}" disabled="${pre?.estacion ? true : false}"/>
-                </div>
+    <div style="margin-top: 30px; width: 600px; margin-left: 150px" class="vertical-container">
+        <p class="css-vertical-text" style="margin-top: -10px;">Tipo</p>
+        <div class="linea"></div>
+        <div class="row">
+            <div class="col-xs-2 negrilla control-label">Tipo: </div>
+            <div class="col-md-6" style="margin-bottom: 45px">
+                <g:select id="tipo" name="tipo_name" from="${tipo.Tipo.list([sort: 'descripcion'])}" optionKey="id"
+                          optionValue="descripcion" class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
+                          value="${pre?.tipo?.id}" disabled="${pre?.estacion ? true : false}"/>
+            </div>
 
-                <div class="descripcion hidden">
-                    <h4>Ayuda</h4>
-                    <p>Las auditorías pueden ser de tres tipos: <br>
-                        Inicio<br>
-                        Licenciammiento<br>
-                        Cumplimiento<br>
+            <div class="descripcion hidden">
+                <h4>Ayuda</h4>
+                <p>Las auditorías pueden ser de tres tipos: <br>
+                    Inicio<br>
+                    Licenciammiento<br>
+                    Cumplimiento<br>
                     %{--* Si necesita crear un tipo adicional de auditoría comuniquese con el administrador del sistema</p>--}%
-                </div>
-
-                %{--<g:if test="${session.perfil.codigo == 'ADMI'}">--}%
-                    %{--<a href="#" id="btnTipo" class="btn btn-primary" title="Agregar un tipo">--}%
-                        %{--<i class="fa fa-plus"> Agregar</i>--}%
-                    %{--</a>--}%
-                %{--</g:if>--}%
-
-                <a href="#" id="btnAyudaTipo" class="btn btn-info over" title="Ayuda">
-                    <i class="fa fa-exclamation"></i>
-                </a>
             </div>
-        </div>
 
-                <div class="col-md-4" style="float: right; margin-top: -80px">
-                    <div class="panel panel-info right hidden">
-                        <div class="panel-heading">
-                            <h3 class="panel-title" style="color: #000033"></h3>
-                        </div>
+            %{--<g:if test="${session.perfil.codigo == 'ADMI'}">--}%
+            %{--<a href="#" id="btnTipo" class="btn btn-primary" title="Agregar un tipo">--}%
+            %{--<i class="fa fa-plus"> Agregar</i>--}%
+            %{--</a>--}%
+            %{--</g:if>--}%
 
-                        <div class="panel-body"> </div>
-                    </div>
-                </div>
-
-
-        <div style="margin-top: 30px; width: 600px; margin-left: 150px" class="vertical-container">
-            <p class="css-vertical-text" style="margin-top: -10px;">Período</p>
-            <div class="linea"></div>
-            <div class="row">
-                <div class="col-md-2 negrilla control-label">Período: </div>
-                <div class="col-md-6" style="margin-bottom: 45px">
-                    <g:select id="periodo" name="periodo_name" from="${tipo.Periodo.list([sort: 'inicio', order: 'asc' ])}" optionKey="id"
-                              optionValue="${{it?.inicio?.format("yyyy") + '  -  '+ it?.fin?.format("yyyy") }}"
-                              class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
-                              style="text-align: center" value="${pre?.periodo?.id}" disabled="${pre?.estacion ? true : false}"/>
-                </div>
-
-                <div class="descripcion hidden">
-                    <h4>Ayuda</h4>
-                    <p>Período en el que se va a realizar la auditoría
-                    </p>
-                </div>
-                <a href="#" id="btnPeriodo" class="btn btn-primary ${pre?.estacion ? 'disabled' : ''}" title="Agregar un período" >
-                    <i class="fa fa-plus"> Agregar</i>
-                </a>
-                <a href="#" id="btnAyudaPeriodo" class="btn btn-info over" title="Ayuda">
-                    <i class="fa fa-exclamation"></i>
-                </a>
-            </div>
-        </div>
-
-
-        <div class="row"  style="margin-bottom: 10px">
-            <div class="col-md-5"></div>
-            <a href="#" id="btnContinuar" class="btn btn-success ${pre ? '' : 'disabled'}" title="Continuar">
-                Continuar <i class="fa fa-angle-double-right"></i>
+            <a href="#" id="btnAyudaTipo" class="btn btn-info over" title="Ayuda">
+                <i class="fa fa-exclamation"></i>
             </a>
         </div>
+    </div>
+
+    <div class="col-md-4" style="float: right; margin-top: -80px">
+        <div class="panel panel-info right hidden">
+            <div class="panel-heading">
+                <h3 class="panel-title" style="color: #000033"></h3>
+            </div>
+
+            <div class="panel-body"> </div>
+        </div>
+    </div>
+
+
+    <div style="margin-top: 30px; width: 600px; margin-left: 150px" class="vertical-container">
+        <p class="css-vertical-text" style="margin-top: -10px;">Período</p>
+        <div class="linea"></div>
+        <div class="row">
+            <div class="col-md-2 negrilla control-label">Período: </div>
+            <div class="col-md-6" style="margin-bottom: 45px">
+                <g:select id="periodo" name="periodo_name" from="${tipo.Periodo.list([sort: 'inicio', order: 'asc' ])}" optionKey="id"
+                          optionValue="${{it?.inicio?.format("yyyy") + '  -  '+ it?.fin?.format("yyyy") }}"
+                          class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
+                          style="text-align: center" value="${pre?.periodo?.id}" disabled="${pre?.estacion ? true : false}"/>
+            </div>
+
+            <div class="descripcion hidden">
+                <h4>Ayuda</h4>
+                <p>Período en el que se va a realizar la auditoría
+                </p>
+            </div>
+            <a href="#" id="btnPeriodo" class="btn btn-primary ${pre?.estacion ? 'disabled' : ''}" title="Agregar un período" >
+                <i class="fa fa-plus"> Agregar</i>
+            </a>
+            <a href="#" id="btnAyudaPeriodo" class="btn btn-info over" title="Ayuda">
+                <i class="fa fa-exclamation"></i>
+            </a>
+        </div>
+    </div>
+
+
+    <nav>
+        <ul class="pager">
+            <li>
+                <a href="#" id="btnContinuar" class="btn btn-success ${pre ? '' : 'disabled'}" title="Continuar">
+                    Continuar <i class="fa fa-angle-double-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+
 </div>
-
-    %{--</div>--}%
-
-%{--</div>--}%
-%{--</div>--}%
-
 
 <script type="text/javascript">
 
@@ -122,36 +122,36 @@
     });
 
     $("#btnTipo").click(function () {
-            $.ajax({
-                type    : "POST",
-                url     : "${createLink(controller: 'tipo', action:'form_ajax')}",
-                success : function (msg) {
-                    var b = bootbox.dialog({
-                        id      : "dlgCrearTipo",
-                        title   : "Tipo de auditoría",
-                        message : msg,
-                        buttons : {
-                            cancelar : {
-                                label     : "Cancelar",
-                                className : "btn-primary",
-                                callback  : function () {
-                                }
-                            },
-                            guardar  : {
-                                id        : "btnSave",
-                                label     : "<i class='fa fa-save'></i> Guardar",
-                                className : "btn-success",
-                                callback  : function () {
-                                    return submitForm();
-                                } //callback
-                            } //guardar
-                        } //buttons
-                    }); //dialog
-                    setTimeout(function () {
-                        b.find(".form-control").first().focus()
-                    }, 500);
-                } //success
-            }); //ajax
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'tipo', action:'form_ajax')}",
+            success : function (msg) {
+                var b = bootbox.dialog({
+                    id      : "dlgCrearTipo",
+                    title   : "Tipo de auditoría",
+                    message : msg,
+                    buttons : {
+                        cancelar : {
+                            label     : "Cancelar",
+                            className : "btn-primary",
+                            callback  : function () {
+                            }
+                        },
+                        guardar  : {
+                            id        : "btnSave",
+                            label     : "<i class='fa fa-save'></i> Guardar",
+                            className : "btn-success",
+                            callback  : function () {
+                                return submitForm();
+                            } //callback
+                        } //guardar
+                    } //buttons
+                }); //dialog
+                setTimeout(function () {
+                    b.find(".form-control").first().focus()
+                }, 500);
+            } //success
+        }); //ajax
     });
 
     function submitForm() {
@@ -180,13 +180,13 @@
     }
 
 
-//    $("#btnAyudaTipo").click(function () {
-//       bootbox.alert("Las auditorías pueden ser de tres tipos: <br><br>" +
-//               "<li>Licenciamiento <br>" +
-//               "<li>Cumplimiento<br>" +
-//               "<li>............<br><br>" +
-//               "* Si necesita crear un tipo adicional de auditoría comuniquese con el administrador del sistema")
-//    });
+    //    $("#btnAyudaTipo").click(function () {
+    //       bootbox.alert("Las auditorías pueden ser de tres tipos: <br><br>" +
+    //               "<li>Licenciamiento <br>" +
+    //               "<li>Cumplimiento<br>" +
+    //               "<li>............<br><br>" +
+    //               "* Si necesita crear un tipo adicional de auditoría comuniquese con el administrador del sistema")
+    //    });
 
 
     //funcion para guardar el periodo
@@ -214,7 +214,7 @@
                             callback  : function () {
 //                                var fecha1 = $("#inicioDate").val();
 //                                console.log("fecha 1" + fecha1);
-                                    return submitFormPeriodo();
+                                return submitFormPeriodo();
 
                             } //callback
                         } //guardar
@@ -253,9 +253,9 @@
     }
 
 
-//    $("#btnAyudaPeriodo").click(function () {
-//        bootbox.alert("Período en el que se va a realizar la Auditoría")
-//    });
+    //    $("#btnAyudaPeriodo").click(function () {
+    //        bootbox.alert("Período en el que se va a realizar la Auditoría")
+    //    });
 
 
     //activacion del botón continuar al seleccionar los combos

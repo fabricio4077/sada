@@ -33,14 +33,21 @@ class NormaController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def normaInstanceList = getLista(params, false)
-        def normaInstanceCount = getLista(params, true).size()
-        if (normaInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def normaInstanceList = getLista(params, false)
+            def normaInstanceCount = getLista(params, true).size()
+            if (normaInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            normaInstanceList = getLista(params, false)
+            return [normaInstanceList: normaInstanceList, normaInstanceCount: normaInstanceCount, params: params]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        normaInstanceList = getLista(params, false)
-        return [normaInstanceList: normaInstanceList, normaInstanceCount: normaInstanceCount, params: params]
+
     } //list
 
     def show_ajax() {

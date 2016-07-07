@@ -116,7 +116,14 @@ class AlcanceController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def alc = Alcance.findByAuditoria(audi)
-        return [pre:pre, alc: alc, audi: audi]
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+
+        if (creador == pre?.creador) {
+            return [pre:pre, alc: alc, audi: audi]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
     }
 
     def guardarAlcance_ajax () {

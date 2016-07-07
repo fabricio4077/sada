@@ -46,14 +46,23 @@ class AreaController extends Seguridad.Shield {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
-        def areaInstanceList = getLista(params, false)
-        def areaInstanceCount = getLista(params, true).size()
-        if (areaInstanceList.size() == 0 && params.offset && params.max) {
-            params.offset = params.offset - params.max
+
+        if (session.perfil.codigo == 'ADMI') {
+            params.max = Math.min(params.max ? params.max.toInteger() : 10, 100)
+            def areaInstanceList = getLista(params, false)
+            def areaInstanceCount = getLista(params, true).size()
+            if (areaInstanceList.size() == 0 && params.offset && params.max) {
+                params.offset = params.offset - params.max
+            }
+            areaInstanceList = getLista(params, false)
+            return [areaInstanceList: areaInstanceList, areaInstanceCount: areaInstanceCount, params: params]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su perfil."
+            response.sendError(403)
         }
-        areaInstanceList = getLista(params, false)
-        return [areaInstanceList: areaInstanceList, areaInstanceCount: areaInstanceCount, params: params]
+
+
+
     } //list
 
     def show_ajax() {
@@ -123,11 +132,24 @@ class AreaController extends Seguridad.Shield {
     } //notFound para ajax
 
     def areas () {
+        def creador = session.usuario.apellido + "_" + session.usuario.login
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def objetivo =  Objetivo.findByIdentificador('Evaluar Áreas de la Estación')
         def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
-        return [pre:pre, obau: obau]
+
+//        println("obau " + obau)
+
+        if (creador == pre?.creador) {
+            if(obau){
+                return [pre:pre, obau: obau]
+            }else{
+                response.sendError(404)
+            }
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
     }
 
 
