@@ -472,19 +472,20 @@ class PreauditoriaController extends Seguridad.Shield {
         def listaAuditorias
 
         if (params.fecha) {
-            params.fechaIni = new Date().parse("dd-MM-yyyy HH:mm:ss", params.fecha + " 00:00:00")
-            params.fechaFin = new Date().parse("dd-MM-yyyy HH:mm:ss", params.fecha + " 23:59:59")
+            params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
         }
 
-        println("params tabla " + params)
+//        println("params tabla " + params)
 
         if(!params.estacion && !params.tipo){
-            listaAuditorias = Preauditoria.findAllByCreadorAndEstado(creador, 1, [sort:"creador", order:'desc'])
+            listaAuditorias = Preauditoria.findAllByCreadorAndEstado(creador, 1, [sort:"estacion.nombre", order:'desc'])
         }else{
             def t = Tipo.get(params.tipo)
 
             listaAuditorias = Preauditoria.withCriteria {
                 eq("tipo", t)
+                eq("estado",1)
+                eq("creador", creador)
 
                 if(params.estacion){
                     estacion{
@@ -493,13 +494,95 @@ class PreauditoriaController extends Seguridad.Shield {
                 }
 
                 if(params.fecha){
-                        gt('fechaCreacion', params.fechaIni)
-                        lt('fechaCreacion', params.fechaFin)
+                    between('fechaCreacion',params.fecha,params.fecha)
                 }
+
+                order ("estacion")
             }
         }
 
 
+        //revisar avance
+
+        def porcentaje
+        def obau
+        def audi
+        listaAuditorias.each {li->
+            porcentaje = 0
+            if(li.estacion){
+                porcentaje += 5
+            }
+            audi = Auditoria.findByPreauditoria(li)
+            obau = ObjetivosAuditoria.findAllByAuditoria(audi)
+
+            obau.each {ob->
+                if(ob?.objetivo?.identificador == 'Evaluar Áreas de la Estación' && ob?.completado == 1){
+                    porcentaje += 15
+                }
+                if(ob?.objetivo?.identificador == 'Evaluación Ambiental' && ob?.completado == 1){
+                    porcentaje += 35
+                }
+                if(ob?.objetivo?.identificador == 'Plan de Acción' && ob?.completado == 1){
+                    porcentaje += 15
+                }
+                if(ob?.objetivo?.identificador == 'Situación Ambiental' && ob?.completado == 1){
+                    porcentaje += 10
+                }
+                if(ob?.objetivo?.identificador == 'PMA' && ob?.completado == 1){
+                    porcentaje += 10
+                }
+                if(ob?.objetivo?.identificador == 'Cronograma' && ob?.completado == 1){
+                    porcentaje += 5
+                }
+                if(ob?.objetivo?.identificador == 'Recomendaciones' && ob?.completado == 1){
+                    porcentaje += 5
+                }
+            }
+
+            li.avance = porcentaje
+            try{
+                li.save(flush: true)
+            }catch (e){
+                println("error al asignar el porcentaje de la auditoria " + li.errors)
+            }
+        }
+
+        return [lista: listaAuditorias]
+    }
+
+    def tablaAuditoriaGeneral_ajax() {
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def listaAuditorias
+
+        if (params.fecha) {
+            params.fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+        }
+
+//        println("params tabla " + params)
+
+        if(!params.estacion && !params.tipo){
+            listaAuditorias = Preauditoria.findAllByEstado(1, [sort:"creador", order:'asc'])
+        }else{
+            def t = Tipo.get(params.tipo)
+
+            listaAuditorias = Preauditoria.withCriteria {
+                eq("tipo", t)
+                eq("estado",1)
+//                eq("creador", creador)
+
+                if(params.estacion){
+                    estacion{
+                        ilike('nombre', '%' + params.estacion + '%')
+                    }
+                }
+
+                if(params.fecha){
+                    between('fechaCreacion',params.fecha,params.fecha)
+                }
+
+                order ("creador")
+            }
+        }
 
 
         //revisar avance
