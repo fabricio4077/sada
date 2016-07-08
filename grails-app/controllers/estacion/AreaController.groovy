@@ -154,11 +154,10 @@ class AreaController extends Seguridad.Shield {
 
 
     def comboArea_ajax () {
-
+        def pre = Preauditoria.get(params.id)
         def estacion = Preauditoria.get(params.id).estacion
         def listaAreas = Area.list([sort: 'nombre', order: 'asc'])
-        def areasEstacion = Ares.findAllByEstacion(estacion).area
-
+        def areasEstacion = Ares.findAllByEstacionAndPreauditoria(estacion,pre).area
         def comunes = listaAreas.intersect(areasEstacion)
         def diferentes = listaAreas.plus(areasEstacion)
         diferentes.removeAll(comunes)
@@ -172,19 +171,21 @@ class AreaController extends Seguridad.Shield {
     def acordeonAreas_ajax () {
         def pre = Preauditoria.get(params.id)
         def estacion = pre.estacion
-        def areasEstacion = Ares.findAllByEstacion(estacion, [sort: 'area.nombre', order: 'asc'])
+        def areasEstacion = Ares.findAllByEstacionAndPreauditoria(estacion,pre, [sort: 'area.nombre', order: 'asc'])
 
         return [areas: areasEstacion, pre: pre]
     }
 
     def asignarArea_ajax () {
 //        println("params asign area " + params)
+        def pre = Preauditoria.get(params.id)
         def estacion = Preauditoria.get(params.id).estacion
         def area = Area.get(params.area)
 
         def aresInstance = new Ares()
         aresInstance.estacion = estacion
         aresInstance.area = area
+        aresInstance.preauditoria = pre
 
         try{
             aresInstance.save(flush: true)
@@ -196,7 +197,7 @@ class AreaController extends Seguridad.Shield {
     }
 
     def eliminarArea_ajax () {
-        println("params eliminar area " + params)
+//        println("params eliminar area " + params)
         def areaEstacion = Ares.get(params.id)
         try{
             areaEstacion.delete(flush: true)
@@ -209,7 +210,7 @@ class AreaController extends Seguridad.Shield {
     }
 
     def uploadFile() {
-        println("params upload " + params)
+//        println("params upload " + params)
         def path = servletContext.getRealPath("/") + "images/areas/"    //web-app/images/areas
         new File(path).mkdirs()
         def dia = new Date().format("dd-MM-yyyy_HH_mm_ss").toString()

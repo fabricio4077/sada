@@ -190,10 +190,6 @@ class SituacionAmbientalController extends Seguridad.Shield {
         }
 
 
-
-
-
-
         if (creador == pre?.creador) {
             return [pre: pre, situaciones: situaciones, biotico: biotico.first(),
                     fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first(),
@@ -236,7 +232,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
 
         def area = Area.findByCodigo('GNRD')
-        def existe = Ares.findByAreaAndEstacion(area, pre.estacion)
+        def existe = Ares.findByAreaAndEstacionAndPreauditoria(area, pre.estacion,pre)
 
         def componente = ComponenteAmbiental.get(1)
         def situacion = SituacionAmbiental.findByDetalleAuditoriaAndComponenteAmbiental(detalleAuditoria, componente)

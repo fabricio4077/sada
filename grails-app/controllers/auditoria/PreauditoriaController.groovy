@@ -221,11 +221,13 @@ class PreauditoriaController extends Seguridad.Shield {
         def creador = session.usuario.apellido + "_" + session.usuario.login
         def paso1 = Preauditoria.get(params.id)
 
-        if (creador == paso1?.creador) {
-            return [pre: paso1]
-        } else {
-            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
-            response.sendError(403)
+        if(paso1){
+            if (creador == paso1?.creador) {
+                return [pre: paso1]
+            } else {
+                flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+                response.sendError(403)
+            }
         }
 
     }

@@ -8,6 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
+    <script src="${resource(dir: 'js/plugins/proj4js-2.3.14/dist', file: 'proj4.js')}"></script>
+
+
     <meta name="layout" content="mainSada"/>
     <title>Creando una Auditoría - Paso 3</title>
 
@@ -107,13 +110,32 @@
 
 <script>
 
+    var utm = "+proj=utm +zone=17";
+    var wgs84 = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs";
+//    console.log(proj4(utm,wgs84,[539884, 4942158]));
+//    console.log(proj4(utm,wgs84,[818649, 38290]));
+
     var map;
+    var lt
+    var lg
+
+    <g:if test="${coor.size() > 0}">
+//    lt = proj4(utm,wgs84,[818649, 38290])[1];
+//    lg = proj4(utm,wgs84,[818649, 38290])[0];
+    lt = proj4(utm,wgs84,[${coor.first().coordenadasX.toInteger()}, ${coor.first().coordenadasY.toInteger()}])[1];
+    lg = proj4(utm,wgs84,[${coor.first().coordenadasX.toInteger()}, ${coor.first().coordenadasY.toInteger()}])[0];
+    </g:if>
+    <g:else>
+
+    </g:else>
+
+
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
 //            center: {lat: 36.964, lng: -122.015},
 //            center: {lat: 0.345986458369604, lng: -78.13752948285801},
-            center: {lat: 82.446944, lng: -4.391667},
+            center: {lat: lt, lng: lg},
 //                center: {lat: 818.649, lng:38.290 },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
 //            mapTypeId: google.maps.MapTypeId.SATELLITE,
@@ -139,45 +161,6 @@
 
 
 <script type="text/javascript">
-
-
-    //funcion utm a wgs84
-
-//    function transformarCoordenadas (UtmX, UtmY, zona) {
-//
-//        var fi, ni, mc, se, sd, a, a1, a2, j2, j4, j6, alfa, beta, ganma, bfi, b, zeta, xi, eta, sxi, delta, tau, sexas, radiantes;
-//
-//        fi= UtmY / (6366197.724*0.9996);
-//        ni= (6399593.626/Power((1+0.006739497*sqr(cos(fi))), 0.5))*0.9996;
-//        mc= (6*zona-183);
-//        se= UtmY;
-//        a= (UtmX-500000)/ni;
-//        a1= sin(2*fi);
-//        a2= a1*Power((COS(fi)), 2);
-//        j2= fi+(a1/2);
-//        j4= (3*j2+a2)/4;
-//        j6= (5*j4+a2*Power((COS(fi)),2))/3;
-//        alfa= (3/4)*0.006739497;
-//        beta= (5/3)*Power(alfa, 2);
-//        ganma= (35/27)*Power(alfa, 3);
-//        bfi= 0.9996*6399593.626*(fi-(alfa*j2)+(beta*j4)-(ganma*j6));
-//        b= (se-bfi)/ni;
-//        zeta= ((0.006739497*Power(a,2))/2)*Power(COS(fi),2);
-//        xi= a*(1-(zeta/3));
-//        eta= b*(1-zeta)+fi;
-//        sxi= (EXP(xi)-EXP(-xi))/2;
-//        delta= arcTAN(sxi/COS(eta));
-//        sd= +(delta/PI)*180+mc;
-//        tau= ARCTAN(COS(delta)*TAN(eta));
-//        radiantes= fi+(1+0.006739497*Power(COS(fi),2)-(3/2)*0.006739497*sin(fi)*COS(fi)*(tau-fi))*(tau-fi);
-//        sexas= +(radiantes/PI)*180;
-//
-////        utmtogeo= floattostr(sexas)+'&'+floattostr(sd);
-//
-//
-//    }
-
-
 
     //botón de regreso al paso anterior 2
 
