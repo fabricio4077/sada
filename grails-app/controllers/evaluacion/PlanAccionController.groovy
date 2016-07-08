@@ -122,7 +122,7 @@ class PlanAccionController extends Seguridad.Shield {
         def objetivo =  Objetivo.findByIdentificador('Plan de Acción')
         def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
 
-        if (creador == pre?.creador) {
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre: pre, obau: obau]
 
         } else {

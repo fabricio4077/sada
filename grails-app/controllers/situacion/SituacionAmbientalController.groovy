@@ -190,7 +190,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
         }
 
 
-        if (creador == pre?.creador) {
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre: pre, situaciones: situaciones, biotico: biotico.first(),
                     fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first(),
                     fisicoDesechos: fisicoDesechos.first(), obau: obau]

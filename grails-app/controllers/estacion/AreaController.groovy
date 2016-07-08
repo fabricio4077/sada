@@ -140,7 +140,7 @@ class AreaController extends Seguridad.Shield {
 
 //        println("obau " + obau)
 
-        if (creador == pre?.creador) {
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             if(obau){
                 return [pre:pre, obau: obau]
             }else{

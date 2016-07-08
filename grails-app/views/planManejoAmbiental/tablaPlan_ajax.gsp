@@ -132,7 +132,7 @@
                         idAs: idAspecto
                    },
                    success: function (msg){
-                       if(msg == 'ok'){
+                       if(${band == 'false'}){
                            $.ajax({
                                type: 'POST',
                                url: '${createLink(controller: 'planManejoAmbiental', action: 'quitarMedida_Ajax')}',
@@ -149,7 +149,26 @@
                                }
                            });
                        }else{
-                            log("No es posible borrar la Medida, este Aspecto Ambiental ya está siendo evaluado!","error")
+                           if(msg == 'ok'){
+                               $.ajax({
+                                   type: 'POST',
+                                   url: '${createLink(controller: 'planManejoAmbiental', action: 'quitarMedida_Ajax')}',
+                                   data:{
+                                       id: idAspecto
+                                   },
+                                   success: function (msg) {
+                                       if(msg == 'ok'){
+                                           log("Medida retirada correctamente","success");
+                                           cargarTablaPlanes(${pre?.id}, ${band});
+                                       }else{
+                                           log("Error al retirar la medida","error")
+                                       }
+                                   }
+                               });
+                           }else{
+                               log("No es posible borrar la Medida, este Aspecto Ambiental ya está siendo evaluado!","error")
+                           }
+
                        }
                    }
 

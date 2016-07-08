@@ -20,14 +20,14 @@
     </div>
     <div class="well" style="text-align: center; height: 200px">
 
-        <g:if test="${anteriores}">
+        <g:if test="${planesAnteriores}">
             <div class="row">
                 <div class="col-md-4 negrilla control-label">Seleccionar el Plan de Manejo Ambiental (anterior) :
                 </div>
 
                 <div class="col-md-4">
                     <g:select name="anteriores_name" class="form-control"
-                              from="${anteriores}" id="anteriores"
+                              from="${planesAnteriores}" id="anteriores"
                               optionValue="${{it?.tipo?.descripcion + " - Período: " + it?.periodo?.inicio?.format("yyyy") + " - " + it?.periodo?.fin?.format("yyyy")}}" optionKey="id"/>
                     <a href="#" id="btnSeleccionarPlan" class="btn btn-info" title="" style="margin-bottom: 20px; margin-top: 10px">
                         <i class="fa fa-check"></i> Seleccionar PMA
@@ -60,7 +60,7 @@
             if(result){
                 $.ajax({
                     type: 'POST',
-                    url: '${createLink(controller: 'planManejoAmbiental', action: 'asociarPlanEvam_ajax')}',
+                    url: '${createLink(controller: 'planManejoAmbiental', action: 'asociarPMA_ajax')}',
                     data:{
                         id: anterior,
                         actual: ${pre?.id}
@@ -69,6 +69,9 @@
                         var parts = msg.split("_");
                         if(parts[0] == 'ok'){
                             log(parts[1],'success');
+                            setTimeout(function () {
+                                location.href="${createLink(controller: 'planManejoAmbiental', action: 'planManejoAmbiental')}?id=" + ${pre?.id} + "&band=" + false
+                            }, 1500);
                         }else{
                             log(parts[1],'error');
                         }

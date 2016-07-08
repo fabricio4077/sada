@@ -120,7 +120,7 @@ class AntecedenteController extends Seguridad.Shield {
         def ante = Antecedente.findByDetalleAuditoria(detalleAuditoria)
         def creador = session.usuario.apellido + "_" + session.usuario.login
 
-        if (creador == pre?.creador) {
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
 
             return [pre:pre, ante: ante, det: detalleAuditoria]
         } else {

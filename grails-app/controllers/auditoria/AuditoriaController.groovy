@@ -124,7 +124,7 @@ class AuditoriaController extends Seguridad.Shield {
         def objetivosEspecificos = Objetivo.findAllByTipo("Específico")
         def auditoria = Auditoria.findByPreauditoria(pre)
 
-        if (creador == pre?.creador) {
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [general: objetivoGeneral, especificos: objetivosEspecificos, pre: pre, auditoria: auditoria]
         } else {
             flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
@@ -229,7 +229,7 @@ class AuditoriaController extends Seguridad.Shield {
         def auditoria = Auditoria.findByPreauditoria(pre)
         def creador = session.usuario.apellido + "_" + session.usuario.login
 
-        if (creador == pre?.creador) {
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre: pre, auditoria: auditoria]
         } else {
             flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
@@ -250,7 +250,7 @@ class AuditoriaController extends Seguridad.Shield {
 
         def creador = session.usuario.apellido + "_" + session.usuario.login
 
-        if (creador == pre?.creador) {
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
 
             return [pre:pre, planes: planes, colores: colores]
         } else {

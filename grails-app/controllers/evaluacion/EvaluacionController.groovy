@@ -618,16 +618,32 @@ class EvaluacionController extends Seguridad.Shield {
 
         def anteriores = Preauditoria.withCriteria {
                         eq('estacion', pre?.estacion)
+                        eq("estado",1)
+                        ne("id",pre?.id)
+
                         periodo{
-                            lt('fin',periodoActual)
+                            or{
+                                lt('fin',periodoActual)
+                                eq("id", pre?.periodo?.id)
+                            }
+
                         }
         }
-//        println("anteriores " + anteriores)
+
+
+        def auditorias = Auditoria.findAllByPreauditoriaInList(anteriores)
+        def detallesAnteriores = DetalleAuditoria.findAllByAuditoriaInList(auditorias)
+        def planesAnteriores = PlanAuditoria.findAllByDetalleAuditoriaInListAndPeriodo(detallesAnteriores,'ACT')
+
+        println("planes existentes anteriores " + planesAnteriores.unique())
+
+
+        println("anteriores " + anteriores)
 
 
         def aupm = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria,'ANT')
 
-        return [pre: pre, anteriores: anteriores, plan: aupm]
+        return [pre: pre, anteriores: anteriores, planesAnteriores: planesAnteriores?.detalleAuditoria?.auditoria?.preauditoria?.unique(), plan: aupm]
     }
 
     def evaluacionLicencia () {

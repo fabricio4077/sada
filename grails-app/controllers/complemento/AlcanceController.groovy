@@ -118,7 +118,7 @@ class AlcanceController extends Seguridad.Shield {
         def alc = Alcance.findByAuditoria(audi)
         def creador = session.usuario.apellido + "_" + session.usuario.login
 
-        if (creador == pre?.creador) {
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre:pre, alc: alc, audi: audi]
         } else {
             flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."

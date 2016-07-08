@@ -40,6 +40,10 @@
         text-align: center;
     }
 
+    .izquierda{
+        text-align: left;
+    }
+
     </style>
 
 </head>
@@ -91,36 +95,50 @@
     </div>
     <div class="well" style="text-align: center; height: 200px">
 
-        <g:if test="${anteriores}">
-            <div class="col-md-4 negrilla control-label">Seleccione el Plan de Manejo Ambiental (anterior) del cual se realizará la Evaluación Ambiental:
+        %{--<g:if test="${anteriores}">--}%
+        <g:if test="${planesAnteriores}">
+
+            <div class="${plan.size() >0 ? 'hide' : ''}">
+                <div class="col-md-3 negrilla control-label izquierda">Seleccione el Plan de Manejo Ambiental (anterior) del cual se realizará la Evaluación Ambiental:
+                </div>
+
+                <div class="col-md-4">
+                    <g:select name="anteriores_name" class="form-control"
+                              from="${planesAnteriores}" id="anteriores"
+                              optionValue="${{it?.tipo?.descripcion + " - Período: " + it?.periodo?.inicio?.format("yyyy") + " - " + it?.periodo?.fin?.format("yyyy")}}" optionKey="id" disabled="${plan.size() > 0 ? 'true' : 'false'}"/>
+                </div>
+                <div class="col-md-2">
+                    <a href="#" id="btnSeleccionarPlan" class="btn btn-info btn-sm ${plan.size() >0 ? 'disabled' : ''}" title="" style="margin-bottom: 20px; margin-top: 10px">
+                        <i class="fa fa-check"></i> Seleccionar PMA
+                    </a>
+                </div>
             </div>
 
-            <div class="col-md-4">
-                <g:select name="anteriores_name" class="form-control"
-                          from="${anteriores}" id="anteriores"
-                          optionValue="${{it?.tipo?.descripcion + " - Período: " + it?.periodo?.inicio?.format("yyyy") + " - " + it?.periodo?.fin?.format("yyyy")}}" optionKey="id" disabled="${plan.size() > 0 ? 'true' : 'false'}"/>
-                <a href="#" id="btnSeleccionarPlan" class="btn btn-info ${plan.size() >0 ? 'disabled' : ''}" title="" style="margin-bottom: 20px; margin-top: 10px">
-                    <i class="fa fa-check"></i> Seleccionar PMA
-                </a>
-            </div>
         </g:if>
 
-        <div class="col-md-4 negrilla control-label">
-            Opción 2: Crear un Plan de Manejo Ambiental (anterior) del cual se realizará la Evaluación Ambiental:
-        </div>
-
-            <div class="btn-group">
-                <a href="#" id="btnCrearPlan" class="btn btn-success btn-sm ${plan.size() >0 ? 'disabled' : ''}" title="">
-                    <i class="fa fa-plus"></i> Cargar PMA
-                </a>
-                <a href="#" id="btnEditarPlan" class="btn btn-primary btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
-                    <i class="fa fa-pencil"></i> Editar PMA
-                </a>
-                <a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm ${plan.size() >0 ? '' : 'disabled'}" title="">
-                %{--<a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm" title="Remover PMA para seleccionar otro">--}%
-                    <i class="fa fa-trash"></i> Remover PMA
-                </a>
+        <g:if test="${plan.size() > 0}">
+            <div class="col-md-3 negrilla control-label izquierda">
+               Plan de Manejo Ambiental (anterior):
             </div>
+        </g:if>
+        <g:else>
+            <div class="col-md-4 negrilla control-label izquierda">
+                Opción 2: Crear un Plan de Manejo Ambiental (anterior) del cual se realizará la Evaluación Ambiental:
+            </div>
+        </g:else>
+
+
+        <div class="btn-group col-md-5">
+            <a href="#" id="btnCrearPlan" class="btn btn-success btn-sm ${plan.size() >0 ? 'hide' : ''}" title="">
+                <i class="fa fa-plus"></i> Crear un PMA (anterior)
+            </a>
+            <a href="#" id="btnEditarPlan" class="btn btn-primary btn-sm ${plan.size() >0 ? '' : 'hide'}" title="">
+                <i class="fa fa-pencil"></i> Editar PMA
+            </a>
+            <a href="#" id="btnBorrarPlan" class="btn btn-danger btn-sm ${plan.size() >0 ? '' : 'hide'}" title="">
+                <i class="fa fa-trash"></i> Remover PMA
+            </a>
+        </div>
     </div>
 </div>
 
@@ -249,28 +267,27 @@
     $("#btnSeleccionarPlan").click(function () {
         var anterior = $("#anteriores").val();
         bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-warning text-shadow'></i> Está seguro que desea seleccionar este PMA(anterior) para la Evaluación Ambiental?", function (result){
-         if(result){
-             $.ajax({
-                type: 'POST',
-                url: '${createLink(controller: 'planManejoAmbiental', action: 'asociarPlanEvam_ajax')}',
-                data:{
-                    id: anterior,
-                    actual: ${pre?.id}
-                },
-                 success: function (msg){
-                     var parts = msg.split("_");
-                     if(parts[0] == 'ok'){
-                         log(parts[1],'success');
-                        cargarTablaEvaPlan();
-                         $("#btnCrearPlan").addClass('disabled');
-                         $("#btnEditarPlan").addClass('disabled');
-                         $("#btnSeleccionarPlan").addClass('disabled');
-                     }else{
-                         log(parts[1],'error');
-                     }
-                 }
-             });
-         }
+            if(result){
+                $.ajax({
+                    type: 'POST',
+                    url: '${createLink(controller: 'planManejoAmbiental', action: 'asociarPlanEvam_ajax')}',
+                    data:{
+                        id: anterior,
+                        actual: ${pre?.id}
+                    },
+                    success: function (msg){
+                        var parts = msg.split("_");
+                        if(parts[0] == 'ok'){
+                            log(parts[1],'success');
+                            setTimeout(function () {
+                                location.href="${createLink(controller: 'planManejoAmbiental', action: 'planManejoAmbiental')}?id=" + ${pre?.id} + "&band=" + true
+                            }, 1500);
+                        }else{
+                            log(parts[1],'error');
+                        }
+                    }
+                });
+            }
         })
     });
 
@@ -289,7 +306,7 @@
                 if(msg == 'ok'){
                     location.href="${createLink(controller: 'planManejoAmbiental', action: 'planManejoAmbiental')}?id=" + ${pre?.id} + "&band=" + true
                 }else{
-                log("Error al asignar el PMA anterior", "error")
+                    log("Error al asignar el PMA anterior", "error")
                 }
             }
         })

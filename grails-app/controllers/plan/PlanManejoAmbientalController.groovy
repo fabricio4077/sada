@@ -336,37 +336,148 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
 
     def asociarPlanEvam_ajax () {
 
+        println("params asociar pma anterior" + params)
+
         def preAnterior = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(preAnterior)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
         def per = 'ACT'
+        def ant = 'ANT'
+
         def todosAnteriores = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria, per)
         def evam
-
+        def aupm
+        def error = ''
+//
         def preActual = Preauditoria.get(params.actual)
         def auditoriaAct = Auditoria.findByPreauditoria(preActual)
         def detalleAuditoriaAct = DetalleAuditoria.findByAuditoria(auditoriaAct)
 
         def evamPlan = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalleAuditoriaAct)
-
         if(evamPlan.size() > 0){
             render "no_Ya existe un PMA (anterior) cargado, clic en el botón Borrar PMA si desea continuar"
         }else{
 
             if(todosAnteriores.size() > 0){
                 todosAnteriores.each { a->
+
+                    aupm = new PlanAuditoria()
+                    aupm.periodo = ant
+                    aupm.aspectoAmbiental = a?.aspectoAmbiental
+                    aupm.detalleAuditoria = detalleAuditoriaAct
+
+                    try{
+                        aupm.save(flush: true)
+                    }catch (e){
+                        error += aupm.errors
+                        println("error al guardar aupm anterior")
+                    }
+
+                }
+
+
+//                def planesActuales = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoriaAct, ant)
+//
+//                planesActuales.each {p->
+//
+//
+//                    evam = new Evaluacion()
+//                    evam.detalleAuditoria = detalleAuditoriaAct
+//                    evam.planAuditoria = p
+//
+//                    try{
+//                        evam.save(flush: true)
+//                        render "ok_PMA cargado correctamente para ser usado en la evaluación ambiental"
+//                    }catch (e){
+//                        error += evam.errors
+//                        println("error al crear alguna evam de PMA anterior " + evam.errors)
+//                        render "no_Error al cargar el PMA (anterior)"
+//                    }
+//
+//                }
+
+                if(error == ''){
+                    render "ok_PMA cargado correctamente para ser usado en la evaluación ambiental"
+                }else{
+                    render "no_Error al cargar el PMA (anterior)"
+                }
+
+
+            }else{
+                render "no_La auditoría seleccionada, no contiene un PMA!"
+            }
+        }
+
+    }
+
+
+    def asociarPMA_ajax () {
+
+        println("params asociar pma anterior" + params)
+
+        def preAnterior = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(preAnterior)
+        def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
+        def per = 'ACT'
+
+
+        def todosAnteriores = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria, per)
+        def evam
+        def aupm
+        def error = ''
+//
+        def preActual = Preauditoria.get(params.actual)
+        def auditoriaAct = Auditoria.findByPreauditoria(preActual)
+        def detalleAuditoriaAct = DetalleAuditoria.findByAuditoria(auditoriaAct)
+
+        def evamPlan = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalleAuditoriaAct)
+        if(evamPlan.size() > 0){
+            render "no_Ya existe un PMA (anterior) cargado, clic en el botón Borrar PMA si desea continuar"
+        }else{
+
+            if(todosAnteriores.size() > 0){
+                todosAnteriores.each { a->
+
+                    aupm = new PlanAuditoria()
+                    aupm.periodo = per
+                    aupm.aspectoAmbiental = a?.aspectoAmbiental
+                    aupm.detalleAuditoria = detalleAuditoriaAct
+
+                    try{
+                        aupm.save(flush: true)
+                    }catch (e){
+                        error += aupm.errors
+                        println("error al guardar aupm anterior")
+                    }
+
+                }
+
+
+                def planesActuales = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoriaAct, per)
+
+                planesActuales.each {p->
+
+
                     evam = new Evaluacion()
                     evam.detalleAuditoria = detalleAuditoriaAct
-                    evam.planAuditoria = a
+                    evam.planAuditoria = p
 
                     try{
                         evam.save(flush: true)
-                        render "ok_PMA cargado correctamente para ser usado en la evaluación ambiental"
                     }catch (e){
+                        error += evam.errors
                         println("error al crear alguna evam de PMA anterior " + evam.errors)
-                        render "no_Error al cargar el PMA (anterior)"
                     }
+
                 }
+
+                if(error == ''){
+                    render "ok_PMA cargado correctamente"
+                }else{
+                    render "no_Error al cargar el PMA"
+                }
+
+
             }else{
                 render "no_La auditoría seleccionada, no contiene un PMA!"
             }
@@ -463,17 +574,37 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
 
+//        def anteriores = Preauditoria.withCriteria {
+//            eq('estacion', pre?.estacion)
+//            periodo{
+//                lt('fin',periodoActual)
+//            }
+//        }
+
+
         def anteriores = Preauditoria.withCriteria {
             eq('estacion', pre?.estacion)
+            eq("estado",1)
+            ne("id",pre?.id)
+
             periodo{
-                lt('fin',periodoActual)
+                or{
+                    lt('fin',periodoActual)
+                    eq("id", pre?.periodo?.id)
+                }
+
             }
         }
 
+        def auditorias = Auditoria.findAllByPreauditoriaInList(anteriores)
+        def detallesAnteriores = DetalleAuditoria.findAllByAuditoriaInList(auditorias)
+        def planesAnteriores = PlanAuditoria.findAllByDetalleAuditoriaInListAndPeriodo(detallesAnteriores,'ACT')
+
+
         def creador = session.usuario.apellido + "_" + session.usuario.login
 
-        if (creador == pre?.creador) {
-            return [pre:pre, anteriores: anteriores, detalle: detalleAuditoria]
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
+            return [pre:pre, anteriores: anteriores, detalle: detalleAuditoria, planesAnteriores: planesAnteriores?.detalleAuditoria?.auditoria?.preauditoria?.unique()]
         } else {
             flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
             response.sendError(403)
