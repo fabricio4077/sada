@@ -20,7 +20,7 @@
     <style type="text/css">
 
     #list-cuenta {
-        width : 650px;
+        width : 850px;
     }
 
     #tree {
@@ -128,11 +128,14 @@
                 data    : $form.serialize(),
                 success : function (msg) {
                     var parts = msg.split("_");
-                    log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+//                    log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                     if (parts[0] == "OK") {
-                        location.reload(true);
+                        log("Marco Legal creado correctamente","success");
+                        setTimeout(function () {
+                            location.reload(true);
+                        }, 1500);
                     } else {
-                        spinner.replaceWith($btn);
+                        log("Error al crear el marco legal","error");
                         return false;
                     }
                 }
@@ -146,22 +149,38 @@
     function borrarMarcoLegal (id) {
         bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de borrar este Marco Legal?", function (result) {
             if(result){
+
                 $.ajax({
-                    type: 'POST',
-                    url: '${createLink(controller: 'marcoLegal', action: 'delete_ajax')}',
+                   type: 'POST',
+                    url: "${createLink(controller: 'marcoLegal', action: 'revisarArbol_ajax')}",
                     data:{
-                        id: id
+                        marco: id
                     },
-                    success: function(msg){
-                        var parts = msg.split("_");
-                        if(parts[0] == 'OK'){
-                            log("Marco legal borrado correctamente","success");
-                            setTimeout(function () {
-                                location.reload(true)
-                            }, 1500);
+                    success: function (msg1){
+                        var re = msg1.split("_");
+                        if(re[0] == 'ok'){
+                            $.ajax({
+                                type: 'POST',
+                                url: '${createLink(controller: 'marcoLegal', action: 'delete_ajax')}',
+                                data:{
+                                    id: id
+                                },
+                                success: function(msg){
+                                    var parts = msg.split("_");
+                                    if(parts[0] == 'OK'){
+                                        log("Marco legal borrado correctamente","success");
+                                        setTimeout(function () {
+                                            location.reload(true)
+                                        }, 1500);
+                                    }else{
+                                        log('Error al borrar el marco legal',"error");
+                                    }
+                                }
+                            });
                         }else{
-                            log('Error al borrar el marco legal',"error");
+                           log(re[1],"error")
                         }
+
                     }
                 });
             }
@@ -273,11 +292,13 @@
     //función para crear una nueva norma
 
     function crearNorma (idMarco) {
+//        console.log("---> " + idMarco)
         $.ajax({
             type    : "POST",
             url     : "${createLink(controller: 'norma', action:'form_ajax')}",
             data    : {
-                idMarco: idMarco
+                idMarco: idMarco,
+                crear : true
             },
             success : function (msg) {
                 var b = bootbox.dialog({
@@ -622,6 +643,7 @@
         var nodeUsu = $node.data("usuario");
         var nodeHasChildren = $node.hasClass("hasChildren");
 
+
         var items = {};
 
         var root = {
@@ -726,34 +748,85 @@
         }
 
         if(nodeType == "marco"){
-            items.editarMarco = editarMarco
-            items.norma = norma;
-            items.borrarMarco = borrarMarco
-
-        }
+            var kk = comprobarUsuario(nodeStrId.split("ue_")[1]);
+            if(kk == 'ok'){
+                console.log(nodeId)
+                items.editarMarco = editarMarco;
+                items.norma = norma;
+                items.borrarMarco = borrarMarco
+            }
+         }
 
         if(nodeType == "norma"){
-            items.editarNorma = editarNorma;
-            items.articulo = articulo;
-            items.borrarNorma = borrarNorma
+            var kk1 = comprobarUsuario2(nodeId);
+            if(kk1 == 'ok') {
+                items.editarNorma = editarNorma;
+                items.articulo = articulo;
+                items.borrarNorma = borrarNorma
+            }
         }
 
         if(nodeType == "articulo"){
-            items.editarArticulo = editarArticulo;
-            items.crearLiteral = literal;
-            items.borrarArticulo = borrarArticulo
+            var kk2 = comprobarUsuario2(papa);
+            if(kk2 == 'ok') {
+                items.editarArticulo = editarArticulo;
+                items.crearLiteral = literal;
+                items.borrarArticulo = borrarArticulo
+            }
         }
 
         if(nodeType == 'literal'){
-            items.editarLiteral = editarLiteral;
-            items.borrarLiteral = borrarLiteral
+            var kk3 = comprobarUsuario(nodoAbuelo);
+            if(kk3 == 'ok') {
+                items.editarLiteral = editarLiteral;
+                items.borrarLiteral = borrarLiteral
+            }
         }
 
-
-
         return items
-
     }
+
+    function comprobarUsuario (idM){
+     var ii =   $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'marcoLegal', action: 'comprobarUsuario_ajax')}",
+         async: false,
+            data:{
+                idMarco:  idM
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    return true
+                }else{
+                    return false
+                }
+            }
+        });
+
+        return ii.responseText
+    }
+
+    function comprobarUsuario2 (idC){
+        var ii =   $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'marcoLegal', action: 'comprobarUsuario2_ajax')}",
+            async: false,
+            data:{
+                idMarco:  idC
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    return true
+                }else{
+                    return false
+                }
+            }
+        });
+
+        return ii.responseText
+    }
+
+
 
     //función para buscar en el árbol
 

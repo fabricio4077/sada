@@ -1,5 +1,6 @@
 package legal
 
+import evaluacion.Evaluacion
 import groovy.json.JsonBuilder
 
 
@@ -79,6 +80,7 @@ class MarcoLegalController extends Seguridad.Shield {
             }
         } //update
         marcoLegalInstance.properties = params
+        marcoLegalInstance.creador = (session.usuario.apellido + "_" + session.usuario.login)
         if (!marcoLegalInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} MarcoLegal."
             msg += renderErrors(bean: marcoLegalInstance)
@@ -361,6 +363,56 @@ class MarcoLegalController extends Seguridad.Shield {
         def json = new JsonBuilder(nodosAbrir.keySet())
         render json
     }
+
+    def revisarArbol_ajax () {
+        println("params revisar arbol legal " + params)
+        def marcoLegal = MarcoLegal.get(params.marco)
+        def marcoNorma = MarcoNorma.findAllByMarcoLegal(marcoLegal)
+        def evaluaciones = Evaluacion.findAllByMarcoNormaInList(marcoNorma)
+
+        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login) || session.perfil.codigo == 'ADMI'){
+            if(evaluaciones){
+                render "no_No se puede borrar este marco legal, ya se encuentra en evaluación!"
+            }else{
+                render "ok"
+            }
+        }else{
+            render "no_Su usuario no puede borrar este marco legal, solo el usuario creador del mismo puede"
+        }
+
+    }
+
+    def comprobarUsuario_ajax () {
+//        println("comprobar params " + params)
+        def marcoLegal = MarcoLegal.get(params.idMarco)
+        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login) || session.perfil.codigo == 'ADMI'){
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
+    def comprobarUsuario2_ajax () {
+        println("comprobar params2 " + params)
+        def marcoLegal = MarcoNorma.get(params.idMarco).marcoLegal
+        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login) || session.perfil.codigo == 'ADMI'){
+            render "ok"
+        }else{
+            render "no"
+        }
+    }
+
+//    def comprobarUsuario3_ajax () {
+//        println("comprobar params3 " + params)
+//        def articulo =  Articulo.get(params.idMarco)
+//
+//        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login) || session.perfil.codigo == 'ADMI'){
+//            render "ok"
+//        }else{
+//            render "no"
+//        }
+//    }
+
 
 
 }

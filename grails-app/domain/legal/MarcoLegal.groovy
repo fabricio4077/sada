@@ -5,6 +5,7 @@ class MarcoLegal {
     static auditable = true
     String descripcion
     String codigo
+    String creador
 
     static mapping = {
         table 'mclg'
@@ -15,6 +16,7 @@ class MarcoLegal {
             id column: 'mclg__id'
             descripcion column: 'mclgdscr'
             codigo column: 'mclgcdgo'
+            creador column: 'mclgcrea'
         }
     }
 

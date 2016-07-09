@@ -150,7 +150,7 @@
 
         <g:if test="${session.perfil.codigo == 'ADMI'}">
             <div class="list-group" style="text-align: center;">
-                <g:link controller="persona" action="list" class="list-group-item bgOpcion bg-otro">
+                <g:link controller="preauditoria" action="listaGeneral" class="list-group-item bgOpcion bg-otro">
                     <h4 class="list-group-item-heading"><span class="icon"></span>
                         <i class="fa fa-navicon"></i>
                     </h4>

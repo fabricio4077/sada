@@ -64,25 +64,34 @@ class NormaController extends Seguridad.Shield {
     } //show para cargar con ajax en un dialog
 
     def form_ajax() {
-//        println("params norma legal " + params)
+        println("params norma legal " + params)
         def marco
-        if(params.idMarco){
+        if(params.crear == 'true'){
+            println("ok")
+            def normaInstance = new Norma(params)
             marco = params.idMarco
-            if(MarcoNorma.get(marco)?.norma?.id){
-                params.id = MarcoNorma.get(marco).norma.id
+            return [normaInstance: normaInstance, marco: marco]
+
+        }else{
+            if(params.idMarco){
+                marco = params.idMarco
+                if(MarcoNorma.get(marco)?.norma?.id){
+                    params.id = MarcoNorma.get(marco).norma.id
+                }
             }
 
+            def normaInstance = new Norma(params)
+            if (params.id) {
+                normaInstance = Norma.get(params.id)
+                if (!normaInstance) {
+                    notFound_ajax()
+                    return
+                }
+            }
+            return [normaInstance: normaInstance, marco: marco]
         }
 
-        def normaInstance = new Norma(params)
-        if (params.id) {
-            normaInstance = Norma.get(params.id)
-            if (!normaInstance) {
-                notFound_ajax()
-                return
-            }
-        }
-        return [normaInstance: normaInstance, marco: marco]
+
     } //form para cargar con ajax en un dialog
 
     def save_ajax() {
