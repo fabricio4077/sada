@@ -147,9 +147,88 @@ class EvaluacionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
-        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+        def leyes
+
+//        leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+
+        leyes = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalleAuditoria)
+            isNotNull("marcoNorma")
+            order("orden","asc")
+        }
+
         return [leyes: leyes]
     }
+
+    def orden_ajax() {
+        def evaluacion = Evaluacion.get(params.id)
+        return [evaluacion: evaluacion]
+    }
+
+    def ordenLicencia_ajax () {
+        def evaluacion = Evaluacion.get(params.id)
+        return [evaluacion: evaluacion]
+    }
+
+    def guardarOrden_ajax () {
+        def evaluacion = Evaluacion.get(params.id)
+        def orden = params.orden.toInteger()
+        def listaOrden = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(evaluacion.detalleAuditoria)
+
+        if(listaOrden.orden.contains(orden)){
+            render "no_El número de orden ingresado ya se encuentra asignado"
+        }else{
+            evaluacion.orden = params.orden.toInteger()
+
+            try{
+               evaluacion.save(flush: true)
+                render"ok"
+            }catch (e){
+                render "no_Error al asignar el número de orden"
+            }
+
+        }
+    }
+
+    def guardarOrdenPlan_ajax () {
+        def evaluacion = Evaluacion.get(params.id)
+        def orden = params.orden.toInteger()
+        def listaOrden = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(evaluacion.detalleAuditoria)
+
+        if(listaOrden.orden.contains(orden)){
+            render "no_El número de orden ingresado ya se encuentra asignado"
+        }else{
+            evaluacion.orden = params.orden.toInteger()
+
+            try{
+                evaluacion.save(flush: true)
+                render"ok"
+            }catch (e){
+                render "no_Error al asignar el número de orden"
+            }
+
+        }
+    }
+
+    def guardarOrdenLic_ajax () {
+        def evaluacion = Evaluacion.get(params.id)
+        def orden = params.orden.toInteger()
+        def listaOrden = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(evaluacion.detalleAuditoria)
+
+        if(listaOrden.orden.contains(orden)){
+            render "no_El número de orden ingresado ya se encuentra asignado"
+        }else{
+            evaluacion.orden = params.orden.toInteger()
+            try{
+                evaluacion.save(flush: true)
+                render"ok"
+            }catch (e){
+                render "no_Error al asignar el número de orden"
+            }
+
+        }
+    }
+
 
 
     def asignarMarco_ajax () {
@@ -228,19 +307,19 @@ class EvaluacionController extends Seguridad.Shield {
         }
         if(evaluacion.planAuditoria){
             listaHallazgos = Evaluacion.withCriteria {
-                                planAuditoria{
-                                    eq("aspectoAmbiental", evaluacion.planAuditoria.aspectoAmbiental)
-                                }
+                planAuditoria{
+                    eq("aspectoAmbiental", evaluacion.planAuditoria.aspectoAmbiental)
+                }
 
-                                isNotNull("hallazgo")
+                isNotNull("hallazgo")
             }.hallazgo
         }
         if(evaluacion.licencia){
             println("entro")
             listaHallazgos = Evaluacion.withCriteria {
-                                licencia{
-                                    eq("descripcion",evaluacion.licencia.descripcion )
-                                }
+                licencia{
+                    eq("descripcion",evaluacion.licencia.descripcion )
+                }
                 isNotNull("hallazgo")
             }.hallazgo
         }
@@ -338,7 +417,7 @@ class EvaluacionController extends Seguridad.Shield {
         evaluacion.calificacion = cali
 
         try{
-        evaluacion.save(flush: true)
+            evaluacion.save(flush: true)
             render "ok"
         }catch (e){
             render "no"
@@ -542,68 +621,68 @@ class EvaluacionController extends Seguridad.Shield {
 
 
     def borrarAnexo_ajax () {
-            def anxo = Anexo.get(params.id)
-            def band = true
-                try {
-                    def path = servletContext.getRealPath("/") + "anexos/estacion_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${anxo?.evaluacion?.id}" + "/" + anxo?.path
-                    def file = new File(path)
-                    file.delete()
-                } catch (e) {
-                    println "error borrar " + e
-                    band = false
-                }
+        def anxo = Anexo.get(params.id)
+        def band = true
+        try {
+            def path = servletContext.getRealPath("/") + "anexos/estacion_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${anxo?.evaluacion?.id}" + "/" + anxo?.path
+            def file = new File(path)
+            file.delete()
+        } catch (e) {
+            println "error borrar " + e
+            band = false
+        }
 
-                if (band) {
-                    anxo.delete(flush: true)
-                    render "ok"
-                } else {
-                   println("error al borrar anexo");
-                    render "no"
-                }
+        if (band) {
+            anxo.delete(flush: true)
+            render "ok"
+        } else {
+            println("error al borrar anexo");
+            render "no"
+        }
     }
 
 
     def descargarDoc() {
         def anxo = Anexo.get(params.id)
 //        if (session.key == (anxo.path.size() + anxo.path?.encodeAsMD5()?.substring(0, 10))) {
-            session.key = null
-            def path = servletContext.getRealPath("/") + "anexos/estacion_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${anxo?.evaluacion?.id}" + "/" + anxo?.path
-            def tipo = anxo.path.split("\\.")
-            tipo = tipo[1]
-            switch (tipo) {
-                case "jpeg":
-                case "gif":
-                case "jpg":
-                case "bmp":
-                case "png":
-                    tipo = "application/image"
-                    break;
-                case "pdf":
-                    tipo = "application/pdf"
-                    break;
-                case "doc":
-                case "docx":
-                case "odt":
-                    tipo = "application/msword"
-                    break;
-                case "xls":
-                case "xlsx":
-                    tipo = "application/vnd.ms-excel"
-                    break;
-                default:
-                    tipo = "application/pdf"
-                    break;
-            }
-            try {
-                def file = new File(path)
-                def b = file.getBytes()
-                response.setContentType(tipo)
-                response.setHeader("Content-disposition", "attachment; filename=" + (anxo.path))
-                response.setContentLength(b.length)
-                response.getOutputStream().write(b)
-            } catch (e) {
-                response.sendError(404)
-            }
+        session.key = null
+        def path = servletContext.getRealPath("/") + "anexos/estacion_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.estacion?.id}/" + "periodo_${anxo?.evaluacion?.detalleAuditoria?.auditoria?.preauditoria?.periodo?.id}" + "/" + "eva-${anxo?.evaluacion?.id}" + "/" + anxo?.path
+        def tipo = anxo.path.split("\\.")
+        tipo = tipo[1]
+        switch (tipo) {
+            case "jpeg":
+            case "gif":
+            case "jpg":
+            case "bmp":
+            case "png":
+                tipo = "application/image"
+                break;
+            case "pdf":
+                tipo = "application/pdf"
+                break;
+            case "doc":
+            case "docx":
+            case "odt":
+                tipo = "application/msword"
+                break;
+            case "xls":
+            case "xlsx":
+                tipo = "application/vnd.ms-excel"
+                break;
+            default:
+                tipo = "application/pdf"
+                break;
+        }
+        try {
+            def file = new File(path)
+            def b = file.getBytes()
+            response.setContentType(tipo)
+            response.setHeader("Content-disposition", "attachment; filename=" + (anxo.path))
+            response.setContentLength(b.length)
+            response.getOutputStream().write(b)
+        } catch (e) {
+            response.sendError(404)
+        }
 //        } else {
 //            response.sendError(403)
 //        }
@@ -617,17 +696,17 @@ class EvaluacionController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
 
         def anteriores = Preauditoria.withCriteria {
-                        eq('estacion', pre?.estacion)
-                        eq("estado",1)
-                        ne("id",pre?.id)
+            eq('estacion', pre?.estacion)
+            eq("estado",1)
+            ne("id",pre?.id)
 
-                        periodo{
-                            or{
-                                lt('fin',periodoActual)
-                                eq("id", pre?.periodo?.id)
-                            }
+            periodo{
+                or{
+                    lt('fin',periodoActual)
+                    eq("id", pre?.periodo?.id)
+                }
 
-                        }
+            }
         }
 
 
@@ -695,10 +774,22 @@ class EvaluacionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
-        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalleAuditoria, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
+        def planes
+//        Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalleAuditoria, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
+
+        planes = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalleAuditoria)
+            isNotNull("planAuditoria")
+            order("orden","asc")
+        }
 
         return[planes: planes]
     }
+
+    def ordenPlan_ajax () {
+        def evaluacion = Evaluacion.get(params.id)
+        return [evaluacion: evaluacion]
+     }
 
     def verificarLegislacion_ajax(){
 
@@ -706,18 +797,41 @@ class EvaluacionController extends Seguridad.Shield {
         def auditoria = Auditoria.findByPreauditoria(pre)
         def marcoLegal = auditoria.marcoLegal
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def error = ''
 
         def evam = Evaluacion.withCriteria {
-                    eq("detalleAuditoria",detalle)
-                    marcoNorma{
-                        eq("marcoLegal",marcoLegal)
-                    }
+            eq("detalleAuditoria",detalle)
+            isNotNull("marcoNorma")
+            isNotNull("hallazgo")
+            isNotNull("calificacion")
         }
 
+//        println("existen " + evam)
+
         if(evam.size() > 0){
-            render "ok"
+            render "ok_No se puede cambiar el Marco Legal, ya se encuentra en Evaluación"
         }else{
-            render "no"
+            def porBorrar = Evaluacion.withCriteria {
+                eq("detalleAuditoria",detalle)
+                isNotNull("marcoNorma")
+            }
+
+            porBorrar.each {po->
+                try{
+                    po.delete(flush: true)
+                }catch (e){
+                    error += po.errors
+                }
+            }
+
+            if(error == ''){
+                auditoria.marcoLegal = null
+                auditoria.save(flush: true)
+                render "no_Marco legal removido correctamente"
+            }else{
+                render "ok_Error al cambiar el marco legal"
+            }
+
         }
     }
 
@@ -725,7 +839,15 @@ class EvaluacionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
-        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalleAuditoria, [sort: 'licencia.descripcion', order: 'asc'])
+        def licencias
+//        Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalleAuditoria, [sort: 'licencia.descripcion', order: 'asc'])
+
+        licencias = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalleAuditoria)
+            isNotNull("licencia")
+            order("orden","asc")
+        }
+
         return [licencias: licencias]
     }
 

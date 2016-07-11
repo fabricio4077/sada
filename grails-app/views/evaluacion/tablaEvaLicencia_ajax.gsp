@@ -27,7 +27,11 @@
                 <tbody>
                 <g:each in="${licencias}" var="lic" status="j">
                     <tr>
-                        <td style="width: 2%">${j+1}</td>
+                        <td style="width: 3%">${lic?.orden}
+                            <a href="#" class="btn btn-xs btn-primary btnOrden" data-id="${lic?.id}" title="Agregar orden" style="float: right">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </td>
                         <td style="width: 10%; font-size: smaller">Licencia Ambiental</td>
                         <td style="width: 30%; font-size: smaller">${lic?.licencia?.descripcion}</td>
                         <td style="width: 15%">
@@ -90,6 +94,35 @@
 </div>
 
 <script type="text/javascript">
+
+
+    $(".btnOrden").click(function () {
+        var idEva = $(this).data('id');
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'evaluacion', action: 'ordenLicencia_ajax')}",
+            data:{
+                id: idEva
+            },
+            success: function (msg){
+                bootbox.dialog({
+                    id: "dlgOrden",
+                    title: "Orden",
+                    message: msg,
+                    buttons: {
+                        cancelar :{
+                            label     : 'Aceptar',
+                            className : 'btn-primary',
+                            callback  : function () {
+                                cargarTablaEva();
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    });
+
 
     //función cargar calificación
     $(".btnCalificacion").click(function () {

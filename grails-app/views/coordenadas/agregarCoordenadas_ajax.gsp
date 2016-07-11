@@ -18,7 +18,7 @@
                     Posición en X
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="x_name" id="coordenadasX" value="${coordenada?.coordenadasX}" class="number form-control  required"/>
+                    <g:textField name="x_name" id="coordenadasX" value="${coordenada?.coordenadasX}" class="form-control number required"/>
                 </div>
 
             </span>
@@ -30,7 +30,7 @@
                     Posición en Y
                 </label>
                 <div class="col-md-6">
-                    <g:textField name="y_name" id="coordenadasY" value="${coordenada?.coordenadasY}" class="number form-control  required"/>
+                    <g:textField name="y_name" id="coordenadasY" value="${coordenada?.coordenadasY}" class="form-control number required"/>
                 </div>
 
             </span>

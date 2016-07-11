@@ -5,8 +5,8 @@ class Coordenadas {
 
     static auditable = true
     Estacion estacion
-    Double coordenadasX
-    Double coordenadasY
+    BigInteger coordenadasX
+    BigInteger coordenadasY
 
     static mapping = {
         table 'cddn'

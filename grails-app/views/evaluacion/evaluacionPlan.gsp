@@ -145,7 +145,7 @@
 <table class="table table-condensed table-bordered table-striped">
     <thead>
     <tr>
-        <th style="width: 3%">#</th>
+        <th style="width: 3%">Orden</th>
         <th style="width: 10%">Obligación Ambiental</th>
         <th style="width: 31%">Descripción</th>
         <th style="width: 16%">Calificación</th>

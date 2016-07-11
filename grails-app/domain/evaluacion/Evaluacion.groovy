@@ -16,6 +16,7 @@ class Evaluacion {
     PlanAuditoria planAuditoria
     Licencia licencia
     String evidencia
+    int orden = 0
 
     static mapping = {
         table 'evam'
@@ -32,6 +33,7 @@ class Evaluacion {
             planAuditoria column: 'aupm__id'
             licencia column: 'lcnc__id'
             evidencia column: 'evamevid'
+            orden column: 'evamordn'
         }
     }
 

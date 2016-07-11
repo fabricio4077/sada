@@ -20,7 +20,11 @@
                 <tbody>
                 <g:each in="${planes}" var="plan" status="j">
                     <tr>
-                        <td style="width: 2%">${j+1}</td>
+                        <td style="width: 3%">${plan?.orden}
+                            <a href="#" class="btn btn-xs btn-primary btnOrden" data-id="${plan?.id}" title="Agregar orden" style="float: right">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </td>
                         <td style="width: 10%; font-size: smaller">${plan?.planAuditoria?.aspectoAmbiental?.planManejoAmbiental?.nombre}</td>
                         <td style="width: 30%; font-size: smaller">${plan?.planAuditoria?.aspectoAmbiental?.descripcion + " - " + plan?.planAuditoria?.medida?.descripcion}</td>
                         <td style="width: 15%">
@@ -83,6 +87,33 @@
 </div>
 
 <script type="text/javascript">
+
+    $(".btnOrden").click(function () {
+        var idEva = $(this).data('id');
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'evaluacion', action: 'ordenPlan_ajax')}",
+            data:{
+                id: idEva
+            },
+            success: function (msg){
+                bootbox.dialog({
+                    id: "dlgOrden",
+                    title: "Orden",
+                    message: msg,
+                    buttons: {
+                        cancelar :{
+                            label     : 'Aceptar',
+                            className : 'btn-primary',
+                            callback  : function () {
+                                cargarTablaEvaPlan();
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    });
 
     //función cargar calificación
     $(".btnCalificacion").click(function () {

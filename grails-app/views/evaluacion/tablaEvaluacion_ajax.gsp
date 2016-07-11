@@ -13,7 +13,12 @@
                 <tbody>
                 <g:each in="${leyes}" var="ley" status="j">
                     <tr>
-                        <td style="width: 2%">${j+1}</td>
+                        %{--<td style="width: 2%">${j+1}--}%
+                        <td style="width: 3%">${ley?.orden}
+                            <a href="#" class="btn btn-xs btn-primary btnOrden" data-id="${ley?.id}" title="Agregar orden" style="float: right">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </td>
                         <td style="width: 10%; font-size: smaller">${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}</td>
                         <td style="width: 30%; font-size: smaller">${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}</td>
                         <td style="width: 15%">
@@ -78,12 +83,40 @@
 
 <script type="text/javascript">
 
+    $(".btnOrden").click(function () {
+        var idEva = $(this).data('id');
+        $.ajax({
+            type: 'POST',
+            url: "${createLink(controller: 'evaluacion', action: 'orden_ajax')}",
+            data:{
+                id: idEva
+            },
+            success: function (msg){
+                bootbox.dialog({
+                    id: "dlgOrden",
+                    title: "Orden",
+                    message: msg,
+                    buttons: {
+                        cancelar :{
+                            label     : 'Aceptar',
+                            className : 'btn-primary',
+                            callback  : function () {
+                                cargarTablaLicencia();
+                            }
+                        }
+                    }
+                })
+            }
+        });
+    });
+
+
     //función cargar calificación
     $(".btnCalificacion").click(function () {
         var idEva = $(this).data('ley');
         var idCali = $(this).data('id');
         $.ajax({
-           type: 'POST',
+            type: 'POST',
             url: "${createLink(controller: 'evaluacion', action: 'guardarCalificacion_ajax')}",
             data:{
                 id: idEva,

@@ -23,11 +23,14 @@
     <div class="well" style="text-align: center">
         <p>
             <strong>
-            Seleccione el conjunto de leyes a ser usadas en la auditoría de ${pre?.tipo?.descripcion}
+            Seleccione el conjunto de leyes a ser usadas en la evaluación ambiental de ${pre?.tipo?.descripcion}
             en la estación "${pre?.estacion?.nombre}", en el período
             ${pre?.periodo?.inicio?.format("yyyy") + "-" + pre?.periodo?.fin?.format("yyyy")}.
             </strong>
 
+        </p>
+        <p style="color: #ec3120">
+            <i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> ATENCIÓN: Una vez se encuentre en evaluación el marco legal no podrá ser cambiado!
         </p>
 
         <br>

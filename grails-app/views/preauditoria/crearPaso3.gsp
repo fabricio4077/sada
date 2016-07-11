@@ -121,9 +121,14 @@
 
     <g:if test="${coor.size() > 0}">
 //    lt = proj4(utm,wgs84,[818649, 38290])[1];
+//    lt = proj4(utm,wgs84,[818649, 38290])[1];
 //    lg = proj4(utm,wgs84,[818649, 38290])[0];
+//    lg = proj4(utm,wgs84,[820863, 10057015])[0];
+
     lt = proj4(utm,wgs84,[${coor.first().coordenadasX.toInteger()}, ${coor.first().coordenadasY.toInteger()}])[1];
     lg = proj4(utm,wgs84,[${coor.first().coordenadasX.toInteger()}, ${coor.first().coordenadasY.toInteger()}])[0];
+    console.log("lt " + lt)
+    console.log("lg " + lg)
     </g:if>
     <g:else>
 
@@ -146,9 +151,10 @@
 
         var marker = new google.maps.Marker({
 //            position: {lat: 36.964, lng: -122.015},
-            position: {lat: 0.345986458369604, lng: -78.13752948285801},
+//            position: {lat: 0.345986458369604, lng: -78.13752948285801},
+            position: {lat: lt, lng: lg},
             map: map,
-            title: 'Hello World!'
+            title: 'Estación: ${pre?.estacion?.nombre}'
         });
 
     }

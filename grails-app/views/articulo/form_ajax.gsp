@@ -18,7 +18,6 @@
                 </label>
                     <div class="col-md-6">
                         <g:hiddenField name="norma_id" value="${normaExistente?.id}" class="normaFija"/>
-                       %{--<g:textField name="norma.id" id="norma" value="${normaExistente?.nombre}" class="form-control" readonly="true"/>--}%
                        <g:textField name="norma.id" id="norma" value="${normaExistente?.nombre}" class="form-control" readonly="true"/>
                     </div>
             </span>
@@ -39,7 +38,6 @@
                 <div class="col-md-1">
                     <g:checkBox name="seleccionado" checked="${(mctp?.seleccionado == 1) ? 'true' : 'false'}"/>
                 </div>
-
             </span>
         </div>
         

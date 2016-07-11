@@ -103,13 +103,13 @@
                 <g:textField name="marco_usado" value="${auditoria?.marcoLegal?.descripcion}" readonly="true" class="form-control"/>
             </div>
 
-            %{--<div class="row">--}%
-                %{--<div class="col-md-8" style="margin-top: 30px">--}%
-                    %{--<a href="#" id="btnCambiarMarco" class="btn btn-warning" title="">--}%
-                        %{--Cambiar Marco Legal <i class="fa fa-close"></i>--}%
-                    %{--</a>--}%
-                %{--</div>--}%
-            %{--</div>--}%
+            <div class="row">
+                <div class="col-md-8" style="margin-top: 30px">
+                    <a href="#" id="btnCambiarMarco" class="btn btn-warning" title="">
+                        Cambiar Marco Legal <i class="fa fa-close"></i>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -117,7 +117,7 @@
     <table class="table table-condensed table-bordered table-striped">
         <thead>
         <tr>
-            <th style="width: 3%">#</th>
+            <th style="width: 3%">Orden</th>
             <th style="width: 10%">Obligación Ambiental</th>
             <th style="width: 31%">Descripción</th>
             <th style="width: 16%">Calificación</th>
@@ -235,11 +235,10 @@
     });
 
 
-
-
     //función cambiar marco legal
     $("#btnCambiarMarco").click(function () {
-        bootbox.confirm("Está seguro de cambiar el Marco Legal?", function (result) {
+        bootbox.confirm("<i class='fa fa-exclamation-triangle fa-3x text-danger text-shadow'></i> Está seguro de cambiar el Marco Legal? </br>" +
+        "</br><b style='color: #ec3120'>El marco legal solo puede ser cambiado cuando NO se encuentra en evaluacion!</b>", function (result) {
             if(result){
                 $.ajax({
                     type: 'POST',
@@ -248,10 +247,14 @@
                         id:${pre?.id}
                     },
                     success: function (msg) {
-                        if(msg == 'ok'){
-                            log("No se puede cambiar el Marco Legal, ya se encuentra en Evaluación","error")
+                        var parts = msg.split("_");
+                        if(parts[0] == 'ok'){
+                            log(parts[1],"error")
                         }else{
-                            /*TODO hacer el cambio de marco legal en evaluacion de legislacion*/
+                            log(parts[1],"success");
+                            setTimeout(function () {
+                                location.href = "${createLink(controller:'auditoria',action:'leyes')}/" + ${pre?.id};
+                            }, 1500);
                         }
                     }
                 });
