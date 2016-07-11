@@ -325,7 +325,7 @@ class PreauditoriaController extends Seguridad.Shield {
         def anteriores = Preauditoria.findByEstacionAndTipoAndPeriodoAndIdNotEqual(estacion,tipoCump,paso.periodo,paso.id)
 
 
-        def existente = Preauditoria.findByEstacionAndTipoAndPeriodoAndIdNotEqual(estacion, paso?.tipo, paso?.periodo, paso?.id)
+        def existente = Preauditoria.findByEstacionAndTipoAndPeriodoAndIdNotEqualAndEstado(estacion, paso?.tipo, paso?.periodo, paso?.id,1)
 
 
 //        println("existente " + existente?.tipo?.descripcion)
@@ -523,7 +523,16 @@ class PreauditoriaController extends Seguridad.Shield {
 //        println("params tabla " + params)
 
         if(!params.estacion && !params.tipo){
-            listaAuditorias = Preauditoria.findAllByCreadorAndEstado(creador, 1, [sort:"estacion.nombre", order:'desc'])
+            listaAuditorias = Preauditoria.findAllByCreadorAndEstado(creador, 1, [sort:"estacion", order:'asc'])
+
+//            listaAuditorias = Preauditoria.withCriteria {
+//                eq("estado",1)
+//                eq("creador", creador)
+//
+//                order("estacion")
+//            }
+
+//            println("lis "+ listaAuditorias)
         }else{
             def t = Tipo.get(params.tipo)
 

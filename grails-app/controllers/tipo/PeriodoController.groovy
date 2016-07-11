@@ -67,32 +67,57 @@ class PeriodoController extends Seguridad.Shield {
         return [periodoInstance: periodoInstance]
     } //form para cargar con ajax en un dialog
 
+    def fin_ajax () {
+        return [fin: params.anio.toInteger() + 1]
+    }
+
     def save_ajax() {
-        println("params prdo " + params)
+//        println("params prdo " + params)
 
         def inicio = new Date().parse("yyyy",params.inicio_year)
         def fin = new Date().parse("yyyy",params.fin_year)
+//
+//        println("inicio " + inicio)
+//        println("fin " + fin)
 
-        println("inicio " + inicio)
-        println("fin " + fin)
+        def listaPeriodos = Periodo.list()
+        def tiene = ''
 
+        listaPeriodos.each {p->
+            if((p.inicio.format("yyyy") == params.inicio_year) && (p.fin.format("yyyy") == params.fin_year)){
+               tiene += 'tiene'
+            }else{
 
-        def periodoInstance = new Periodo()
-        if (params.id) {
-            periodoInstance = Periodo.get(params.id)
-            if (!periodoInstance) {
-                notFound_ajax()
+            }
+        }
+
+        println("tiene " + tiene)
+
+        if(tiene != ''){
+            render "no_Este período ya existe!"
+        }else{
+            def periodoInstance = new Periodo()
+            if (params.id) {
+                periodoInstance = Periodo.get(params.id)
+                if (!periodoInstance) {
+                    notFound_ajax()
+                    return
+                }
+            } //update
+            periodoInstance.properties = params
+            if (!periodoInstance.save(flush: true)) {
+                def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} el Período."
+                msg += renderErrors(bean: periodoInstance)
+                render msg
                 return
             }
-        } //update
-        periodoInstance.properties = params
-        if (!periodoInstance.save(flush: true)) {
-            def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Periodo."
-            msg += renderErrors(bean: periodoInstance)
-            render msg
-            return
+            render "OK_${params.id ? 'Actualización' : 'Creación'} de Periodo exitosa."
         }
-        render "OK_${params.id ? 'Actualización' : 'Creación'} de Periodo exitosa."
+
+
+
+
+
     } //save para grabar desde ajax
 
     def delete_ajax() {

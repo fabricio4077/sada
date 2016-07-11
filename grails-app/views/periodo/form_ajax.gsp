@@ -19,27 +19,31 @@
                         Inicio
                     </label>
                     <div class="col-md-2">
-                        %{--<elm:datepicker name="inicio"  class="datepicker form-control required" value="${periodoInstance?.inicio}"  />--}%
-                        <g:datePicker name="inicio" id="inicioDate" precision="year" years="${2050..2000}"/>
+                        %{--<elm:datepicker name="inicio"  precision="year" class="datepicker form-control required" value="${periodoInstance?.inicio}"  />--}%
+                        <g:datePicker name="inicio" id="inicioDate" class="form-control" precision="year" years="${2050..2000}"/>
                     </div>
 
                 </span>
             </div>
 
-            <div class="form-group ${hasErrors(bean: periodoInstance, field: 'fin', 'error')} ">
-                <span class="grupo">
-                    <label for="fin" class="col-md-4 control-label text-info">
-                        Fin
-                    </label>
-                    <div class="col-md-2">
+            <div id="divFin">
+
+            </div>
+
+            %{--<div class="form-group ${hasErrors(bean: periodoInstance, field: 'fin', 'error')} ">--}%
+                %{--<span class="grupo">--}%
+                    %{--<label for="fin" class="col-md-4 control-label text-info">--}%
+                        %{--Fin--}%
+                    %{--</label>--}%
+                    %{--<div class="col-md-2">--}%
                         %{--<elm:datepicker name="fin"  class="datepicker form-control required" value="${periodoInstance?.fin}" changeYear="true"/>--}%
                         %{--<g:datePicker name="fin" precision="year"  class="form-control required" years="${Calendar.instance.get(Calendar.YEAR)..1900}"/>--}%
-                        <g:datePicker name="fin" precision="year"  class="form-control required" years="${2050..2000}"/>
+                        %{--<g:datePicker name="fin" precision="year"  class="form-control required" years="${2050..2000}"/>--}%
 
-                    </div>
+                    %{--</div>--}%
 
-                </span>
-            </div>
+                %{--</span>--}%
+            %{--</div>--}%
 
         </div>
 
@@ -47,13 +51,25 @@
 
     <script type="text/javascript">
 
+        cargarAnioFin($("#inicioDate_year").val());
 
+        function cargarAnioFin (an) {
+            $.ajax({
+                type: 'POST',
+                url: '${createLink(controller: 'periodo', action: 'fin_ajax')}',
+                data:{
+                    anio: an
+                },
+                success: function (msg){
+                    $("#divFin").html(msg)
+                }
+            });
+        }
 
-//        $("#inicioDate").selected(function () {
-//           console.log($(this).val())
-//        });
-
-        console.log("-->" +   $("#inicioDate").selected)
+        $("#inicioDate_year").change(function () {
+           var anio =   $("#inicioDate_year").val();
+            cargarAnioFin(anio)
+        });
 
 
         var validator = $("#frmPeriodo").validate({

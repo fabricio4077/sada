@@ -3,6 +3,8 @@ package auditoria
 import Seguridad.Persona
 import consultor.Asignados
 import estacion.Coordenadas
+import evaluacion.Calificacion
+import evaluacion.Evaluacion
 import objetivo.Objetivo
 import objetivo.ObjetivosAuditoria
 import plan.PlanAuditoria
@@ -185,44 +187,44 @@ class AuditoriaController extends Seguridad.Shield {
 
         }
 
-      if(error == ''){
-          render "ok"
-      }else{
-         render "no"
-      }
+        if(error == ''){
+            render "ok"
+        }else{
+            render "no"
+        }
 
     }
 
-     def cargarTablaObjetivos_ajax (){
+    def cargarTablaObjetivos_ajax (){
 
 
-         def objetivoGeneral
-         def especificos
-         def auditoria = Auditoria.get(params.idA)
+        def objetivoGeneral
+        def especificos
+        def auditoria = Auditoria.get(params.idA)
 
-         objetivoGeneral = ObjetivosAuditoria.withCriteria {
+        objetivoGeneral = ObjetivosAuditoria.withCriteria {
 
-             eq("auditoria",auditoria)
+            eq("auditoria",auditoria)
 
-             objetivo{
-                 eq("tipo","General")
-             }
-         }
+            objetivo{
+                eq("tipo","General")
+            }
+        }
 
-         especificos = ObjetivosAuditoria.withCriteria {
+        especificos = ObjetivosAuditoria.withCriteria {
 
-             eq("auditoria",auditoria)
+            eq("auditoria",auditoria)
 
-             objetivo{
-                 eq("tipo","Específico")
-             }
+            objetivo{
+                eq("tipo","Específico")
+            }
 
-             order("objetivo","asc")
-         }
+            order("objetivo","asc")
+        }
 
-         return [auditoria: auditoria, general: objetivoGeneral, especificos: especificos]
+        return [auditoria: auditoria, general: objetivoGeneral, especificos: especificos]
 
-     }
+    }
 
     def leyes () {
         def pre = Preauditoria.get(params.id)
@@ -257,10 +259,90 @@ class AuditoriaController extends Seguridad.Shield {
             flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
             response.sendError(403)
         }
-
-
     }
 
+    def recomendaciones () {
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def objetivo =  Objetivo.findByIdentificador('Recomendaciones')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(auditoria,objetivo)
+        def listaCalificacionesMayor = ['NC+']
+        def listaCalificacionesMenor = ['nc-']
+        def calificacionesMayor = Calificacion.findAllBySiglaInList(listaCalificacionesMayor)
+        def calificacionesMenor = Calificacion.findAllBySiglaInList(listaCalificacionesMenor)
+        def evaluacionesMayores = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalle,calificacionesMayor, [sort: 'hallazgo.descripcion', order: "asc"])
+        def evaluacionesMenores = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalle,calificacionesMenor, [sort: 'hallazgo.descripcion', order: "asc"])
+        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def texto
+
+        texto = "<p style='text-align:justify'>Para verificar el cumplimiento de la Normativa Ambiental vigente y " +
+                "Plan de Manejo Ambiental, se realizaron inspecciones de campo, así como " +
+                "la revisión documental de respaldo. Mediante los mecanismos mencionados se" +
+                " pudo determinar el grado de cumplimiento a la legislación por parte de la Estación '${pre?.estacion?.nombre}'.</p>" +
+                "<br><b>Resultados:</b>" +
+                "<br>Como resultado de la auditoría se pudieron identificar las siguientes no conformidades:" +
+                "<br><b>No Conformidades Mayores</b>" +
+                "<br><ul>"
+
+        evaluacionesMayores.each {
+            texto += "<li style='text-align:justify'>" + it?.hallazgo?.descripcion + "</li>"
+        }
+
+        texto += "</ul>"
+
+        if(evaluacionesMenores){
+            texto += "<br><b>No Conformidades Menores</b>" +
+                    "<br><ul>"
+
+            evaluacionesMenores.each {
+                texto += "<li style='text-align:justify'>" + it?.hallazgo?.descripcion + "</li>"
+            }
+            texto += "</ul>"
+        }
+
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
+            return [det: detalle, texto: texto, mayores: evaluacionesMayores, pre: pre, obau: obau]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+    }
+
+    def completar_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+        def objetivo =  Objetivo.findByIdentificador('Recomendaciones')
+        def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
+        obau.completado = 1
+        try{
+            obau.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+        }
+    }
+
+    def editorRecomendaciones_ajax () {
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+
+        return [det: detalle, texto: params.texto]
+    }
+
+    def guardarRecomendacion_ajax () {
+        println("texto " + params)
+        def detalle = DetalleAuditoria.get(params.det)
+        detalle.recomendaciones = params.descripcion
+
+        try{
+            detalle.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+        }
+    }
 
 
 }

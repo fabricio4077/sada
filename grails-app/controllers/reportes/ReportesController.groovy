@@ -263,6 +263,17 @@ class ReportesController{
 
     }
 
+    def recomendacionesPdf () {
+        def pre = Preauditoria.get(params.id)
+        def auditoria = Auditoria.findByPreauditoria(pre)
+        def detalle = DetalleAuditoria.findByAuditoria(auditoria)
+        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+
+        def ant = corregirTexto(detalle?.recomendaciones)
+
+        return [det: ant, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero]
+    }
+
 
     def corregirTexto (texto) {
         def text = (texto ?: '')

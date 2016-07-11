@@ -114,7 +114,7 @@
     <div class="panel-body">
         <b>SISTEMA  WEB  DE  AUDITORÍA  Y  MONITOREO MEDIO  AMBIENTAL  PARA  ESTACIONES  DE COMERCIALIZACIÓN DE COMBUSTIBLES</b>
         <br>
-        SADA(Sistema Automatizado De Auditoría Ambiental) es un sistema web el
+        SADA (Sistema Automatizado De Auditoría Ambiental) es un sistema web el
         cual permite realizar los procesos de una auditoría ambiental de manera rápida y eficiente.
     </div>
 </div>
@@ -173,51 +173,33 @@
     </div>
     <div class="panel-body">
 
-
-        %{--<div class="media-box">--}%
-            %{--<div class="pull-left">--}%
-                %{--<span class="fa-stack">--}%
-                    %{--<em class="fa fa-circle fa-stack-2x text-purple"></em>--}%
-                    %{--<em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>--}%
-                %{--</span>--}%
-            %{--</div>--}%
-            %{--<div class="media-box-body clearfix">--}%
-                %{--<small class="text-muted pull-right ml">15m</small>--}%
-                %{--<div class="media-box-heading">--}%
-                    %{--<a class="text-purple m0" href="#">NEW FILE</a>--}%
-                %{--</div>--}%
-                %{--<p class="m0">--}%
-            %{--</div>--}%
-        %{--</div>--}%
-
-
         <table class="table table-inner table-vmiddle">
             <thead>
             <tbody>
-            <tr>
-                <td class="">
-                    <div class="pull-left">
-                        <span class="fa-stack">
-                            <em class="fa fa-circle fa-stack-2x text-danger"></em>
-                            <em class="fa fa-exclamation fa-stack-1x fa-inverse text-danger"></em>
-                        </span>
-                    </div>
-                </td>
-                <td>Alerta 1</td>
-                <td class="f-500 c-cyan"></td>
-            </tr>
-            <tr>
-                <td class="">
-                    <div class="pull-left">
-                        <span class="fa-stack">
-                            <em class="fa fa-circle fa-stack-2x text-info"></em>
-                            <em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>
-                        </span>
-                    </div>
-                </td>
-                <td>Alerta 2</td>
-                <td class="f-500 c-cyan"></td>
-            </tr>
+            %{--<tr>--}%
+                %{--<td class="">--}%
+                    %{--<div class="pull-left">--}%
+                        %{--<span class="fa-stack">--}%
+                            %{--<em class="fa fa-circle fa-stack-2x text-danger"></em>--}%
+                            %{--<em class="fa fa-exclamation fa-stack-1x fa-inverse text-danger"></em>--}%
+                        %{--</span>--}%
+                    %{--</div>--}%
+                %{--</td>--}%
+                %{--<td>Alerta 1</td>--}%
+                %{--<td class="f-500 c-cyan"></td>--}%
+            %{--</tr>--}%
+            %{--<tr>--}%
+                %{--<td class="">--}%
+                    %{--<div class="pull-left">--}%
+                        %{--<span class="fa-stack">--}%
+                            %{--<em class="fa fa-circle fa-stack-2x text-info"></em>--}%
+                            %{--<em class="fa fa-cloud-upload fa-stack-1x fa-inverse text-white"></em>--}%
+                        %{--</span>--}%
+                    %{--</div>--}%
+                %{--</td>--}%
+                %{--<td>Alerta 2</td>--}%
+                %{--<td class="f-500 c-cyan"></td>--}%
+            %{--</tr>--}%
             <tr>
                 <td class="">
                     <div class="pull-left">
@@ -227,31 +209,48 @@
                         </span>
                     </div>
                 </td>
-                <td>Ultima auditoría </td>
-                <td class="">
-                    <div class="easy-pie sub-pie-1" data-percent="56">
-                        %{--<div class="percent">56</div>--}%
-                        <div id="example1" style="float: right"></div>
+            <g:if test="${auditorias}">
+                <td><b>Auditorías en progreso</b></td>
+            </g:if>
+            <g:else>
+                <td><b>No posee ninguna auditoría en progreso</b></td>
+            </g:else>
 
-                        <div class="pie-title">Avance de la auditoría %</div>
-                        <canvas height="95" width="95"></canvas>
-                    </div>
+                %{--<td class="">--}%
+                    %{--<div class="easy-pie sub-pie-1" data-percent="56">--}%
+                        %{--<div id="example1" style="float: right"></div>--}%
+                        %{--<div class="pie-title">Avance de la auditoría %</div>--}%
+                        %{--<canvas height="95" width="95"></canvas>--}%
+                    %{--</div>--}%
+                %{--</td>--}%
 
-                </td>
+            <table class="table table-condensed table-bordered table-striped">
+                <thead>
+                </thead>
+                <tbody>
+                <g:each in="${auditorias}" var="au">
+                    <tr>
+                        <g:if test="${au?.tipo?.codigo == 'INIC'}">
+                            <td style="background-color: #85c5ff; width: 20%">${au?.tipo?.descripcion}</td>
+                        </g:if>
+                        <g:elseif test="${au?.tipo?.codigo == 'LCM1'}">
+                            <td style="background-color: #77ff6b; width: 20%">${au?.tipo?.descripcion}</td>
+                        </g:elseif>
+                        <g:else>
+                            <td style="background-color: #fdff78; width: 20%">${au?.tipo?.descripcion}</td>
+                        </g:else>
+                        %{--<td style="width: 20%">${au?.tipo?.descripcion}</td>--}%
+                        <td style="width: 20%">${au?.periodo?.inicio?.format("yyyy") + "-" + au?.periodo?.fin?.format("yyyy")}</td>
+                        <td style="width: 60%">${au?.estacion?.nombre}</td>
+                    </tr>
+                </g:each>
+                </tbody>
+             </table>
             </tr>
-            <tr>
-
-
-
-            </tr>
-
             </tbody>
         </table>
-
-
     </div>
 </div>
-
 
 <div class="row">
     <div class="col-sm-3 col-md-3">
@@ -278,12 +277,13 @@
     %{--cargarBienvenida();--}%
 
     %{--function cargarBienvenida () {--}%
-        %{--log("Bienvenido ${session.usuario.nombre + " " + session.usuario.apellido}", "success");--}%
+        %{--console.log("entro")--}%
+    %{--log("Bienvenido ${session.usuario.nombre + " " + session.usuario.apellido}", "success");--}%
     %{--}--}%
 
     $("#example1").radialProgress("init", {
-                'size': 70,
-                'fill': 5
+        'size': 70,
+        'fill': 5
     }).radialProgress("to", {'perc': 56, 'time': 3000});
 
 

@@ -56,6 +56,7 @@
             <g:select name="orden4_name" id="ordenEva" from="${arr}" class="form-control"/>
             <g:select name="orden5_name" id="ordenAccion" from="${arr}" class="form-control"/>
             <g:select name="orden6_name" id="ordenPMA" from="${arr}" class="form-control"/>
+            <g:select name="orden6_name" id="ordenReco" from="${arr}" class="form-control"/>
         </div>
     </div>
     <div class="col-md-2" style="width: 150px">
@@ -67,6 +68,7 @@
             <g:textField name="pagina_name" id="paginaEva" maxlength="3" class="form-control number sin"/>
             <g:textField name="pagina_name" id="paginaAccion" maxlength="3" class="form-control number sin"/>
             <g:textField name="pagina_name" id="paginaPMA" maxlength="3" class="form-control number sin"/>
+            <g:textField name="pagina_name" id="paginaReco" maxlength="3" class="form-control number sin"/>
         </div>
     </div>
     <div class="col-md-3">
@@ -78,6 +80,7 @@
             <a href="#" class="list-group-item" id="imprimirEva"><i class="fa fa-print"></i> Evaluación Ambiental</a>
             <a href="#" class="list-group-item" id="imprimirAccion"><i class="fa fa-print"></i> Plan de Acción</a>
             <a href="#" class="list-group-item" id="imprimirPMA"><i class="fa fa-print"></i> Plan de Manejo Ambiental</a>
+            <a href="#" class="list-group-item" id="imprimirReco"><i class="fa fa-print"></i> Conclusiones y recomendaciones</a>
         </div>
     </div>
 
@@ -193,6 +196,15 @@
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=PMA_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
+
+    $("#imprimirReco").click(function () {
+        var orden = $("#ordenReco").val();
+        var numero = $("#paginaReco").val();
+        var url = "${createLink(controller: 'reportes', action: 'recomendacionesPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendaciones_${pre?.id}.pdf" + "&numero=" + numero;
+        return false
+    });
+
 
 
     <g:if test="${especialista?.persona?.consultora?.logotipo}">

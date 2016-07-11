@@ -1,5 +1,7 @@
 package Seguridad
 
+import auditoria.Preauditoria
+
 
 class PersonaController extends Shield {
 
@@ -98,6 +100,7 @@ class PersonaController extends Shield {
             }
         } //update
         personaInstance.properties = params
+        personaInstance.password = params.password.encodeAsMD5()
 
         if (!personaInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} Persona."
@@ -171,11 +174,23 @@ class PersonaController extends Shield {
         if (params.id) {
             def personaInstance = Persona.get(params.id)
             if (personaInstance) {
+                def creador = personaInstance.apellido + "_" + personaInstance.login
+                def auditorias = Preauditoria.findAllByCreadorAndEstado(creador,1)
+
                 try {
-                    personaInstance.delete(flush: true)
-                    render "OK_Eliminación de Persona exitosa."
+                    if(auditorias){
+                        render "NO_No se pudo eliminar al usuario."
+                    }else{
+                        def sesion = Sesn.findAllByUsuario(personaInstance)
+                        sesion.each {s->
+                            s.delete(flush: true)
+                        }
+
+                        personaInstance.delete(flush: true)
+                        render "OK_Usuario eliminado correctamente."
+                    }
                 } catch (e) {
-                    render "NO_No se pudo eliminar Persona."
+                    render "NO_No se pudo eliminar al usuario."
                 }
             } else {
                 notFound_ajax()
@@ -366,6 +381,19 @@ class PersonaController extends Shield {
             }
         } else {
             render "ERROR*Password de ingreso es incorrecto"
+        }
+    }
+
+    def resetearPass_ajax () {
+        println("params resetear " + params)
+        def nuevoPass = '123'
+        def usuario = Persona.get(params.id)
+        usuario.password = nuevoPass.encodeAsMD5()
+        try{
+            usuario.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
         }
     }
 

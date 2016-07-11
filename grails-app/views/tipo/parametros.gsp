@@ -91,6 +91,16 @@
                                         </p>
                                     </div>
                                 </li>
+                                <li class="margen">
+                                    <g:link controller="canton" class="over" action="list">
+                                        <i class="fa fa-map-marker"> Cantón </i>
+                                    </g:link>
+                                    <div class="descripcion hidden">
+                                        <h4>Cantón</h4>
+                                        <p>Administración del cantón donde encuentra ubicada la estación de servicio.
+                                        </p>
+                                    </div>
+                                </li>
                             </ul>
                         </div>
                         <div id="menu2" class="tab-pane fade">

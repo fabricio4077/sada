@@ -84,6 +84,14 @@
                 </span>
             </div>
         </g:if>
+        <g:else>
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <a href="#" class="btn btn-info btnReseteaPass" title="Resetear Password" data-id="${personaInstance?.id}">
+                    <i class="fa fa-eraser"></i> Resetear Password
+                </a>
+            </div>
+        </g:else>
     </div>
 
     <div class="row col-lg-12">
@@ -141,6 +149,30 @@
 </g:form>
 
 <script type="text/javascript">
+
+    $(".btnReseteaPass").click(function () {
+        var idP = $(".btnReseteaPass").data('id');
+        bootbox.confirm("<i class='fa fa-danger fa-3x pull-left text-warning text-shadow'></i> Está seguro que desea resetear el password de este usuario?", function (result) {
+            if (result) {
+                $.ajax({
+                   type: 'POST',
+                    url: "${createLink(controller: 'persona', action: 'resetearPass_ajax')}",
+                    data:{
+                        id: idP
+                    },
+                    success: function (msg){
+                        if(msg == 'ok'){
+                            log("Password reseteado correctamente","success")
+                        }else{
+                            log("Error al resetear el password","error")
+                        }
+                    }
+                });
+            }
+        })
+    });
+
+
     var validator = $("#frmPersona").validate({
         errorClass     : "help-block",
         errorPlacement : function (error, element) {

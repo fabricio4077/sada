@@ -26,7 +26,7 @@
             </div>
             
             <div class="col-md-3">
-                ${cantonInstance?.provincia?.encodeAsHTML()}
+                ${cantonInstance?.provincia?.nombre?.encodeAsHTML()}
             </div>
             
         </div>
