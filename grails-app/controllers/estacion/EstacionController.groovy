@@ -127,7 +127,7 @@ class EstacionController extends Seguridad.Shield {
     }
 
     def guardarEstacion_ajax () {
-        println("params estacion " + params)
+//        println("params estacion " + params)
 
         def comercializadora = Comercializadora.get(params.comercializadora);
         def provincia = Provincia.get(params.provincia)
@@ -181,6 +181,8 @@ class EstacionController extends Seguridad.Shield {
 
     def cargarComboEstacion_ajax() {
 
+//        println("camob params " + params)
+
         def estacion = Estacion.get(params.id)
         def pre = Preauditoria.get(params.pre)
 
@@ -188,7 +190,7 @@ class EstacionController extends Seguridad.Shield {
     }
 
     def cargarCanton_ajax () {
-        println("params canton " + params)
+//        println("params canton " + params)
 
         def estacion = Estacion.get(params.estacion)
         def provincia = Provincia.get(params.id)

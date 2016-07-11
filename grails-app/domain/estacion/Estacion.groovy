@@ -36,7 +36,7 @@ class Estacion {
     }
 
     static constraints = {
-        nombre(nullable: false, blank: false, size: 1..31)
+        nombre(nullable: false, blank: false, size: 1..63)
         administrador(nullable: false, blank: false, size: 1..31)
         direccion(nullable: false, blank: false, size: 1..255)
     }
