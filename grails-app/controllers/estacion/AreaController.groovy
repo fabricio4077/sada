@@ -457,15 +457,18 @@ class AreaController extends Seguridad.Shield {
     }
 
     def cargarExtintor_ajax () {
-
         def ares = Ares.get(params.id)
         return[ares: ares]
     }
 
     def tablaExtintores_ajax () {
-        def ares = Ares.get(params.id)
-        def lista = Extintor.findAllByAres(ares)
-
+        println("params tabla ex" + params)
+        def aresArea = Ares.get(params.id)
+//        def lista = Extintor.findAllByAres(ares)
+        def lista = Extintor.withCriteria {
+            eq("ares",aresArea)
+        }
+        println("lista " + lista)
         return [lista: lista]
      }
 
@@ -474,20 +477,32 @@ class AreaController extends Seguridad.Shield {
 //        println("params gregar extintor " + params )
 
         def ares = Ares.get(params.id)
-        def extintor = new Extintor()
 
-        extintor.ares = ares
-        extintor.tipo = params.tipo
-        extintor.capacidad = params.capacidad.toInteger()
+        def extintorArea = new Extintor()
+        extintorArea.ares = ares
+        extintorArea.tipo = params.tipo
+        extintorArea.capacidad = params.capacidad.toInteger()
 
         try{
-            extintor.save(flush: true)
+            extintorArea.save(flush: true)
+//            println("ex " + extintorArea.id)
             render "ok"
         }catch(e){
             render"no"
             println("Error al agregar el extintor")
         }
     }
+
+    def grabarExtintor_ajax() {
+        def ares = Ares.get(params.id)
+        def nuevoEx = new Extintor()
+        nuevoEx.ares = ares
+        nuevoEx.tipo = params.tipo
+        nuevoEx.capacidad = params.capacidad.toInteger()
+        nuevoEx.save(flush: true)
+        render "ok"
+    }
+
 
     //funcion para borrar un extintor del área
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="layout" content="main">
+        <meta name="layout" content="mainSada">
         <title>Lista de Extintor</title>
     </head>
     <body>

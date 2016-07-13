@@ -48,12 +48,32 @@ class ReportesController{
 
         def pre = Preauditoria.get(params.id)
         def coordenadas = Coordenadas.findAllByEstacion(pre?.estacion)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def coordinador = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Coordinador"));
-        def biologo = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Biologo"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def coordinador = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Coordinador"));
+//        def biologo = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Biologo"));
         def canton = Canton.get(pre?.estacion?.canton)
-        return [pre: pre, coordenadas: coordenadas, especialista: especialista?.persona,
-                coordinador: coordinador?.persona, biologo: biologo?.persona,
+
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }
+        def coordinador = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Coordinador")
+            }
+        }
+        def biologo = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Biologo")
+            }
+        }
+
+        return [pre: pre, coordenadas: coordenadas, especialista: especialista?.first()?.persona,
+                coordinador: coordinador?.first()?.persona, biologo: biologo?.first()?.persona,
                 canton: canton, orden: params.orden, numero: params.numero]
 
     }
@@ -200,9 +220,28 @@ class ReportesController{
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
         def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalle, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
-        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
-        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
+//        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalle, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+//        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
+//        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
+
+
+        def leyes = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalle)
+            isNotNull("marcoNorma")
+            order("orden","asc")
+        }
+
+        def planes = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalle)
+            isNotNull("planAuditoria")
+            order("orden","asc")
+        }
+
+        def licencias = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalle)
+            isNotNull("licencia")
+            order("orden","asc")
+        }
 
         return [pre: pre, especialista: especialista?.persona, orden: params.orden, leyes: leyes, planes: planes, licencias: licencias,  numero: params.numero]
     }

@@ -7,7 +7,6 @@ class Extintor {
     String tipo
     int capacidad = 0
 
-
     static mapping = {
         table 'exas'
         cache usage: 'read-write', include: 'non-lazy'
@@ -23,7 +22,6 @@ class Extintor {
 
 
     static constraints = {
-
         tipo inList: ['Agua-espuma','CO2','PQS']
         capacidad inList: ['5','10','15','20']
     }

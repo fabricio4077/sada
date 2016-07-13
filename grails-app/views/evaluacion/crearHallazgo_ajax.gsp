@@ -16,7 +16,7 @@
 
 <div class="row">
     <div class="col-md-11">
-        <g:textArea name="hallazgo_name" id="hallazgoDescripcion" maxlength="500" class="form-control" style="height: 190px; resize: none"/>
+        <g:textArea name="hallazgo_name" id="hallazgoDescripcion" maxlength="2000" class="form-control" style="height: 190px; resize: none"/>
     </div>
 </div>
 

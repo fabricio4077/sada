@@ -29,7 +29,7 @@
                     Art. N°
                 </label>
                 <div class="col-md-3">
-                    <g:textField name="numero" value="${articuloInstance.numero}" maxlength="4" class="digits form-control number required noEspacios" required=""/>
+                    <g:textField name="numero" value="${articuloInstance.numero}" maxlength="10" class="digits form-control number required noEspacios" required=""/>
                 </div>
 
                 <label for="seleccionado" class="col-md-5 control-label text-info">

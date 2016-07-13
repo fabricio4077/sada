@@ -162,7 +162,8 @@
     <tbody>
     <g:each in="${leyes}" var="ley" status="j">
         <tr>
-            <td>${j+1}</td>
+            %{--<td>${j+1}</td>--}%
+            <td>${ley?.orden}</td>
             <td><util:renderHTML html="${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}"/></td>
             <td style="text-align: left"><util:renderHTML html="${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}"/></td>
             <g:if test="${ley?.calificacion?.sigla == 'C'}">
@@ -243,7 +244,8 @@
     <tbody>
     <g:each in="${planes}" var="plan" status="j">
         <tr>
-            <td>${j+1}</td>
+            %{--<td>${j+1}</td>--}%
+            <td>${plan?.orden}</td>
             <td><util:renderHTML html="${plan?.planAuditoria?.aspectoAmbiental?.planManejoAmbiental?.nombre}"/></td>
             <td style="text-align: left"><util:renderHTML html="${plan?.planAuditoria?.aspectoAmbiental?.descripcion + " - " + plan?.planAuditoria?.medida?.descripcion}"/></td>
             <g:if test="${plan?.calificacion?.sigla == 'C'}">
@@ -325,7 +327,7 @@
         <tbody>
         <g:each in="${licencias}" var="lic" status="j">
             <tr>
-                <td>${j+1}</td>
+                <td>${lic?.orden}</td>
                 <td><util:renderHTML html="${"Licencia Ambiental"}"/></td>
                 <td style="text-align: left"><util:renderHTML html="${lic?.licencia?.descripcion}"/></td>
                 <g:if test="${lic?.calificacion?.sigla == 'C'}">

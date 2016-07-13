@@ -461,13 +461,37 @@ class PreauditoriaController extends Seguridad.Shield {
     def fichaTecnica () {
         def creador = session.usuario.apellido + "_" + session.usuario.login
         def pre = Preauditoria.get(params.id)
+        def coor = Persona.findByCargo('Coordinador')
         def coordenadas = Coordenadas.findAllByEstacion(pre?.estacion)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def coordinador = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Coordinador"));
-        def biologo = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Biologo"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+       def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }
+//        def coordinador = Asignados.findByPreauditoriaAndPersona(pre, coor);
+        def coordinador = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Coordinador")
+            }
+        }
+//        def biologo = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Biologo"));
+        def biologo = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Biologo")
+            }
+        }
+
+//        def asignados = Asignados.findAllByPreauditoria(pre)
+
+//        println("asignados " + asignados)
+
 
         if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
-            return [pre: pre, coordenadas: coordenadas, especialista: especialista?.persona, coordinador: coordinador?.persona, biologo: biologo?.persona]
+            return [pre: pre, coordenadas: coordenadas, especialista: especialista?.first()?.persona, coordinador: coordinador?.first()?.persona, biologo: biologo?.first()?.persona]
         } else {
             flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
             response.sendError(403)

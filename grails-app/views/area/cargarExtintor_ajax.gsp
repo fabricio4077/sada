@@ -12,7 +12,7 @@
         Tipo
     </div>
     <div class="col-md-6">
-        <g:select name="tipo_name" id="tipo" from="${estacion.Extintor.constraints.tipo.inList}"
+        <g:select name="tipo_name" id="tipo" from="${Extintor.constraints.tipo.inList}"
                   class="form-control"
                   noSelection="[null: 'Seleccione...']"/>
     </div>
@@ -56,7 +56,7 @@
             type: 'POST',
             url: '${createLink(controller: 'area', action: 'tablaExtintores_ajax')}',
             data: {
-                id: ${ares.id}
+                id: '${ares.id}'
             },
             success: function (msg) {
                 $("#tablaExtintores").html(msg)
@@ -75,8 +75,9 @@
             $.ajax({
                 type: 'POST',
                 url: '${createLink(controller: 'area',action:  'agregarExtintor_ajax')}',
+                %{--url: "${createLink(controller: 'area',action:  'grabarExtintor_ajax')}",--}%
                 data:{
-                    id: ${ares?.id},
+                    id: '${ares?.id}',
                     tipo: tp,
                     capacidad: cp
                 },
