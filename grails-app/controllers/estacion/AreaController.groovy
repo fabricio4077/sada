@@ -474,18 +474,17 @@ class AreaController extends Seguridad.Shield {
 
     def agregarExtintor_ajax (){
 
-//        println("params gregar extintor " + params )
+        println("params gregar extintor " + params )
 
-        def ares = Ares.get(params.id)
+        def ares = Ares.get(params.idA)
 
-        def extintorArea = new Extintor()
+        def extintorArea = new Extintor(params)
         extintorArea.ares = ares
         extintorArea.tipo = params.tipo
         extintorArea.capacidad = params.capacidad.toInteger()
 
         try{
             extintorArea.save(flush: true)
-//            println("ex " + extintorArea.id)
             render "ok"
         }catch(e){
             render"no"

@@ -37,5 +37,7 @@ class Consultora {
         nombre (nullable: false, blank: false, size: 1..31)
         administrador (nullable: false, blank: false, size: 1..63)
         logotipo(nullable: true, blank: true)
+        mail(nullable: true, blank: true)
+        pagina(nullable: true, blank: true)
     }
 }

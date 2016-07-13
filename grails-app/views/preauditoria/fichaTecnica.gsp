@@ -131,7 +131,7 @@
             </table>
         </div>
 
-        <g:if test="${especialista?.consultora}">
+        <g:if test="${pre?.consultora}">
             <div class="col-md-12" style="margin-top: -20px">
                 <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
                     <thead >
@@ -143,30 +143,31 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>${especialista?.consultora?.nombre}</td>
-                        <td>${especialista?.consultora?.administrador}</td>
-                        <g:set var="reg" value="${especialista?.consultora?.registro}"/>
-                        <td>MAE: ${reg?.split("_")[0]} <br/> DPA: ${reg?.split("_")[1]}</td>
+                        <td>${pre?.consultora?.nombre}</td>
+                        <td>${pre?.consultora?.administrador}</td>
+                        <g:set var="reg" value="${pre?.consultora?.registro}"/>
+                        %{--<td>MAE: ${reg?.split("_")[0]} <br/> DPA: ${reg?.split("_")[1]}</td>--}%
+                        <td>${reg}</td>
                     </tr>
                     <tr>
                         <td>Dirección</td>
-                        <td colspan="2">${especialista?.consultora?.direccion}</td>
+                        <td colspan="2">${pre?.consultora?.direccion}</td>
                     </tr>
                     <tr>
                         <td>RUC</td>
-                        <td colspan="2">${especialista?.consultora?.ruc}</td>
+                        <td colspan="2">${pre?.consultora?.ruc}</td>
                     </tr>
                     <tr>
                         <td>Teléfono</td>
-                        <td colspan="2">${especialista?.consultora?.telefono}</td>
+                        <td colspan="2">${pre?.consultora?.telefono}</td>
                     </tr>
                     <tr>
                         <td>Correo electrónico</td>
-                        <td colspan="2">${especialista?.consultora?.mail}</td>
+                        <td colspan="2">${pre?.consultora?.mail}</td>
                     </tr>
                     <tr>
                         <td>Página web</td>
-                        <td colspan="2"> <a href=http://${especialista?.consultora?.pagina}>${especialista?.consultora?.pagina}</a>  </td>
+                        <td colspan="2"> <a href=http://${pre?.consultora?.pagina}>${pre?.consultora?.pagina}</a>  </td>
                     </tr>
                     </tbody>
                 </table>

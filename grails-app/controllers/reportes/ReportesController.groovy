@@ -48,9 +48,6 @@ class ReportesController{
 
         def pre = Preauditoria.get(params.id)
         def coordenadas = Coordenadas.findAllByEstacion(pre?.estacion)
-//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-//        def coordinador = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Coordinador"));
-//        def biologo = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Biologo"));
         def canton = Canton.get(pre?.estacion?.canton)
 
         def especialista = Asignados.withCriteria {
@@ -85,7 +82,18 @@ class ReportesController{
     def metodologiaPdf() {
 
         def pre = Preauditoria.get(params.id)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+
+
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
+
+
+
         def metodologia = Metodologia.get(1);
 
 
@@ -114,7 +122,15 @@ class ReportesController{
     def objetivosPdf () {
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
+
+
         def objetivoGeneral = ObjetivosAuditoria.withCriteria {
                               eq("auditoria",auditoria)
 
@@ -157,7 +173,14 @@ class ReportesController{
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
         def antecedente = Antecedente.findByDetalleAuditoria(detalle)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
 
         def ant = corregirTexto(antecedente?.descripcion)
 
@@ -169,7 +192,13 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def alcance = Alcance.findByAuditoria(auditoria)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
         def alc = corregirTexto(alcance?.descripcion)
 
         return [alcance: alc, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero]
@@ -180,7 +209,13 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
         def componenteEmi = ComponenteAmbiental.get(1)
         def componenteDescargas = ComponenteAmbiental.get(2)
         def componenteResiduos = ComponenteAmbiental.get(3)
@@ -208,7 +243,13 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
         def ares = Ares.findAllByEstacion(pre?.estacion, [sort: 'area.nombre', order: 'asc'])
         def extintores = Extintor.findAllByAresInList(ares)
 
@@ -219,11 +260,18 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
 //        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalle, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
 //        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
 //        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
 
+
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
 
         def leyes = Evaluacion.withCriteria {
             eq("detalleAuditoria", detalle)
@@ -250,10 +298,38 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalle, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
-        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
-        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
+
+//        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalle, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+//        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
+//        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
+
+
+        def leyes = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalle)
+            isNotNull("marcoNorma")
+            order("orden","asc")
+        }
+
+        def planes = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalle)
+            isNotNull("planAuditoria")
+            order("orden","asc")
+        }
+
+        def licencias = Evaluacion.withCriteria {
+            eq("detalleAuditoria", detalle)
+            isNotNull("licencia")
+            order("orden","asc")
+        }
+
 
 
         def eval = Evaluacion.findAllByDetalleAuditoria(detalle).size()
@@ -294,9 +370,18 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
         def planAuditoria = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalle, 'ACT', [sort: 'aspectoAmbiental.planManejoAmbiental.id', order: 'asc'])
         def unicos = planAuditoria.aspectoAmbiental.planManejoAmbiental.unique()
+
+
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
+
 
         return [pre: pre, especialista: especialista?.persona, orden: params.orden, unicos: unicos, planes: planAuditoria,  numero: params.numero]
 
@@ -306,7 +391,14 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
-        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
+
+        def especialista = Asignados.withCriteria {
+            eq("preauditoria",pre)
+            persona{
+                eq("cargo","Especialista")
+            }
+        }.first()
 
         def ant = corregirTexto(detalle?.recomendaciones)
 

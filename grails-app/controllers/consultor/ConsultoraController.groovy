@@ -1,5 +1,6 @@
 package consultor
 
+import auditoria.Preauditoria
 import groovy.json.JsonBuilder
 import objetivo.Objetivo
 
@@ -153,6 +154,11 @@ class ConsultoraController extends Seguridad.Shield {
         }
         return [consultora: consultora, w: w, h: h]
 
+    }
+
+    def crearLogo_ajax () {
+        def pre = Preauditoria.get(params.id)
+        return [pre:pre]
     }
 
     def uploadFile() {

@@ -75,7 +75,7 @@
                         Teléfono
                     </label>
                     <div class="col-md-8">
-                        <g:textField name="telefono" value="${consultoraInstance?.telefono}" maxlength="31" class="form-control number noEspacios"/>
+                        <g:textField name="telefono" value="${consultoraInstance?.telefono}" maxlength="31" class="form-control number noEspacios required"/>
                     </div>
 
                 </span>
@@ -114,7 +114,7 @@
                         Dirección
                     </label>
                     <div class="col-md-6">
-                        <g:textArea name="direccion" class="col-md-8 form-control" maxlength="255" style="resize: none; width: 485px; height: 85px" value="${consultoraInstance?.direccion}"/>
+                        <g:textArea name="direccion" class="col-md-8 form-control required" maxlength="255" style="resize: none; width: 485px; height: 85px" value="${consultoraInstance?.direccion}"/>
                     </div>
                 </span>
             </div>

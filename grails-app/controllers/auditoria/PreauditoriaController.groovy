@@ -3,6 +3,7 @@ package auditoria
 import Seguridad.Persona
 import complemento.ActiAudi
 import consultor.Asignados
+import consultor.Consultora
 import estacion.Coordenadas
 import estacion.Estacion
 import legal.TipoNorma
@@ -239,6 +240,7 @@ class PreauditoriaController extends Seguridad.Shield {
         def creador = session.usuario.apellido + "_" + session.usuario.login
         def tipo = Tipo.get(params.tipo)
         def periodo = Periodo.get(params.periodo)
+        def consultora = Consultora.get(params.con)
 
         def paso
 
@@ -246,6 +248,7 @@ class PreauditoriaController extends Seguridad.Shield {
             paso = Preauditoria.get(params.id)
             paso.tipo = tipo
             paso.periodo = periodo
+            paso.consultora = consultora
             try{
                 paso.save(flush: true)
                 render "ok_${paso?.id}"
@@ -257,6 +260,7 @@ class PreauditoriaController extends Seguridad.Shield {
             paso = new Preauditoria()
             paso.tipo = tipo
             paso.periodo = periodo
+            paso.consultora = consultora
             paso.fechaCreacion = new Date()
             paso.creador = creador
             paso.estado = 1
@@ -469,21 +473,21 @@ class PreauditoriaController extends Seguridad.Shield {
             persona{
                 eq("cargo","Especialista")
             }
-        }
+        }.first()
 //        def coordinador = Asignados.findByPreauditoriaAndPersona(pre, coor);
         def coordinador = Asignados.withCriteria {
             eq("preauditoria",pre)
             persona{
                 eq("cargo","Coordinador")
             }
-        }
+        }.first()
 //        def biologo = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Biologo"));
         def biologo = Asignados.withCriteria {
             eq("preauditoria",pre)
             persona{
                 eq("cargo","Biologo")
             }
-        }
+        }.first()
 
 //        def asignados = Asignados.findAllByPreauditoria(pre)
 
@@ -491,7 +495,7 @@ class PreauditoriaController extends Seguridad.Shield {
 
 
         if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
-            return [pre: pre, coordenadas: coordenadas, especialista: especialista?.first()?.persona, coordinador: coordinador?.first()?.persona, biologo: biologo?.first()?.persona]
+            return [pre: pre, coordenadas: coordenadas, especialista: especialista?.persona, coordinador: coordinador?.persona, biologo: biologo?.persona]
         } else {
             flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
             response.sendError(403)

@@ -98,6 +98,7 @@
          </div>
      </div>
 
+
         %{--<div class="form-group ${hasErrors(bean: personaInstance, field: 'activo', 'error')} ">--}%
             %{--<span class="grupo">--}%
                 %{--<label for="activo" class="col-md-2 control-label text-info">--}%

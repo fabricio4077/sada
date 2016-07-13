@@ -207,9 +207,26 @@
 
 
 
-    <g:if test="${especialista?.persona?.consultora?.logotipo}">
-    cargarLogoConsultora(${especialista?.persona?.consultora?.id});
+    <g:if test="${pre?.consultora?.logotipo}">
+    cargarLogoConsultora(${pre?.consultora?.id});
     </g:if>
+    <g:else>
+    crearLogoConsultora(${pre?.id});
+    </g:else>
+
+    function crearLogoConsultora (idPre){
+        $.ajax({
+            type    : "POST",
+            url     : "${createLink(controller: 'consultora', action: 'crearLogo_ajax')}",
+            data:{
+                id: idPre
+            },
+            success : function (msg) {
+                $("#divLogoConsultora").html(msg);
+            }
+        });
+    }
+
 
     function cargarLogoConsultora (idO) {
         $.ajax({

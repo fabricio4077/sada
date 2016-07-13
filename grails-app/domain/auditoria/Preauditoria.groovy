@@ -1,6 +1,7 @@
 package auditoria
 
 import complemento.Actividad
+import consultor.Consultora
 import estacion.Estacion
 import tipo.Periodo
 import tipo.Tipo
@@ -16,6 +17,7 @@ class Preauditoria {
     Date fechaCreacion
     int avance = 0
     int estado = 0
+    Consultora consultora
 
     static mapping = {
         table 'prau'
@@ -32,6 +34,7 @@ class Preauditoria {
             fechaCreacion column: 'praufcha'
             avance column: 'prauavce'
             estado column: 'prauetdo'
+            consultora column: 'cnra__id'
         }
     }
 

@@ -448,14 +448,20 @@ class ReportesTagLib {
         def title = attrs.title ?: ""
         def titulo = attrs.titulo ?: ""
         def logoConsultora
+        def pre = Preauditoria.get(attrs.auditoria)
         def orden
         if(!attrs.anio){
             attrs.anio = new Date().format("yyyy")
         }
 
-        if(attrs.especialista){
-            logoConsultora = Persona.get(attrs.especialista).consultora.logotipo
+//        if(attrs.especialista){
+//            logoConsultora = Persona.get(attrs.especialista).consultora.logotipo
+//        }
+
+        if(pre?.consultora?.logotipo){
+            logoConsultora = pre?.consultora?.logotipo
         }
+
 
         if(attrs.orden){
            orden = attrs.orden
@@ -467,7 +473,7 @@ class ReportesTagLib {
         def estilo = attrs.estilo ?: "center"
         def form
         def h = 55
-        def wi = 150
+        def wi = 170
 
         def logoComer = Preauditoria.get(attrs.auditoria).estacion.comercializadora.logotipo
 
@@ -480,7 +486,7 @@ class ReportesTagLib {
         html += '</div>' + "\n"
 
         html += '<div id="header2">' + "\n"
-        html += "<img src='${logoPathCon}' style='height:${h}px;'/>" + "\n"
+        html += "<img src='${logoPathCon}' style='height:${h}px; width:${wi}px'/>" + "\n"
         html += '</div>' + "\n"
 
         html += "<div class='tituloRprt tituloReporteSinLinea'>"

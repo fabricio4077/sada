@@ -47,11 +47,11 @@
 
 <script type="text/javascript">
 
-    cargarTabla();
+    cargarTablaEx();
 
     //funcion para cargar la tabla de los extintores del área correspondiente
 
-    function cargarTabla () {
+    function cargarTablaEx() {
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'area', action: 'tablaExtintores_ajax')}',
@@ -77,13 +77,13 @@
                 url: '${createLink(controller: 'area',action:  'agregarExtintor_ajax')}',
                 %{--url: "${createLink(controller: 'area',action:  'grabarExtintor_ajax')}",--}%
                 data:{
-                    id: '${ares?.id}',
+                    idA: '${ares?.id}',
                     tipo: tp,
                     capacidad: cp
                 },
                 success: function (msg){
                     if(msg == 'ok'){
-                        cargarTabla();
+                        cargarTablaEx();
                     }else{
                         log("Error al agregar un extintor al área","error")
                     }
