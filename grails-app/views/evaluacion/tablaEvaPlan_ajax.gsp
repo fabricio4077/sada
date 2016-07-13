@@ -103,10 +103,10 @@
                     message: msg,
                     buttons: {
                         cancelar :{
-                            label     : 'Aceptar',
+                            label     : '<i class="fa fa-close"></i> Cancelar',
                             className : 'btn-primary',
                             callback  : function () {
-                                cargarTablaEvaPlan();
+
                             }
                         }
                     }

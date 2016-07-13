@@ -5,9 +5,24 @@
   Time: 21:39
 --%>
 
+<div class="row">
+     <div class="well" style="text-align: center">
+         <p style="text-align: left"><b>Evaluando:</b></p>
+         <g:if test="${evaluacion?.marcoNorma}">
+            <p style="text-align: justify">${evaluacion?.marcoNorma?.literal ? evaluacion?.marcoNorma?.literal?.descripcion : evaluacion?.marcoNorma?.articulo?.descripcion}</p>
+         </g:if>
+         <g:if test="${evaluacion?.licencia}">
+             <p style="text-align: justify">${evaluacion?.licencia?.descripcion}</p>
+         </g:if>
+         <g:if test="${evaluacion?.planAuditoria}">
+             <p style="text-align: justify">${evaluacion?.planAuditoria?.medida?.descripcion}</p>
+         </g:if>
+     </div>
+</div>
+
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-2 text-info">
         <strong> Hallazgo</strong>
     </div>
     <div class="col-md-7" id="divHallazgo">
@@ -16,7 +31,7 @@
 
     <div class="col-md-1" style="margin-left: 10px">
         <div class="btn-group">
-            <a href="#" id="btnSeleccionarHallazgo" class="btn btn-info" title="Seleccionar Hallazgo">
+            <a href="#" id="btnSeleccionarHallazgo" class="btn btn-success" title="Seleccionar Hallazgo">
                 <i class="fa fa-check"></i>
             </a>
 

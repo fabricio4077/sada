@@ -6,6 +6,7 @@
   Time: 03:30 PM
 --%>
 
+
 <div class="row-fluid"  style="width: 99.7%;height: 500px;overflow-y: auto;float: right;">
     <div class="span12">
         <div style="width: 1120px; height: 500px;">
@@ -98,14 +99,13 @@
                     message: msg,
                     buttons: {
                         cancelar :{
-                            label     : 'Aceptar',
+                            label     : '<i class="fa fa-close"></i> Cancelar',
                             className : 'btn-primary',
                             callback  : function () {
-                                cargarTablaLicencia();
                             }
                         }
                     }
-                })
+                }).off("shown.bs.modal")
             }
         });
     });
