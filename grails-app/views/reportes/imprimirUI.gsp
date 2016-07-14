@@ -44,6 +44,20 @@
         </div>
 
     </div>
+
+        <div class="alert alert-info" role="alert" style="text-align: center">
+            <div class="col-md-3">
+                <i class='fa fa-calendar fa-2x text-primary text-shadow'></i> Fecha de la impresión:
+            </div>
+            <div class="col-md-2 grupo">
+                <elm:datepicker class="form-control input-sm fechaInicio required"
+                                name="fechaInicio"
+                                title="Fecha de inicio de la actividad"
+                                id="inicio"/>
+
+            </div>
+        </div>
+
 </div>
 
 <div class="row">

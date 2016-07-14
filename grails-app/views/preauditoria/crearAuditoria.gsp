@@ -91,19 +91,37 @@
         <div class="row">
             <div class="col-md-2 negrilla control-label">Consultora: </div>
             <div class="col-md-6" style="margin-bottom: 45px">
-                <g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"
-                          optionValue="nombre"
-                          class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
-                          style="text-align: center" value="${pre?.consultora?.id}"/>
+                <g:if test="${session.perfil.codigo == 'ADMI'}">
+                    <g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"
+                              optionValue="nombre"
+                              class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
+                              style="text-align: center" value="${pre?.consultora?.id}"/>
+                </g:if>
+                <g:elseif test="${session.usuario.consultora}">
+                    <g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"
+                              optionValue="nombre"
+                              class="many-to-one form-control " noSelection="[0: 'Seleccione...']"
+                              style="text-align: center" value="${session.usuario.consultora.id}" disabled="true"/>
+
+                </g:elseif><g:else>
+                    <g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"
+                              optionValue="nombre"
+                              class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
+                              style="text-align: center" value="${pre?.consultora?.id}"/>
+                </g:else>
+
             </div>
             <div class="descripcion hidden">
                 <h4>Ayuda</h4>
                 <p>Consultora que está realizando esta auditoría.
                 </p>
             </div>
-            <a href="#" id="btnConsultora" class="btn btn-primary" title="Agregar una consultora" >
-                <i class="fa fa-plus"> Agregar</i>
-            </a>
+
+            <g:if test="${session.perfil.codigo == 'ADMI'}">
+                <a href="#" id="btnConsultora" class="btn btn-primary" title="Agregar una consultora" >
+                    <i class="fa fa-plus"> Agregar</i>
+                </a>
+            </g:if>
             <a href="#" id="btnAyudaConsultora" class="btn btn-info over" title="Ayuda">
                 <i class="fa fa-exclamation"></i>
             </a>
@@ -341,7 +359,7 @@
                             location.reload(true);
                         },1500);
                     } else {
-                       log(parts[1],"error")
+                        log(parts[1],"error")
                     }
                 }
             });
@@ -424,13 +442,13 @@
             label.parents(".grupo").removeClass('has-error');
         }
     });
-//    $(".form-control").keydown(function (ev) {
-//        if (ev.keyCode == 13) {
-//            submitForm();
-//            return false;
-//        }
-//        return true;
-//    });
+    //    $(".form-control").keydown(function (ev) {
+    //        if (ev.keyCode == 13) {
+    //            submitForm();
+    //            return false;
+    //        }
+    //        return true;
+    //    });
 
 </script>
 
