@@ -174,7 +174,7 @@ class PersonaController extends Shield {
         if (params.id) {
             def personaInstance = Persona.get(params.id)
             if (personaInstance) {
-                def creador = personaInstance.apellido + "_" + personaInstance.login
+                def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
                 def auditorias = Preauditoria.findAllByCreadorAndEstado(creador,1)
 
                 try {

@@ -106,7 +106,6 @@
 
 
 
-
 <div class="panel panel-info">
     <div class="panel-heading">
         <h3 class="panel-title" style="text-align: center"> <i class="fa fa-book"></i> Evaluación Ambiental: Legislación</h3>
@@ -149,6 +148,95 @@
         </tr>
         </thead>
     </table>
+
+    %{--<div class="row-fluid"  style="width: 99.7%;height: 500px;overflow-y: auto;float: right;">--}%
+        %{--<div class="span12">--}%
+            %{--<div style="width: 1120px; height: 500px;">--}%
+                %{--<table class="table table-condensed table-bordered table-striped" id="tablaH">--}%
+                    %{--<tbody>--}%
+                    %{--<g:each in="${leyes}" var="ley" status="j">--}%
+                        %{--<tr>--}%
+                            %{--<td style="width: 3%; color: #224aff"><b>${ley?.orden != 0 ? ley?.orden : ''}</b></br>--}%
+                                %{--<a href="#" class="btn btn-xs btn-primary btnOrdenEva" data-id="${ley?.id}" title="Agregar orden" style="float: right">--}%
+                                    %{--<i class="fa fa-plus"></i>--}%
+                                %{--</a>--}%
+                            %{--</td>--}%
+                            %{--<td style="width: 10%; font-size: smaller">${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}</td>--}%
+                            %{--<td style="width: 30%; font-size: smaller">${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}</td>--}%
+                            %{--<td style="width: 15%">--}%
+
+                                %{--${ley?.calificacion?.sigla}--}%
+
+                                %{--<table id="tabla_${pre?.id}">--}%
+                                %{--<tbody>--}%
+                                %{--<tr>--}%
+                                %{--<td>--}%
+                                %{--<div class="btn-group">--}%
+                                %{--<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}%
+                                %{--Calificar <span class="caret"></span>--}%
+                                %{--</button>--}%
+                                %{--<ul class="dropdown-menu">--}%
+                                %{--<g:each in="${evaluacion.Calificacion.list([sort: 'nombre', order: 'asc'])}" var="cal">--}%
+                                %{--<li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacionEva" data-id="${cal?.id}" data-ley="${ley?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>--}%
+                                %{--</g:each>--}%
+                                %{--</ul>--}%
+                                %{--</div>--}%
+                                %{--</td>--}%
+                                %{--<td style="background-color: ${ley?.calificacion?.tipo};" class="col-md-3">--}%
+                                %{--<div class="divCalificacion_${ley?.id} col-md-4" title="${ley?.calificacion?.nombre}">--}%
+                                %{--${ley?.calificacion?.sigla}--}%
+                                %{--</div>--}%
+                                %{--</td>--}%
+                                %{--</tr>--}%
+                                %{--</tbody>--}%
+                                %{--</table>--}%
+                            %{--</td>--}%
+                            %{--<td style="width: 15%; font-size: smaller" title="${ley?.hallazgo?.descripcion ? ley?.hallazgo?.descripcion : 'Hallazgo no cargado'}">--}%
+                                %{--<g:if test="${ley?.hallazgo?.descripcion}">--}%
+                                    %{--<g:if test="${ley?.hallazgo?.descripcion?.size() > 100}">--}%
+                                        %{--${ley?.hallazgo?.descripcion?.substring(0,100)}...--}%
+                                    %{--</g:if>--}%
+                                    %{--<g:else>--}%
+                                        %{--${ley?.hallazgo?.descripcion}--}%
+                                    %{--</g:else>--}%
+                                %{--</g:if>--}%
+                                %{--<g:else>--}%
+                                    %{--NO--}%
+                                %{--</g:else>--}%
+
+                                %{--<a href="#" class="btn btn-xs btn-primary btnHallazgoEva" data-id="${ley?.id}" title="Agregar hallazgo" style="float: right">--}%
+                                    %{--<i class="fa fa-plus"></i>--}%
+                                %{--</a>--}%
+                            %{--</td>--}%
+                            %{--<td style="width: 10%">--}%
+
+                                %{--<g:set value="${evaluacion.Anexo.findAllByEvaluacion(evaluacion.Evaluacion.get(ley?.id)).size()}" var="numero"/>--}%
+
+                                %{--<i class="fa fa-folder-open"></i> Anexos : ${numero}--}%
+
+                                %{--<a href="#" class="btn btn-xs btn-primary btnAnexoEva" data-id="${ley?.id}" title="Agregar anexo" style="float: right">--}%
+                                    %{--<i class="fa fa-plus"></i>--}%
+                                %{--</a>--}%
+                            %{--</td>--}%
+                        %{--</tr>--}%
+                    %{--</g:each>--}%
+
+                    %{--</tbody>--}%
+                %{--</table>--}%
+
+            %{--</div>--}%
+        %{--</div>--}%
+    %{--</div>--}%
+
+
+
+
+
+
+
+
+
+
 
     <div id="divTablaEvaluaciones">
 
@@ -210,15 +298,15 @@
 
 <script type="text/javascript">
 
-    $("#btnCumplirEva").click(function () {
+  $("#btnCumplirEva").click(function () {
         $.ajax({
             type: 'POST',
             url: "${createLink(controller: 'evaluacion', action: 'completar_ajax')}",
             data:{
                 id: ${pre?.id}
             },
-            success: function (msg) {
-                if(msg == 'ok'){
+            success: function (msgCom) {
+                if(msgCom == 'ok'){
                     log("Objetivo registrado como completado!", "success");
                     setTimeout(function () {
                         location.reload(true)
@@ -268,8 +356,8 @@
                     data:{
                         id:${pre?.id}
                     },
-                    success: function (msg) {
-                        var parts = msg.split("_");
+                    success: function (msgLegal) {
+                        var parts = msgLegal.split("_");
                         if(parts[0] == 'ok'){
                             log(parts[1],"error")
                         }else{
@@ -284,6 +372,9 @@
         })
     });
 
+
+
+
     cargarTablaEva();
 
     //función para cargar la tabla con las evaluaciones
@@ -291,11 +382,12 @@
         $.ajax({
             type: 'POST',
             url: '${createLink(controller: 'evaluacion', action: 'tablaEvaluacion_ajax')}',
+            async: true,
             data: {
                 id: ${pre?.id}
             },
-            success: function (msg) {
-                $("#divTablaEvaluaciones").html(msg).addClass('animated fadeInDown')
+            success: function (msgTabla) {
+                $("#divTablaEvaluaciones").html(msgTabla).addClass('animated fadeInDown')
             }
         });
     }

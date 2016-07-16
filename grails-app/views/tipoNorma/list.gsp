@@ -17,26 +17,23 @@
                     <i class="fa fa-file-o"></i> Nuevo Tipo de Norma Legal
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
-                    <span class="input-group-btn">
-                        <g:link action="list" class="btn btn-default btn-search" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </g:link>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</g:link>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
 
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    
-                    <g:sortableColumn property="descripcion" title="Descripcion" />
-                    
-                    <g:sortableColumn property="codigo" title="Codigo" />
-                    
+                    <th>Descripción</th>
+                    %{--<th>Código</th>--}%
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +42,7 @@
                         
                         <td>${fieldValue(bean: tipoNormaInstance, field: "descripcion")}</td>
                         
-                        <td>${fieldValue(bean: tipoNormaInstance, field: "codigo")}</td>
+                        %{--<td>${fieldValue(bean: tipoNormaInstance, field: "codigo")}</td>--}%
                         
                     </tr>
                 </g:each>
@@ -67,11 +64,14 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+//                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log("Tipo de Norma Legal creada correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1500);
                         } else {
-                            spinner.replaceWith($btn);
+                            log("Error al crear el Tipo de Norma Legal","error");
                             return false;
                         }
                     }
@@ -83,7 +83,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el TipoNorma seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Tipo de Norma Legal seleccionada? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -103,9 +103,14 @@
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+//                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "OK") {
-                                            location.reload(true);
+                                            log("Norma Legal borrada correctamente","success")
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1500);
+                                        }else{
+                                            log("Error al borrar la Norma Legal","error")
                                         }
                                     }
                                 });
@@ -124,7 +129,7 @@
                     success : function (msg) {
                         var b = bootbox.dialog({
                             id      : "dlgCreateEdit",
-                            title   : title + " TipoNorma",
+                            title   : "Nuevo Tipo de Norma Legal",
                             message : msg,
                             buttons : {
                                 cancelar : {
@@ -157,67 +162,69 @@
                     return false;
                 });
 
-                context.settings({
-                    onShow : function (e) {
-                        $("tr.success").removeClass("success");
-                        var $tr = $(e.target).parent();
-                        $tr.addClass("success");
-                        id = $tr.data("id");
-                    }
-                });
-                context.attach('tbody>tr', [
-                    {
-                        header : 'Acciones'
-                    },
-                    {
-                        text   : 'Ver',
-                        icon   : "<i class='fa fa-search'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            $.ajax({
-                                type    : "POST",
-                                url     : "${createLink(action:'show_ajax')}",
-                                data    : {
-                                    id : id
-                                },
-                                success : function (msg) {
-                                    bootbox.dialog({
-                                        title   : "Ver TipoNorma",
-                                        message : msg,
-                                        buttons : {
-                                            ok : {
-                                                label     : "Aceptar",
-                                                className : "btn-primary",
-                                                callback  : function () {
+
+                $("tbody tr").contextMenu({
+                    items  : {
+                        header   : {
+                            label  : "Acciones",
+                            header : true
+                        },
+                        ver      : {
+                            label  : "Ver",
+                            icon   : "fa fa-search",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                $.ajax({
+                                    type    : "POST",
+                                    url     : "${createLink(action:'show_ajax')}",
+                                    data    : {
+                                        id : id
+                                    },
+                                    success : function (msg) {
+                                        bootbox.dialog({
+                                            title   : "Ver",
+                                            message : msg,
+                                            buttons : {
+                                                ok : {
+                                                    label     : "Aceptar",
+                                                    className : "btn-primary",
+                                                    callback  : function () {
+                                                    }
                                                 }
                                             }
-                                        }
-                                    });
-                                }
-                            });
+                                        });
+                                    }
+                                });
+                            }
+                        },
+                        editar   : {
+                            label  : "Editar",
+                            icon   : "fa fa-pencil",
+                            action : function ($element) {
+                                var id = $element.data("id");
+                                createEditRow(id);
+                            }
+                        },
+                      eliminar : {
+                            label            : "Eliminar",
+                            icon             : "fa fa-trash-o",
+                            separator_before : true,
+                            action           : function ($element) {
+                                var id = $element.data("id");
+                                deleteRow(id);
+                            }
                         }
                     },
-                    {
-                        text   : 'Editar',
-                        icon   : "<i class='fa fa-pencil'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            createEditRow(id);
-                        }
+                    onShow : function ($element) {
+                        $element.addClass("trHighlight");
                     },
-                    {divider : true},
-                    {
-                        text   : 'Eliminar',
-                        icon   : "<i class='fa fa-trash-o'></i>",
-                        action : function (e) {
-                            $("tr.success").removeClass("success");
-                            e.preventDefault();
-                            deleteRow(id);
-                        }
+                    onHide : function ($element) {
+                        $(".trHighlight").removeClass("trHighlight");
                     }
-                ]);
+                });
+
+
+
             });
         </script>
 

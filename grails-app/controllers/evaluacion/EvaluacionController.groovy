@@ -129,18 +129,34 @@ class EvaluacionController extends Seguridad.Shield {
 
     def evaluacionAmbiental () {
 
+
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def objetivo =  Objetivo.findByIdentificador('Evaluación Ambiental')
         def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(audi,objetivo)
 
+        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalleAuditoria, [sort: 'orden', order: 'asc'])
 
-//        def leyes = MarcoNorma.findAllByMarcoLegalAndSeleccionado(audi.marcoLegal, 1, [sort:'norma.nombre', order: 'asc'])
-//        def leyes = Evaluacion.findAllByDetalleAuditoria(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
+//        def leyes
+//
+//        leyes = Evaluacion.withCriteria {
+//            eq("detalleAuditoria", detalleAuditoria)
+//            isNotNull("marcoNorma")
+//            order("orden","asc")
+//        }
 
-//        return [pre: pre, auditoria: audi, leyes: leyes]
-        return [pre: pre, auditoria: audi, obau: obau]
+
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
+            return [pre: pre, auditoria: audi, obau: obau, leyes: leyes]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+
+
+        return [pre: pre, auditoria: audi, obau: obau, leyes: leyes]
     }
 
     def tablaEvaluacion_ajax () {
@@ -149,15 +165,13 @@ class EvaluacionController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
         def leyes
 
-//        leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalleAuditoria, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
-
         leyes = Evaluacion.withCriteria {
             eq("detalleAuditoria", detalleAuditoria)
             isNotNull("marcoNorma")
             order("orden","asc")
         }
 
-        return [leyes: leyes]
+        return [leyes: leyes, pre: pre]
     }
 
     def orden_ajax() {
@@ -304,25 +318,27 @@ class EvaluacionController extends Seguridad.Shield {
             }else{
                 listaHallazgos = Hallazgo.findAllByArticulo(evaluacion.marcoNorma.articulo)
             }
-        }
-        if(evaluacion.planAuditoria){
-            listaHallazgos = Evaluacion.withCriteria {
-                planAuditoria{
-                    eq("aspectoAmbiental", evaluacion.planAuditoria.aspectoAmbiental)
-                }
+        }else{
+            if(evaluacion.planAuditoria){
+                listaHallazgos = Evaluacion.withCriteria {
+                    planAuditoria{
+                        eq("aspectoAmbiental", evaluacion.planAuditoria.aspectoAmbiental)
+                    }
 
-                isNotNull("hallazgo")
-            }.hallazgo
-        }
-        if(evaluacion.licencia){
-            println("entro")
-            listaHallazgos = Evaluacion.withCriteria {
-                licencia{
-                    eq("descripcion",evaluacion.licencia.descripcion )
+                    isNotNull("hallazgo")
+                }.hallazgo
+            }else {
+                if(evaluacion.licencia){
+                    println("entro" + evaluacion.id)
+                    listaHallazgos = Evaluacion.withCriteria {
+                        licencia{
+                            eq("descripcion",evaluacion.licencia.descripcion )
+                        }
+                        isNotNull("hallazgo")
+                    }.hallazgo
                 }
-                isNotNull("hallazgo")
-            }.hallazgo
-        }
+            }
+       }
 
         println("lista hallazgos " + listaHallazgos)
 
@@ -717,17 +733,34 @@ class EvaluacionController extends Seguridad.Shield {
         println("planes existentes anteriores " + planesAnteriores.unique())
 
 
-        println("anteriores " + anteriores)
+//        println("anteriores " + anteriores)
 
 
         def aupm = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodo(detalleAuditoria,'ANT')
 
-        return [pre: pre, anteriores: anteriores, planesAnteriores: planesAnteriores?.detalleAuditoria?.auditoria?.preauditoria?.unique(), plan: aupm]
+
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
+            return [pre: pre, anteriores: anteriores, planesAnteriores: planesAnteriores?.detalleAuditoria?.auditoria?.preauditoria?.unique(), plan: aupm]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+
+
     }
 
     def evaluacionLicencia () {
         def pre = Preauditoria.get(params.id)
-        return [pre: pre]
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
+            return [pre: pre]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
+
+
     }
 
     def asignarPlanAnterior_Ajax (){
@@ -839,6 +872,7 @@ class EvaluacionController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)
+        println("det " + detalleAuditoria)
         def licencias
 //        Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalleAuditoria, [sort: 'licencia.descripcion', order: 'asc'])
 

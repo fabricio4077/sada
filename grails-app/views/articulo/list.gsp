@@ -17,25 +17,28 @@
                     <i class="fa fa-file-o"></i> Nuevo Artículo
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
-                    <span class="input-group-btn">
-                        <g:link action="list" class="btn btn-default btn-search" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </g:link>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</g:link>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
 
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    <g:sortableColumn property="norma" title="Norma" style="width: 20%"/>
-                    <g:sortableColumn property="descripcion" title="Descripción" style="width: 69%" />
-                    <g:sortableColumn property="numero" title="Artículo Número" style="width: 11%"/>
-                    
+                    %{--<g:sortableColumn property="norma" title="Norma" style="width: 20%"/>--}%
+                    %{--<g:sortableColumn property="descripcion" title="Descripción" style="width: 69%" />--}%
+                    %{--<g:sortableColumn property="numero" title="Artículo Número" style="width: 11%"/>--}%
+                    <th style="width: 20%">Norma Legal</th>
+                    <th style="width: 69%">Descripción</th>
+                    <th style="width: 11%">Articulo Número</th>
+
                 </tr>
             </thead>
             <tbody>

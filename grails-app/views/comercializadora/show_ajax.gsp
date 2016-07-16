@@ -22,7 +22,7 @@
     <g:if test="${comercializadoraInstance?.direccion}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Direccion
+                Dirección
             </div>
             
             <div class="col-md-3">
@@ -61,7 +61,7 @@
     <g:if test="${comercializadoraInstance?.telefono}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Telefono
+                Teléfono
             </div>
             
             <div class="col-md-3">

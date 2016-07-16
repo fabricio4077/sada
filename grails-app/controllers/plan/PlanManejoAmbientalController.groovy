@@ -130,8 +130,16 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(auditoria)
         def objetivo =  Objetivo.findByIdentificador('PMA')
         def obau = ObjetivosAuditoria.findByAuditoriaAndObjetivo(auditoria,objetivo)
+
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
+        if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
+            return [pre: pre, band: params.band, obau: obau]
+        } else {
+            flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
+            response.sendError(403)
+        }
         
-        return [pre: pre, band: params.band, obau: obau]
+
     }
 
     def cargarAspectos_ajax () {
@@ -601,7 +609,7 @@ class PlanManejoAmbientalController extends Seguridad.Shield {
         def planesAnteriores = PlanAuditoria.findAllByDetalleAuditoriaInListAndPeriodo(detallesAnteriores,'ACT')
 
 
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
 
         if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre:pre, anteriores: anteriores, detalle: detalleAuditoria, planesAnteriores: planesAnteriores?.detalleAuditoria?.auditoria?.preauditoria?.unique()]

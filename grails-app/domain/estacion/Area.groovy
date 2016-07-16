@@ -17,15 +17,13 @@ class Area {
             nombre column: 'areanmbr'
             codigo column: 'areacdgo'
             descripcion column: 'areadscr'
-
-
         }
     }
 
     static constraints = {
 
         nombre(nullable: false, blank: false, size: 1..63)
-        descripcion(nullable: false, blank: false, size: 1..255)
+        descripcion(nullable: false, blank: false, size: 1..2000)
         codigo(nullable: true, blank: true)
 
     }

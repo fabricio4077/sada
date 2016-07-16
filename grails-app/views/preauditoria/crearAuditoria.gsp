@@ -89,26 +89,33 @@
         <p class="css-vertical-text" style="margin-top: -10px;">Consultora</p>
         <div class="linea"></div>
         <div class="row">
-            <div class="col-md-2 negrilla control-label">Consultora: </div>
+            <div class="col-md-2 negrilla control-label">Consultora:</div>
             <div class="col-md-6" style="margin-bottom: 45px">
-                <g:if test="${session.perfil.codigo == 'ADMI'}">
+
+                <g:if test="${msn == 1}">
                     <g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"
                               optionValue="nombre"
                               class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
                               style="text-align: center" value="${pre?.consultora?.id}"/>
                 </g:if>
-                <g:elseif test="${session.usuario.consultora}">
+                <g:else>
                     <g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"
                               optionValue="nombre"
                               class="many-to-one form-control " noSelection="[0: 'Seleccione...']"
                               style="text-align: center" value="${session.usuario.consultora.id}" disabled="true"/>
-
-                </g:elseif><g:else>
-                    <g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"
-                              optionValue="nombre"
-                              class="many-to-one form-control" noSelection="[0: 'Seleccione...']"
-                              style="text-align: center" value="${pre?.consultora?.id}"/>
                 </g:else>
+                %{--<g:elseif test="${session.usuario.consultora}">--}%
+                %{--<g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"--}%
+                %{--optionValue="nombre"--}%
+                %{--class="many-to-one form-control " noSelection="[0: 'Seleccione...']"--}%
+                %{--style="text-align: center" value="${session.usuario.consultora.id}" disabled="true"/>--}%
+
+                %{--</g:elseif><g:else>--}%
+                %{--<g:select id="consultora" name="consultora_name" from="${consultor.Consultora.list()}" optionKey="id"--}%
+                %{--optionValue="nombre"--}%
+                %{--class="many-to-one form-control" noSelection="[0: 'Seleccione...']"--}%
+                %{--style="text-align: center" value="${pre?.consultora?.id}"/>--}%
+                %{--</g:else>--}%
 
             </div>
             <div class="descripcion hidden">

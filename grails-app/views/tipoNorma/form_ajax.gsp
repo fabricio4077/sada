@@ -20,17 +20,17 @@
             </span>
         </div>
         
-        <div class="form-group ${hasErrors(bean: tipoNormaInstance, field: 'codigo', 'error')} ">
-            <span class="grupo">
-                <label for="codigo" class="col-md-2 control-label text-info">
-                    Codigo
-                </label>
-                <div class="col-md-6">
-                    <g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required" value="${tipoNormaInstance?.codigo}"/>
-                </div>
-                
-            </span>
-        </div>
+        %{--<div class="form-group ${hasErrors(bean: tipoNormaInstance, field: 'codigo', 'error')} ">--}%
+            %{--<span class="grupo">--}%
+                %{--<label for="codigo" class="col-md-2 control-label text-info">--}%
+                    %{--Codigo--}%
+                %{--</label>--}%
+                %{--<div class="col-md-6">--}%
+                    %{--<g:textField name="codigo" maxlength="4" required="" class="allCaps form-control required" value="${tipoNormaInstance?.codigo}"/>--}%
+                %{--</div>--}%
+                %{----}%
+            %{--</span>--}%
+        %{--</div>--}%
         
     </g:form>
 

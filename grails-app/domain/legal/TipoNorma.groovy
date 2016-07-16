@@ -21,6 +21,6 @@ class TipoNorma {
 
     static constraints = {
         descripcion (nullable: false, blank: false, size: 1..31)
-        codigo(nullable: false, blank: false, size: 1..4)
+        codigo(nullable: true, blank: true)
     }
 }

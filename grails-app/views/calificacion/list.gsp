@@ -17,27 +17,24 @@
                     <i class="fa fa-file-o"></i> Nueva Calificación
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
-                    <span class="input-group-btn">
-                        <g:link action="list" class="btn btn-default btn-search" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </g:link>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</g:link>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
 
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    <g:sortableColumn property="sigla" title="Sigla" style="width: 50px"/>
+                <th>Sigla</th>
+                <th>Nombre</th>
 
-                    <g:sortableColumn property="nombre" title="Nombre" style="width: 400px" />
-
-                    %{--<g:sortableColumn property="tipo" title="Tipo" />--}%
-                    
                 </tr>
             </thead>
             <tbody>

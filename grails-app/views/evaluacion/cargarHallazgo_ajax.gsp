@@ -120,7 +120,7 @@
                 success: function (msg) {
                     if(msg == 'ok'){
                         cargarExistente(${evaluacion?.id})
-                        cargarTablaEva();
+//                        cargarTablaEva();
                     }else{
                         log("Error al seleccionar el hallazgo","error")
                     }

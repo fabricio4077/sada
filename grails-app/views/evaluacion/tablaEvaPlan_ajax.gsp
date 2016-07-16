@@ -21,7 +21,7 @@
                 <g:each in="${planes}" var="plan" status="j">
                     <tr>
                         <td style="width: 3%">${plan?.orden}
-                            <a href="#" class="btn btn-xs btn-primary btnOrden" data-id="${plan?.id}" title="Agregar orden" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnOrdenPlan" data-id="${plan?.id}" title="Agregar orden" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -38,7 +38,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <g:each in="${evaluacion.Calificacion.list([sort: 'nombre', order: 'asc'])}" var="cal">
-                                                    <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacion" data-id="${cal?.id}" data-plan="${plan?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
+                                                    <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacionPlan" data-id="${cal?.id}" data-plan="${plan?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
                                                 </g:each>
                                             </ul>
                                         </div>
@@ -62,7 +62,7 @@
                                 </g:else>
                             </g:if>
 
-                            <a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${plan?.id}" title="Agregar hallazgo" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnHallazgoPlan" data-id="${plan?.id}" title="Agregar hallazgo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -72,7 +72,7 @@
 
                             <i class="fa fa-folder-open"></i> Anexos : ${numero}
 
-                            <a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${plan?.id}" title="Agregar anexo" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnAnexoPlan" data-id="${plan?.id}" title="Agregar anexo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -88,7 +88,7 @@
 
 <script type="text/javascript">
 
-    $(".btnOrden").click(function () {
+    $(".btnOrdenPlan").click(function () {
         var idEva = $(this).data('id');
         $.ajax({
             type: 'POST',
@@ -116,7 +116,7 @@
     });
 
     //función cargar calificación
-    $(".btnCalificacion").click(function () {
+    $(".btnCalificacionPlan").click(function () {
         var idEva = $(this).data('plan');
         var idCali = $(this).data('id');
         $.ajax({
@@ -126,17 +126,14 @@
                 id: idEva,
                 calificacion: idCali
             },
-            success: function (msg){
-                if(msg == 'ok'){
+            success: function (msgPlan){
+                if(msgPlan == 'ok'){
                     cargarTablaEvaPlan();
                 }else{
 
                 }
             }
         });
-    });
-    $.ajax({
-
     });
 
     //función para marcar una fila
@@ -149,7 +146,7 @@
 
     //botón agregar hallazgo
 
-    $(".btnHallazgo").click(function () {
+    $(".btnHallazgoPlan").click(function () {
         var idEva = $(this).data("id");
         $.ajax({
             type:'POST',
@@ -167,7 +164,7 @@
                             label     : 'Aceptar',
                             className : 'btn-primary',
                             callback  : function () {
-
+                                cargarTablaEvaPlan();
                             }
                         }
                     }
@@ -177,7 +174,7 @@
     });
 
 
-    $(".btnAnexo").click(function () {
+    $(".btnAnexoPlan").click(function () {
         var idEva = $(this).data("id");
         $.ajax({
             type:'POST',

@@ -57,7 +57,7 @@
 
                                 <li class="margen">
                                     <g:link controller="consultora" class="over" action="list">
-                                        <i class="fa fa-globe"> Consultora ambiental </i>
+                                        <i class="fa fa-leaf"> Consultora ambiental </i>
                                     </g:link>
                                     <div class="descripcion hidden">
                                         <h4>Consultora</h4>
@@ -72,7 +72,7 @@
                             <ul class="fa-ul">
                                 <li class="margen">
                                     <g:link controller="comercializadora" class="over" action="list">
-                                        <i class="fa fa-globe"> Comercializadora </i>
+                                        <i class="fa fa-car"> Comercializadora </i>
                                     </g:link>
                                     <div class="descripcion hidden">
                                         <h4>Comercializadora</h4>

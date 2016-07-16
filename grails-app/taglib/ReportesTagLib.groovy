@@ -519,9 +519,50 @@ class ReportesTagLib {
     def footerReporteNuevo = { attrs ->
         def html = ""
         def auditoria = Preauditoria.get(attrs.auditoria)
+        def mes = ''
+
+        println("attrs " + attrs.mes + attrs.anio)
+
+        if(attrs.mes == '1'){
+            mes = 'Enero'
+        }
+        if(attrs.mes == '2'){
+            mes = 'Febrero'
+        }
+        if(attrs.mes == '3'){
+            mes = 'Marzo'
+        }
+        if(attrs.mes == '4'){
+            mes = 'Abril'
+        }
+        if(attrs.mes == '5'){
+            mes = 'Mayo'
+        }
+        if(attrs.mes == '6'){
+            mes = 'Junio'
+        }
+        if(attrs.mes == '7'){
+            mes = 'Julio'
+        }
+        if(attrs.mes == '8'){
+            mes = 'Agosto'
+        }
+        if(attrs.mes == '9'){
+            mes = 'Septiembre'
+        }
+        if(attrs.mes == '10'){
+            mes = 'Octubre'
+        }
+        if(attrs.mes == '11'){
+            mes = 'Noviembre'
+        }
+        if(attrs.mes == '12'){
+            mes = 'Diciembre'
+        }
 
         html += '<div id="footer">'
 //        html += "<div class='fechaReporte' style='font-size: 8.5pt; margin-bottom: 15px;'>${new Date().format('MM-yyyy')}</div>"
+        html += "<div style='font-size: 8pt;'>${mes + "-" + attrs.anio}</div>"
         html += "<div style='float:left; font-size:8pt;'>"
         html += "Auditoría Ambiental de ${auditoria?.tipo?.descripcion}<br/>"
         html += "E/S '${auditoria?.estacion?.nombre}' "

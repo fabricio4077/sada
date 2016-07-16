@@ -51,7 +51,7 @@
                         <tbody id="tablaAreas">
                         <tr class="tabla" data-p="${a?.id}">
                             <td><g:textArea name="descripcion_name" id="descripcionInstalacion_${a?.id}"
-                                            style="width: 375px; height: 170px; resize: none" maxlength="1023" value="${a?.descripcion}"/> </td>
+                                            style="width: 375px; height: 170px; resize: none" maxlength="2000" value="${a?.descripcion}"/> </td>
                             <td>
                                 <div class="col-md-6">
                                     <span class="btn btn-info fileinput-button" style="position: relative;height: 35px;margin-top: 10px; margin-bottom: 10px">

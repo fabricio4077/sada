@@ -119,7 +119,7 @@ class AuditoriaController extends Seguridad.Shield {
 
 
     def objetivos (){
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
 //        println("params ob " + params)
         def pre = Preauditoria.get(params.id)
         def objetivoGeneral = Objetivo.findByTipo("General")
@@ -229,7 +229,7 @@ class AuditoriaController extends Seguridad.Shield {
     def leyes () {
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
 
         if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre: pre, auditoria: auditoria]
@@ -250,7 +250,7 @@ class AuditoriaController extends Seguridad.Shield {
         def colores = ['#ef3724','#ffa61a','#1ab1ff',' #fd4fda','#567b24']
 
 
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
 
         if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
 
@@ -273,7 +273,7 @@ class AuditoriaController extends Seguridad.Shield {
         def calificacionesMenor = Calificacion.findAllBySiglaInList(listaCalificacionesMenor)
         def evaluacionesMayores = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalle,calificacionesMayor, [sort: 'hallazgo.descripcion', order: "asc"])
         def evaluacionesMenores = Evaluacion.findAllByDetalleAuditoriaAndCalificacionInList(detalle,calificacionesMenor, [sort: 'hallazgo.descripcion', order: "asc"])
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def texto
 
         texto = "<p style='text-align:justify'>Para verificar el cumplimiento de la Normativa Ambiental vigente y " +

@@ -44,20 +44,17 @@
         </div>
 
     </div>
+</div>
 
-        <div class="alert alert-info" role="alert" style="text-align: center">
-            <div class="col-md-3">
-                <i class='fa fa-calendar fa-2x text-primary text-shadow'></i> Fecha de la impresión:
-            </div>
-            <div class="col-md-2 grupo">
-                <elm:datepicker class="form-control input-sm fechaInicio required"
-                                name="fechaInicio"
-                                title="Fecha de inicio de la actividad"
-                                id="inicio"/>
-
-            </div>
-        </div>
-
+<div class="alert alert-info" role="alert" style="height: 50px">
+    <div class="col-md-4"></div>
+    <div class="col-md-2">
+        <i class='fa fa-calendar fa-2x text-primary text-shadow'></i> Fecha de la impresión:
+    </div>
+    <div class="col-md-2 grupo">
+        %{--<elm:datepicker id="fechaTabla" class="form-control fecha"/>--}%
+        <g:datePicker name="fecha_name" id="fechaTabla" precision="month"/>
+    </div>
 </div>
 
 <div class="row">
@@ -131,10 +128,14 @@
 
 <script>
 
+    var fecha = $("#fechaTabla_month").val();
+    var fechay = $("#fechaTabla_year").val();
+
+
     $("#imprimirFicha").click(function () {
         var orden = $("#ordenFicha").val();
         var numero = $("#paginaFicha").val();
-        var url = "${createLink(controller: 'reportes', action: 'fichaTecnicaPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'fichaTecnicaPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=fichaTecnica_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -142,15 +143,15 @@
     $("#imprimirMet").click(function () {
         var orden = $("#ordenMet").val();
         var numero = $("#paginaMet").val();
-        var url = "${createLink(controller: 'reportes', action: 'metodologiaPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
-        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=metodologia_${pre?.id}.pdf" + "&numero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'metodologiaPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
+        location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=metodologia_${pre?.id}.pdf" + "&numero=" + numero ;
         return false
     });
 
     $("#imprimirObj").click(function () {
         var orden = $("#ordenObj").val();
         var numero = $("#paginaObj").val();
-        var url = "${createLink(controller: 'reportes', action: 'objetivosPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'objetivosPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=objetivos_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -158,7 +159,7 @@
     $("#imprimirAnt").click(function () {
         var orden = $("#ordenAnt").val();
         var numero = $("#paginaAnt").val();
-        var url = "${createLink(controller: 'reportes', action: 'antecedentePdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'antecedentePdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=antecedentes_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -166,7 +167,7 @@
     $("#imprimirAlc").click(function () {
         var orden = $("#ordenAlc").val();
         var numero = $("#paginaAlc").val();
-        var url = "${createLink(controller: 'reportes', action: 'alcancePdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'alcancePdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=alcance_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -174,7 +175,7 @@
     $("#imprimirSit").click(function () {
         var orden = $("#ordenSit").val();
         var numero = $("#paginaSit").val();
-        var url = "${createLink(controller: 'reportes', action: 'situacionPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'situacionPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=situacion_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -182,7 +183,7 @@
     $("#imprimirArea").click(function () {
         var orden = $("#ordenArea").val();
         var numero = $("#paginaArea").val();
-        var url = "${createLink(controller: 'reportes', action: 'areasPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'areasPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=areas_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -190,7 +191,7 @@
     $("#imprimirEva").click(function () {
         var orden = $("#ordenEva").val();
         var numero = $("#paginaEva").val();
-        var url = "${createLink(controller: 'reportes', action: 'evaluacionPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'evaluacionPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=evaluacion_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -198,7 +199,7 @@
     $("#imprimirAccion").click(function () {
         var orden = $("#ordenAccion").val();
         var numero = $("#paginaAccion").val();
-        var url = "${createLink(controller: 'reportes', action: 'planAccionPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'planAccionPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=planAccion_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -206,7 +207,7 @@
     $("#imprimirPMA").click(function () {
         var orden = $("#ordenPMA").val();
         var numero = $("#paginaPMA").val();
-        var url = "${createLink(controller: 'reportes', action: 'manejoAmbientalPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'manejoAmbientalPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=PMA_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });
@@ -214,7 +215,7 @@
     $("#imprimirReco").click(function () {
         var orden = $("#ordenReco").val();
         var numero = $("#paginaReco").val();
-        var url = "${createLink(controller: 'reportes', action: 'recomendacionesPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero;
+        var url = "${createLink(controller: 'reportes', action: 'recomendacionesPdf', id: pre?.id)}?orden=" + orden + "Wnumero=" + numero + "Wmes=" + fecha + "Wanio=" + fechay;
         location.href = "${createLink(controller:'pdf',action:'pdfLink')}?url=" + url + "&filename=recomendaciones_${pre?.id}.pdf" + "&numero=" + numero;
         return false
     });

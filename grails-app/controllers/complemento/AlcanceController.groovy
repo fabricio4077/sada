@@ -116,7 +116,7 @@ class AlcanceController extends Seguridad.Shield {
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def alc = Alcance.findByAuditoria(audi)
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
 
         if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre:pre, alc: alc, audi: audi]

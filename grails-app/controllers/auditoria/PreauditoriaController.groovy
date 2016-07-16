@@ -69,7 +69,8 @@ class PreauditoriaController extends Seguridad.Shield {
         }
         preauditoriaInstanceList = getLista(params, false)
 
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
+
         def listaAuditorias = Preauditoria.findAllByCreadorAndEstado(creador, 1, [sort:"creador", order:'desc'])
 
 //        println("creadores " + listaAuditorias.creador)
@@ -217,19 +218,40 @@ class PreauditoriaController extends Seguridad.Shield {
 
     }
 
+
     def crearAuditoria () {
 
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def paso1 = Preauditoria.get(params.id)
-        def usuario = session.usuario
+        def usuario = session.usuario.attach()
+        def consultora = session.usuario.consultora
+
+        def msn = 0
+
+//        println("---->" + session.perfil.codigo)
+
+        if(session.perfil.codigo == 'ADMI'){
+            msn = 1
+        }else{
+            if(consultora){
+                msn = 2
+//                con = Consultora.get(session.usuario.consultora.id)
+            }else{
+                msn = 1
+            }
+        }
+
+//        println("msn " + msn)
 
         if(paso1){
             if (creador == paso1?.creador || session.perfil.codigo == 'ADMI') {
-                return [pre: paso1, usuario: usuario]
+                return [pre: paso1, usuario: usuario, msn: msn]
             } else {
                 flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
                 response.sendError(403)
             }
+        }else{
+            return [msn: msn]
         }
 
     }
@@ -238,7 +260,7 @@ class PreauditoriaController extends Seguridad.Shield {
 
         println("params paso 1 " + params)
 
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def tipo = Tipo.get(params.tipo)
         def periodo = Periodo.get(params.periodo)
         def consultora = Consultora.get(params.con)
@@ -276,8 +298,11 @@ class PreauditoriaController extends Seguridad.Shield {
     }
 
     def crearPaso2 () {
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def paso2 = Preauditoria.get(params.id)
+
+        println("creador " + creador)
+        println("paso2 " + paso2.creador)
 
         if (creador == paso2?.creador || session.perfil.codigo == 'ADMI') {
             def estacion
@@ -299,7 +324,7 @@ class PreauditoriaController extends Seguridad.Shield {
 
     def crearPaso3 () {
 
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def pre = Preauditoria.get(params.id)
         def estacion = params.estacion
 
@@ -411,7 +436,7 @@ class PreauditoriaController extends Seguridad.Shield {
 
     def crearPaso4 () {
 
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def pre = Preauditoria.get(params.id)
         def asignados = Asignados.findAllByPreauditoria(pre)
 
@@ -464,31 +489,46 @@ class PreauditoriaController extends Seguridad.Shield {
     }
 
     def fichaTecnica () {
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def pre = Preauditoria.get(params.id)
         def coor = Persona.findByCargo('Coordinador')
         def coordenadas = Coordenadas.findAllByEstacion(pre?.estacion)
-//        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-       def especialista = Asignados.withCriteria {
+
+
+        def especialista
+
+        especialista = Asignados.withCriteria {
             eq("preauditoria",pre)
             persona{
                 eq("cargo","Especialista")
             }
-        }.first()
-//        def coordinador = Asignados.findByPreauditoriaAndPersona(pre, coor);
+        }
+
+        if(especialista){
+            especialista = especialista.first()
+        }
+
         def coordinador = Asignados.withCriteria {
             eq("preauditoria",pre)
             persona{
                 eq("cargo","Coordinador")
             }
-        }.first()
-//        def biologo = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Biologo"));
+        }
+
+        if(coordinador){
+            coordinador = coordinador.first()
+        }
+
         def biologo = Asignados.withCriteria {
             eq("preauditoria",pre)
             persona{
                 eq("cargo","Biologo")
             }
-        }.first()
+        }
+
+        if(biologo){
+           biologo =  biologo.first()
+        }
 
 //        def asignados = Asignados.findAllByPreauditoria(pre)
 
@@ -542,7 +582,7 @@ class PreauditoriaController extends Seguridad.Shield {
 
     def tablaAuditoriaUsuario_ajax () {
 
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login  + "_" + session.perfil.codigo
         def listaAuditorias
 
         if (params.fecha) {
@@ -634,7 +674,7 @@ class PreauditoriaController extends Seguridad.Shield {
     }
 
     def tablaAuditoriaGeneral_ajax() {
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login  + "_" + session.perfil.codigo
         def listaAuditorias
 
         if (params.fecha) {

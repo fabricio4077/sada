@@ -6,7 +6,6 @@
   Time: 03:30 PM
 --%>
 
-
 <div class="row-fluid"  style="width: 99.7%;height: 500px;overflow-y: auto;float: right;">
     <div class="span12">
         <div style="width: 1120px; height: 500px;">
@@ -14,17 +13,15 @@
                 <tbody>
                 <g:each in="${leyes}" var="ley" status="j">
                     <tr>
-                        %{--<td style="width: 2%">${j+1}--}%
-                        <td style="width: 3%">${ley?.orden}
-                            <a href="#" class="btn btn-xs btn-primary btnOrden" data-id="${ley?.id}" title="Agregar orden" style="float: right">
+                        <td style="width: 3%; color: #224aff"><b>${ley?.orden != 0 ? ley?.orden : ''}</b></br>
+                            <a href="#" class="btn btn-xs btn-primary btnOrdenEva" data-id="${ley?.id}" title="Agregar orden" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
                         <td style="width: 10%; font-size: smaller">${ley?.marcoNorma?.norma?.nombre + " - Art. N° " + ley?.marcoNorma?.articulo?.numero}</td>
                         <td style="width: 30%; font-size: smaller">${ley?.marcoNorma?.literal ? (ley?.marcoNorma?.literal?.identificador + ")  " + ley?.marcoNorma?.literal?.descripcion) : ley?.marcoNorma?.articulo?.descripcion}</td>
                         <td style="width: 15%">
-
-                            <table>
+                            <table id="tabla_${pre?.id}">
                                 <tbody>
                                 <tr>
                                     <td>
@@ -34,7 +31,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <g:each in="${evaluacion.Calificacion.list([sort: 'nombre', order: 'asc'])}" var="cal">
-                                                    <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacion" data-id="${cal?.id}" data-ley="${ley?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
+                                                    <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacionEva" data-id="${cal?.id}" data-ley="${ley?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
                                                 </g:each>
                                             </ul>
                                         </div>
@@ -57,8 +54,11 @@
                                     ${ley?.hallazgo?.descripcion}
                                 </g:else>
                             </g:if>
+                            <g:else>
 
-                            <a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${ley?.id}" title="Agregar hallazgo" style="float: right">
+                            </g:else>
+
+                            <a href="#" class="btn btn-xs btn-primary btnHallazgoEva" data-id="${ley?.id}" title="Agregar hallazgo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -68,7 +68,7 @@
 
                             <i class="fa fa-folder-open"></i> Anexos : ${numero}
 
-                            <a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${ley?.id}" title="Agregar anexo" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnAnexoEva" data-id="${ley?.id}" title="Agregar anexo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -84,7 +84,7 @@
 
 <script type="text/javascript">
 
-    $(".btnOrden").click(function () {
+    $(".btnOrdenEva").click(function () {
         var idEva = $(this).data('id');
         $.ajax({
             type: 'POST',
@@ -112,7 +112,7 @@
 
 
     //función cargar calificación
-    $(".btnCalificacion").click(function () {
+    $(".btnCalificacionEva").click(function () {
         var idEva = $(this).data('ley');
         var idCali = $(this).data('id');
         $.ajax({
@@ -122,17 +122,14 @@
                 id: idEva,
                 calificacion: idCali
             },
-            success: function (msg){
-                if(msg == 'ok'){
+            success: function (msgEva){
+                if(msgEva == 'ok'){
                     cargarTablaEva();
                 }else{
 
                 }
             }
         });
-    });
-    $.ajax({
-
     });
 
     //función para marcar una fila
@@ -145,7 +142,7 @@
 
     //botón agregar hallazgo
 
-    $(".btnHallazgo").click(function () {
+    $(".btnHallazgoEva").click(function () {
         var idEva = $(this).data("id");
         $.ajax({
             type:'POST',
@@ -163,7 +160,8 @@
                             label     : 'Aceptar',
                             className : 'btn-primary',
                             callback  : function () {
-
+//                            location.reload(true)
+                                cargarTablaEva();
                             }
                         }
                     }
@@ -173,7 +171,7 @@
     });
 
 
-    $(".btnAnexo").click(function () {
+    $(".btnAnexoEva").click(function () {
         var idEva = $(this).data("id");
         $.ajax({
             type:'POST',

@@ -87,7 +87,7 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Metodología"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
+<rep:headerFooterNuevo title="${"Metodología"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 <util:renderHTML html="${texto}"/>
 

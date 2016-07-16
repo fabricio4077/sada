@@ -115,7 +115,7 @@ class PlanAccionController extends Seguridad.Shield {
     } //notFound para ajax
 
     def planAccionActual () {
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)
         def detalleAuditoria = DetalleAuditoria.findByAuditoria(audi)

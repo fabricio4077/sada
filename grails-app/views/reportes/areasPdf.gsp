@@ -86,7 +86,7 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Descripción de las actividades de la estación de servicios"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
+<rep:headerFooterNuevo title="${"Descripción de las actividades de la estación de servicios"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 <util:renderHTML html="${"La estación de servicios '${pre?.estacion?.nombre}', cuenta con las siguientes áreas: <br></br>"}"/>
 

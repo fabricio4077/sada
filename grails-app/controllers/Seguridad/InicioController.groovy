@@ -9,7 +9,7 @@ class InicioController extends Shield {
     }
 
     def index() {
-        def usuario = session.usuario.apellido + "_" + session.usuario.login
+        def usuario = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
         def auditorias = Preauditoria.findAllByCreadorAndEstadoAndEstacionIsNotNullAndAvanceLessThan(usuario, 1,100, [sort: 'estacion.nombre', order: 'desc', max: 5])
         println("auditorias " + auditorias)
         return [auditorias: auditorias]

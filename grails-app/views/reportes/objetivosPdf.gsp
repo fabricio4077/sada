@@ -75,7 +75,7 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Objetivos"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
+<rep:headerFooterNuevo title="${"Objetivos"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 ${orden}. ${'1'} <util:renderHTML html="${"<b>Objetivo General</b><br></br>"}"/>
 <util:renderHTML

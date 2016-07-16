@@ -80,7 +80,7 @@ class MarcoLegalController extends Seguridad.Shield {
             }
         } //update
         marcoLegalInstance.properties = params
-        marcoLegalInstance.creador = (session.usuario.apellido + "_" + session.usuario.login)
+        marcoLegalInstance.creador = (session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo)
         if (!marcoLegalInstance.save(flush: true)) {
             def msg = "NO_No se pudo ${params.id ? 'actualizar' : 'crear'} MarcoLegal."
             msg += renderErrors(bean: marcoLegalInstance)
@@ -370,7 +370,7 @@ class MarcoLegalController extends Seguridad.Shield {
         def marcoNorma = MarcoNorma.findAllByMarcoLegal(marcoLegal)
         def evaluaciones = Evaluacion.findAllByMarcoNormaInList(marcoNorma)
 
-        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login) || session.perfil.codigo == 'ADMI'){
+        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo) || session.perfil.codigo == 'ADMI'){
             if(evaluaciones){
                 render "no_No se puede borrar este marco legal, ya se encuentra en evaluación!"
             }else{
@@ -385,7 +385,7 @@ class MarcoLegalController extends Seguridad.Shield {
     def comprobarUsuario_ajax () {
 //        println("comprobar params " + params)
         def marcoLegal = MarcoLegal.get(params.idMarco)
-        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login) || session.perfil.codigo == 'ADMI'){
+        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo) || session.perfil.codigo == 'ADMI'){
             render "ok"
         }else{
             render "no"
@@ -395,7 +395,7 @@ class MarcoLegalController extends Seguridad.Shield {
     def comprobarUsuario2_ajax () {
         println("comprobar params2 " + params)
         def marcoLegal = MarcoNorma.get(params.idMarco).marcoLegal
-        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login) || session.perfil.codigo == 'ADMI'){
+        if(marcoLegal.creador == (session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo) || session.perfil.codigo == 'ADMI'){
             render "ok"
         }else{
             render "no"

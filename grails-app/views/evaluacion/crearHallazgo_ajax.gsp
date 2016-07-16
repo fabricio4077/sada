@@ -58,21 +58,27 @@
                 descripcion: $("#hallazgoDescripcion").val(),
                 calificacion: $("#calificacion").val()
             },
-            success: function (msg){
-                if(msg == 'ok'){
+            success: function (msgCrearHallazgo){
+                if(msgCrearHallazgo == 'ok'){
                     $("#tablaCrearHallazgo").html('');
                     $('.selectpicker').selectpicker('refresh');
-                    cargarComboHallazgo(${evaluacion?.id});
+                    %{--cargarComboHallazgo(${evaluacion?.id});--}%
+
                     bootbox.hideAll();
-                    if(${tipo == 'licencia'}){
-                        cargarTablaLicencia();
-                    }else{
-                        if(${tipo == 'plan'}){
-                            cargarTablaEvaPlan();
-                        }else{
-                            cargarTablaEva();
-                        }
-                    }
+                    location.reload(true)
+                    %{--if(${tipo == 'licencia'}){--}%
+                        %{--cargarTablaLicencia();--}%
+                    %{--}else{--}%
+                        %{--if(${tipo == 'plan'}){--}%
+                            %{--cargarTablaEvaPlan();--}%
+                        %{--}else{--}%
+                            %{--cargarTablaEva();--}%
+                        %{--}--}%
+                    %{--}--}%
+//                    cargarTablaEva();
+//                    cargarTablaLicencia();
+//                    cargarTablaEvaPlan();
+
                 }else{
                     log("Error al crear el hallazgo","error")
                 }

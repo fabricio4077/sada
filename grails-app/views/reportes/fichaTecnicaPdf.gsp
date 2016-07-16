@@ -70,22 +70,22 @@
 
     @page{
         @bottom-right {
-            content: 'Pág. ' counter(page);
+            content: 'Pág. ' counter(page) ;
+
         }
     }
 
 
-</style>
+
+
+    </style>
 
 </head>
 
 <body>
 
 
-
-
-
-<rep:headerFooterNuevo title="${"Ficha Técnica"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
+<rep:headerFooterNuevo title="${"Ficha Técnica"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 
 <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">
@@ -188,30 +188,31 @@
     </thead>
     <tbody>
     <tr>
-        <td><util:clean str="${especialista?.consultora?.nombre}"/></td>
-        <td><util:clean str="${especialista?.consultora?.administrador}"/></td>
-        <g:set var="reg" value="${especialista?.consultora?.registro}"/>
-        <td>MAE: ${reg?.split("_")[0]} <br/> DPA: ${reg?.split("_")[1]}</td>
+        <td><util:clean str="${pre?.consultora?.nombre}"/></td>
+        <td><util:clean str="${pre?.consultora?.administrador}"/></td>
+        <g:set var="reg" value="${pre?.consultora?.registro}"/>
+        %{--<td>MAE: ${reg?.split("_")[0]} <br/> DPA: ${reg?.split("_")[1]}</td>--}%
+        <td>${pre?.consultora?.registro}</td>
     </tr>
     <tr>
         <td>Dirección</td>
-        <td colspan="2"><util:clean str="${especialista?.consultora?.direccion}"/></td>
+        <td colspan="2"><util:clean str="${pre?.consultora?.direccion}"/></td>
     </tr>
     <tr>
         <td>RUC</td>
-        <td colspan="2">${especialista?.consultora?.ruc}</td>
+        <td colspan="2">${pre?.consultora?.ruc}</td>
     </tr>
     <tr>
         <td>Teléfono</td>
-        <td colspan="2">${especialista?.consultora?.telefono}</td>
+        <td colspan="2">${pre?.consultora?.telefono}</td>
     </tr>
     <tr>
         <td>Correo electrónico</td>
-        <td colspan="2">${especialista?.consultora?.mail}</td>
+        <td colspan="2">${pre?.consultora?.mail}</td>
     </tr>
     <tr>
         <td>Página web</td>
-        <td colspan="2">${especialista?.consultora?.pagina}</td>
+        <td colspan="2">${pre?.consultora?.pagina}</td>
     </tr>
     </tbody>
 </table>

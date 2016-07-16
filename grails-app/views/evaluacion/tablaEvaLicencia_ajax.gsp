@@ -28,7 +28,7 @@
                 <g:each in="${licencias}" var="lic" status="j">
                     <tr>
                         <td style="width: 3%">${lic?.orden}
-                            <a href="#" class="btn btn-xs btn-primary btnOrden" data-id="${lic?.id}" title="Agregar orden" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnOrdenLic" data-id="${lic?.id}" title="Agregar orden" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -45,7 +45,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <g:each in="${evaluacion.Calificacion.list([sort: 'nombre', order: 'asc'])}" var="cal">
-                                                    <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacion" data-id="${cal?.id}" data-plan="${lic?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
+                                                    <li style="background-color: ${cal?.tipo}"><a href="#" class="btnCalificacionLic" data-id="${cal?.id}" data-plan="${lic?.id}" title="${cal?.nombre}">${cal?.sigla}</a></li>
                                                 </g:each>
                                             </ul>
                                         </div>
@@ -69,7 +69,7 @@
                                 </g:else>
                             </g:if>
 
-                            <a href="#" class="btn btn-xs btn-primary btnHallazgo" data-id="${lic?.id}" title="Agregar hallazgo" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnHallazgoLic" data-id="${lic?.id}" title="Agregar hallazgo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -79,7 +79,7 @@
 
                             <i class="fa fa-folder-open"></i> Anexos : ${numero}
 
-                            <a href="#" class="btn btn-xs btn-primary btnAnexo" data-id="${lic?.id}" title="Agregar anexo" style="float: right">
+                            <a href="#" class="btn btn-xs btn-primary btnAnexoLic" data-id="${lic?.id}" title="Agregar anexo" style="float: right">
                                 <i class="fa fa-plus"></i>
                             </a>
                         </td>
@@ -96,7 +96,7 @@
 <script type="text/javascript">
 
 
-    $(".btnOrden").click(function () {
+    $(".btnOrdenLic").click(function () {
         var idEva = $(this).data('id');
         $.ajax({
             type: 'POST',
@@ -125,7 +125,7 @@
 
 
     //función cargar calificación
-    $(".btnCalificacion").click(function () {
+    $(".btnCalificacionLic").click(function () {
         var idEva = $(this).data('plan');
         var idCali = $(this).data('id');
         $.ajax({
@@ -135,17 +135,14 @@
                 id: idEva,
                 calificacion: idCali
             },
-            success: function (msg){
-                if(msg == 'ok'){
+            success: function (msgLic){
+                if(msgLic == 'ok'){
                     cargarTablaLicencia();
                 }else{
 
                 }
             }
         });
-    });
-    $.ajax({
-
     });
 
     //función para marcar una fila
@@ -158,7 +155,7 @@
 
     //botón agregar hallazgo
 
-    $(".btnHallazgo").click(function () {
+    $(".btnHallazgoLic").click(function () {
         var idEva = $(this).data("id");
         $.ajax({
             type:'POST',
@@ -177,7 +174,7 @@
                             label     : 'Aceptar',
                             className : 'btn-primary',
                             callback  : function () {
-
+                                cargarTablaLicencia();
                             }
                         }
                     }
@@ -187,7 +184,7 @@
     });
 
 
-    $(".btnAnexo").click(function () {
+    $(".btnAnexoLic").click(function () {
         var idEva = $(this).data("id");
         $.ajax({
             type:'POST',

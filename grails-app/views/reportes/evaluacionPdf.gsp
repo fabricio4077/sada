@@ -16,10 +16,6 @@
 
 <html>
 <head>
-
-
-
-
     <title></title>
 
     <rep:estilosNuevos orientacion="l" pagTitle="${"."}" pags="${numero}"/>
@@ -96,7 +92,7 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Evaluación Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}"/>
+<rep:headerFooterNuevo title="${"Evaluación Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 
 

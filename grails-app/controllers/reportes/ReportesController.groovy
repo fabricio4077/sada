@@ -31,7 +31,7 @@ class ReportesController{
         def pre = Preauditoria.get(params.id)
         def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
         def arr = ['1','2', '3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20']
-        def creador = session.usuario.apellido + "_" + session.usuario.login
+        def creador = session.usuario.apellido + "_" + session.usuario.login + "_" + session.perfil.codigo
 
         if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre:pre, especialista: especialista, arr: arr]
@@ -56,12 +56,21 @@ class ReportesController{
                 eq("cargo","Especialista")
             }
         }
+
+        if(especialista){
+            especialista = especialista.first()
+        }
         def coordinador = Asignados.withCriteria {
             eq("preauditoria",pre)
             persona{
                 eq("cargo","Coordinador")
             }
         }
+
+        if(coordinador){
+            coordinador = coordinador.first()
+        }
+
         def biologo = Asignados.withCriteria {
             eq("preauditoria",pre)
             persona{
@@ -69,9 +78,13 @@ class ReportesController{
             }
         }
 
-        return [pre: pre, coordenadas: coordenadas, especialista: especialista?.first()?.persona,
-                coordinador: coordinador?.first()?.persona, biologo: biologo?.first()?.persona,
-                canton: canton, orden: params.orden, numero: params.numero]
+        if(biologo){
+            biologo = biologo.first()
+        }
+
+        return [pre: pre, coordenadas: coordenadas, especialista: especialista?.persona,
+                coordinador: coordinador?.persona, biologo: biologo?.persona,
+                canton: canton, orden: params.orden, numero: params.numero, mes: params.mes, anio: params.anio ]
 
     }
 
@@ -116,7 +129,7 @@ class ReportesController{
         text = text.replaceAll(~"\\?\\_debugResources=y\\&n=[0-9]*", "")
 
 
-        return[pre:pre, especialista: especialista?.persona, orden: params.orden, metodologia: metodologia, texto: text,  numero: params.numero]
+        return[pre:pre, especialista: especialista?.persona, orden: params.orden, metodologia: metodologia, texto: text,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def objetivosPdf () {
@@ -147,7 +160,7 @@ class ReportesController{
                             }
         }
 
-        println("espec "  + objetivosEspecificos)
+//        println("espec "  + objetivosEspecificos)
 
        def gene = corregirTexto(objetivoGeneral?.first()?.objetivo?.descripcion)
        def espe = ""
@@ -163,7 +176,7 @@ class ReportesController{
 
         }
 
-        return[pre: pre, especialista: especialista?.persona, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe,  numero: params.numero, lista: listaObjetivos]
+        return[pre: pre, especialista: especialista?.persona, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe,  numero: params.numero, lista: listaObjetivos, mes: params.mes, anio: params.anio]
 
     }
 
@@ -184,7 +197,7 @@ class ReportesController{
 
         def ant = corregirTexto(antecedente?.descripcion)
 
-        return [antecedente: ant, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero]
+        return [antecedente: ant, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def alcancePdf () {
@@ -201,7 +214,7 @@ class ReportesController{
         }.first()
         def alc = corregirTexto(alcance?.descripcion)
 
-        return [alcance: alc, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero]
+        return [alcance: alc, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def situacionPdf () {
@@ -236,7 +249,7 @@ class ReportesController{
 
 
         return [pre: pre, especialista: especialista?.persona, orden: params.orden, emi: textoEmi,
-                des: textoDes, res: textoRes, bio: textoBio, soc: textoSocial, tablas: tablas,  numero: params.numero]
+                des: textoDes, res: textoRes, bio: textoBio, soc: textoSocial, tablas: tablas,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def areasPdf () {
@@ -253,7 +266,7 @@ class ReportesController{
         def ares = Ares.findAllByEstacion(pre?.estacion, [sort: 'area.nombre', order: 'asc'])
         def extintores = Extintor.findAllByAresInList(ares)
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, ares: ares, extintores: extintores,  numero: params.numero]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, ares: ares, extintores: extintores,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def evaluacionPdf () {
@@ -291,7 +304,7 @@ class ReportesController{
             order("orden","asc")
         }
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, leyes: leyes, planes: planes, licencias: licencias,  numero: params.numero]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, leyes: leyes, planes: planes, licencias: licencias,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def planAccionPdf () {
@@ -362,7 +375,7 @@ class ReportesController{
 
         println("total " + totalCosto)
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo,  numero: params.numero, totalCosto: totalCosto]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo,  numero: params.numero, totalCosto: totalCosto, mes: params.mes, anio: params.anio]
     }
 
     def manejoAmbientalPdf () {
@@ -383,7 +396,7 @@ class ReportesController{
         }.first()
 
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, unicos: unicos, planes: planAuditoria,  numero: params.numero]
+        return [pre: pre, especialista: especialista?.persona, orden: params.orden, unicos: unicos, planes: planAuditoria,  numero: params.numero, mes: params.mes, anio: params.anio]
 
     }
 
@@ -402,7 +415,7 @@ class ReportesController{
 
         def ant = corregirTexto(detalle?.recomendaciones)
 
-        return [det: ant, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero]
+        return [det: ant, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
 

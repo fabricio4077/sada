@@ -26,7 +26,7 @@
                     Descripción
                 </label>
                 <div class="col-md-8">
-                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="255" required="" style="resize: none" class="form-control required" value="${areaInstance?.descripcion}"/>
+                    <g:textArea name="descripcion" cols="40" rows="5" maxlength="2000" required="" style="resize: none" class="form-control required" value="${areaInstance?.descripcion}"/>
                 </div>
                 
             </span>

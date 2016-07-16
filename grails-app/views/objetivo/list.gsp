@@ -33,9 +33,12 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="tipo" title="Tipo de objetivo" style="width: 120px" />
-                    <g:sortableColumn property="descripcion" title="Descripción" style="width: 900px; text-align: center" />
-                    <g:sortableColumn property="defecto" title="Predeterminado" />
+                    %{--<g:sortableColumn property="tipo" title="Tipo de objetivo" style="width: 120px" />--}%
+                    %{--<g:sortableColumn property="descripcion" title="Descripción" style="width: 900px; text-align: center" />--}%
+                    %{--<g:sortableColumn property="defecto" title="Predeterminado" />--}%
+                    <th style="width: 120px" >Tipo de Objetivo</th>
+                    <th>Descripción del Objetivo</th>
+                    <th>Prederminado</th>
 
                 </tr>
             </thead>

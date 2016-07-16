@@ -22,13 +22,13 @@
 
 <body>
 
-<div class="alert alert-warning text-shadow">
+<div class="alert alert-info text-shadow">
     <i class="fa fa-ban fa-4x pull-left"></i>
 
-    <h1 class="text-warning tituloError">Atención</h1>
+    <h1 class="text-info tituloError">Atención</h1>
 
     <g:if test="${msn}">
-        <p style="font-size: 16px; margin-top: 25px;text-shadow: none"><b>${msn}.</b></p>
+        <p style="font-size: 16px; margin-top: 25px;text-shadow: none"><b>${msn}</b></p>
     </g:if>
     <g:else>
         <p style="font-size: 16px; margin-top: 25px;text-shadow: none">La página solicitada no está disponible</p>

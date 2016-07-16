@@ -17,32 +17,26 @@
                     <i class="fa fa-file-o"></i> Nueva Comercializadora
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
-                    <span class="input-group-btn">
-                        <g:link action="list" class="btn btn-default btn-search" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </g:link>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</g:link>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
 
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
-                    
-                    <g:sortableColumn property="nombre" title="Nombre" />
-                    
-                    <g:sortableColumn property="direccion" title="Dirección" />
-                    
-                    <g:sortableColumn property="representante" title="Representante" />
-                    
-                    <g:sortableColumn property="mail" title="Mail" />
-                    
-                    <g:sortableColumn property="telefono" title="Teléfono" />
-                    
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Representante</th>
+                    <th>Mail</th>
+                    <th>Teléfono</th>
                 </tr>
             </thead>
             <tbody>
@@ -79,11 +73,14 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+//                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log("Comercializadora creada correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1500);
                         } else {
-                            spinner.replaceWith($btn);
+                            log("Error al crear la Comercializadora","error");
                             return false;
                         }
                     }
@@ -95,7 +92,7 @@
             function deleteRow(itemId) {
                 bootbox.dialog({
                     title   : "Alerta",
-                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar el Comercializadora seleccionado? Esta acción no se puede deshacer.</p>",
+                    message : "<i class='fa fa-trash-o fa-3x pull-left text-danger text-shadow'></i><p>¿Está seguro que desea eliminar la Comercializadora seleccionada? Esta acción no se puede deshacer.</p>",
                     buttons : {
                         cancelar : {
                             label     : "Cancelar",
@@ -115,9 +112,14 @@
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+//                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "OK") {
-                                            location.reload(true);
+                                            log("Comercializadora borrada correctamente","success");
+                                            setTimeout(function () {
+                                                    location.reload(true)
+                                            }, 1500);
+                                        }else{
+                                            log("No se puede borrar la comercializadora","error")
                                         }
                                     }
                                 });
