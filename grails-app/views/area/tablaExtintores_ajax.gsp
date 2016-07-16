@@ -38,7 +38,7 @@
                 id: idE
             },
             success: function(msg){
-            cargarTabla();
+            cargarTablaEx();
             }
         });
     });

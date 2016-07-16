@@ -162,6 +162,22 @@ class SituacionAmbientalController extends Seguridad.Shield {
             }
         }
 
+        def social
+
+        social = SituacionAmbiental.withCriteria {
+            eq("detalleAuditoria",detalleAuditoria)
+
+            componenteAmbiental{
+                eq("tipo",'Social')
+            }
+        }
+
+        if(social){
+            social = social.first()
+        }
+
+
+
         def fisicoEmisores = SituacionAmbiental.withCriteria {
             eq("detalleAuditoria",detalleAuditoria)
 
@@ -193,7 +209,7 @@ class SituacionAmbientalController extends Seguridad.Shield {
         if (creador == pre?.creador || session.perfil.codigo == 'ADMI') {
             return [pre: pre, situaciones: situaciones, biotico: biotico.first(),
                     fisicoEmisor: fisicoEmisores.first(), fisicoDescargas: fisicoDescargas.first(),
-                    fisicoDesechos: fisicoDesechos.first(), obau: obau]
+                    fisicoDesechos: fisicoDesechos.first(), obau: obau, social: social]
         } else {
             flash.message = "Está tratando de ingresar a un pantalla restringida para su usuario."
             response.sendError(403)
@@ -310,7 +326,6 @@ class SituacionAmbientalController extends Seguridad.Shield {
     }
 
     def guardarSocial_ajax () {
-
 
         def pre = Preauditoria.get(params.id)
         def audi = Auditoria.findByPreauditoria(pre)

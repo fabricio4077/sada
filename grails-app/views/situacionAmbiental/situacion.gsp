@@ -275,7 +275,7 @@
                         </div>
 
                         <textarea name="editor2" id="editor2" rows="30" cols="80">
-                            ${biotico?.descripcion}
+                            ${social?.descripcion}
                         </textarea>
                         <script>
                             CKEDITOR.replace( 'editor2', {

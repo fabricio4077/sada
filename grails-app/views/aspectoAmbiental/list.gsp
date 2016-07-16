@@ -17,29 +17,25 @@
                     <i class="fa fa-file-o"></i> Nuevo aspecto ambiental
                 </g:link>
             </div>
-            <div class="btn-group pull-right col-md-3">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Buscar" value="${params.search}">
-                    <span class="input-group-btn">
-                        <g:link action="list" class="btn btn-default btn-search" type="button">
-                            <i class="fa fa-search"></i>&nbsp;
-                        </g:link>
-                    </span>
-                </div><!-- /input-group -->
-            </div>
+            %{--<div class="btn-group pull-right col-md-3">--}%
+                %{--<div class="input-group">--}%
+                    %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
+                    %{--<span class="input-group-btn">--}%
+                        %{--<g:link action="list" class="btn btn-default btn-search" type="button">--}%
+                            %{--<i class="fa fa-search"></i>&nbsp;--}%
+                        %{--</g:link>--}%
+                    %{--</span>--}%
+                %{--</div><!-- /input-group -->--}%
+            %{--</div>--}%
         </div>
 
         <table class="table table-condensed table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Plan Manejo Ambiental</th>
+                    <th>Descripción</th>
+                    <th>Impacto</th>
 
-                    <g:sortableColumn property="descripcion" title="Descripción" />
-                    
-                    <g:sortableColumn property="impacto" title="Impacto" />
-                    
-
-                    
                 </tr>
             </thead>
             <tbody>
@@ -73,11 +69,14 @@
                         data    : $form.serialize(),
                             success : function (msg) {
                         var parts = msg.split("_");
-                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+//                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                         if (parts[0] == "OK") {
-                            location.reload(true);
+                            log("Impacto ambiental creado correctamente","success");
+                            setTimeout(function () {
+                                location.reload(true);
+                            }, 1500);
                         } else {
-                            spinner.replaceWith($btn);
+                            log("Error al crear el impacto ambiental","error");
                             return false;
                         }
                     }
@@ -109,9 +108,14 @@
                                     },
                                     success : function (msg) {
                                         var parts = msg.split("_");
-                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
+//                                        log(parts[1], parts[0] == "OK" ? "success" : "error"); // log(msg, type, title, hide)
                                         if (parts[0] == "OK") {
-                                            location.reload(true);
+                                            log("Borrado correctamente","success");
+                                            setTimeout(function () {
+                                                location.reload(true);
+                                            }, 1500);
+                                        }else{
+                                            log("Error al borrar","error");
                                         }
                                     }
                                 });

@@ -462,19 +462,19 @@ class AreaController extends Seguridad.Shield {
     }
 
     def tablaExtintores_ajax () {
-        println("params tabla ex" + params)
+//        println("params tabla ex" + params)
         def aresArea = Ares.get(params.id)
 //        def lista = Extintor.findAllByAres(ares)
         def lista = Extintor.withCriteria {
             eq("ares",aresArea)
         }
-        println("lista " + lista)
+//        println("lista " + lista)
         return [lista: lista]
      }
 
     def agregarExtintor_ajax (){
 
-        println("params gregar extintor " + params )
+//        println("params gregar extintor " + params )
 
         def ares = Ares.get(params.idA)
 

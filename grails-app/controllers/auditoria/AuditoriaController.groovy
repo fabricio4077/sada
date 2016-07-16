@@ -7,6 +7,7 @@ import evaluacion.Calificacion
 import evaluacion.Evaluacion
 import objetivo.Objetivo
 import objetivo.ObjetivosAuditoria
+import org.h2.api.DatabaseEventListener
 import plan.PlanAuditoria
 
 
@@ -239,6 +240,26 @@ class AuditoriaController extends Seguridad.Shield {
         }
     }
 
+
+    def guardarFechaFin_ajax () {
+        println("params " + params)
+        def pre = Preauditoria.get(params.id)
+        def audi = Auditoria.findByPreauditoria(pre)
+
+        def fecha = new Date().parse("dd-MM-yyyy", params.fecha)
+
+        audi.fechaFin = fecha
+
+        try{
+            audi.save(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+            println("Error al guardar la fecha de fin desde cronograma")
+        }
+
+    }
+
     def cronograma (){
 
         def pre = Preauditoria.get(params.id)
@@ -247,6 +268,9 @@ class AuditoriaController extends Seguridad.Shield {
         def per = 'ACT'
 
         def planes = PlanAuditoria.findAllByDetalleAuditoriaAndPeriodoAndMedidaIsNotNull(detalleAuditoria,per)
+
+        println("planes " + planes)
+
         def colores = ['#ef3724','#ffa61a','#1ab1ff',' #fd4fda','#567b24']
 
 

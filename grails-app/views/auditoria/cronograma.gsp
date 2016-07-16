@@ -11,18 +11,8 @@
 <html>
 <head>
 
-    %{--<link href="${resource(dir: 'js/plugins/fullcalendar-2.7.3', file: 'fullcalendar.css')}" rel="stylesheet">--}%
-    %{--<script src="${resource(dir: 'js/plugins/fullcalendar-2.7.3/lib', file: 'moment.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/plugins/fullcalendar-2.7.3/lib', file: 'jquery.min.js')}"></script>--}%
-    %{--<script src="${resource(dir: 'js/plugins/fullcalendar-2.7.3', file: 'fullcalendar.js')}"></script>--}%
-
-    %{--<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/lib/moment.min.js'></script>--}%
-    %{--<script src="http://fullcalendar.io/js/fullcalendar-2.1.1/lib/jquery-ui.custom.min.js"></script>--}%
-    %{--<script src='http://fullcalendar.io/js/fullcalendar-2.1.1/fullcalendar.min.js'></script>--}%
-
     <link href="${resource(dir: 'js/plugins/fullcalendar-2.2.7-yearview', file: 'fullcalendar.css')}" rel="stylesheet">
     <script src="${resource(dir: 'js/plugins/fullcalendar-2.2.7-yearview/lib', file: 'moment.min.js')}"></script>
-    %{--<script src="${resource(dir: 'js/plugins/fullcalendar-2.2.7-yearview/lib', file: 'jquery.min.js')}"></script>--}%
     <script src="${resource(dir: 'js/plugins/fullcalendar-2.2.7-yearview', file: 'fullcalendar.js')}"></script>
     <script src="${resource(dir: 'js/plugins/fullcalendar-2.2.7-yearview', file: 'lang-all.js')}"></script>
 
@@ -174,6 +164,21 @@
     </nav>
 </header>
 
+<div class="alert alert-info" role="alert" style="height: 80px">
+    <div class="row">
+        <label class="col-md-3 control-label text-info">
+            Fecha de inicio de actividades
+        </label>
+        <div class="col-md-3">
+            <elm:datepicker id="fechaInicio" class="form-control"/>
+        </div>
+        <div class="list-group" style="text-align: center">
+            <a href="#" id="btnCrearCrono" class="btn btn-success" title="">
+                Generar cronograma <i class="fa fa-calendar"></i>
+            </a>
+        </div>
+    </div>
+</div>
 
 
 <div id='calendar'></div>
@@ -199,6 +204,29 @@
 </div>
 
 <script type="text/javascript">
+
+
+    $("#btnCrearCrono").click(function () {
+        var fecha = $("#fechaInicio").val();
+        $.ajax({
+           type: 'POST',
+            url: "${createLink(controller: 'auditoria', action: 'guardarFechaFin_ajax')}",
+            data:{
+                id: ${pre?.id},
+                fecha: fecha
+
+            },
+            success: function (msg){
+            if(msg == 'ok'){
+                location.reload(true)
+            }else{
+                log("Error al generar el cronograma","error")
+            }
+            }
+        });
+    });
+
+
     //mini menu
     $("#areasMenu").click(function () {
         location.href="${createLink(controller: 'area', action: 'areas')}/" + ${pre?.id}

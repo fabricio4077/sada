@@ -340,7 +340,7 @@ class EvaluacionController extends Seguridad.Shield {
             }
        }
 
-        println("lista hallazgos " + listaHallazgos)
+//        println("lista hallazgos " + listaHallazgos)
 
 
         return [listaHallazgos: listaHallazgos]
@@ -348,7 +348,7 @@ class EvaluacionController extends Seguridad.Shield {
 
     def guardarHallazgo_ajax () {
 
-        println("params guardar hallazgo " + params)
+//        println("params guardar hallazgo " + params)
 
         def cali = Calificacion.get(params.calificacion)
         def evaluacion = Evaluacion.get(params.id)

@@ -9,10 +9,10 @@
     <g:if test="${planManejoAmbientalInstance?.codigo}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Codigo
+                Código
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <g:fieldValue bean="${planManejoAmbientalInstance}" field="codigo"/>
             </div>
             
@@ -22,10 +22,10 @@
     <g:if test="${planManejoAmbientalInstance?.descripcion}">
         <div class="row">
             <div class="col-md-2 text-info">
-                Descripcion
+                Descripción
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <g:fieldValue bean="${planManejoAmbientalInstance}" field="descripcion"/>
             </div>
             
@@ -38,7 +38,7 @@
                 Nombre
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <g:fieldValue bean="${planManejoAmbientalInstance}" field="nombre"/>
             </div>
             
@@ -51,7 +51,7 @@
                 Objetivo
             </div>
             
-            <div class="col-md-3">
+            <div class="col-md-8">
                 <g:fieldValue bean="${planManejoAmbientalInstance}" field="objetivo"/>
             </div>
             

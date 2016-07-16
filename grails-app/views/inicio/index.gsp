@@ -259,7 +259,7 @@
             <div class="caption">
                 <h3>Nuevo en SADA?</h3>
                 <p>Revise nuestro manual de usuario!</p>
-                <p><a href="#" class="btn btn-default" role="button">Manual</a></p>
+                <p><a href="#" class="btn btn-default" id="btnManual" role="button">Manual</a></p>
             </div>
         </div>
     </div>
@@ -273,6 +273,11 @@
 </div>
 
 <script type="text/javascript">
+
+
+    $("#btnManual").click(function () {
+        location.href = "${g.createLink(controller: 'inicio', action: 'descargarManual')}"
+    });
 
     %{--cargarBienvenida();--}%
 

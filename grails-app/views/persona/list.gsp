@@ -18,11 +18,11 @@
         </g:link>
     </div>
 
-    <div class="btn-group">
-        <g:link controller="prfl" action="list" class="btn btn-default btnPerfil" title="Crear un nuevo perfil para los usuarios">
-            <i class="fa fa-credit-card"></i> Nuevo Perfil de usuario
-        </g:link>
-    </div>
+    %{--<div class="btn-group">--}%
+        %{--<g:link controller="prfl" action="list" class="btn btn-default btnPerfil" title="Crear un nuevo perfil para los usuarios">--}%
+            %{--<i class="fa fa-credit-card"></i> Perfiles de usuario--}%
+        %{--</g:link>--}%
+    %{--</div>--}%
     %{--<div class="btn-group pull-right col-md-3">--}%
         %{--<div class="input-group">--}%
             %{--<input type="text" class="form-control" placeholder="Buscar" value="${params.search}">--}%
