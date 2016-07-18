@@ -19,10 +19,10 @@ class InicioController extends Shield {
 
     def descargarManual() {
         session.key = null
-        def path = servletContext.getRealPath("/") + "anexos/Manual de Usuario-Sada.docx"
-        def nombre = 'Manual de Usuario-Sada.docx'
+        def path = servletContext.getRealPath("/") + "anexos/Manual de Usuario-Sada.pdf"
+        def nombre = 'Manual de Usuario-Sada.pdf'
         def tipo = nombre.split("\\.")
-        println("tipo " + tipo)
+//        println("tipo " + tipo)
         tipo = tipo[1]
         switch (tipo) {
             case "jpeg":

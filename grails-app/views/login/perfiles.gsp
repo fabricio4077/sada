@@ -76,7 +76,7 @@
 </div>
 
 <p class="text-info pull-right" style="font-size: 10px; margin-top: 20px">
-    Versión ${message(code: 'version', default: '2.1.0x')}
+    Versión ${message(code: 'version', default: '3.0.0x')}
 </p>
 
 

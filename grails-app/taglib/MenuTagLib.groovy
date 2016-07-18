@@ -215,7 +215,7 @@ class MenuTagLib {
 
                 if(perfil?.codigo ==  'ADMI'){
 
-                items = ["<i class=\"fa fa-info\"></i> Inicio": ["Inicio", "${createLink(controller: 'inicio', action: 'index')}", "Manual de usuario", "linkTest"],
+                items = ["<i class=\"fa fa-info\"></i> Inicio": ["Inicio", "${createLink(controller: 'inicio', action: 'index')}", "Manual de usuario", "${createLink(controller: 'inicio', action: 'descargarManual')}"],
                          "<i class=\"fa fa-gear\"></i> Administración": ["<i class=\"fa fa-group\"></i> Usuarios", "${createLink(controller: 'persona', action: 'list')}",
                                             "<i class=\"fa fa-gears\"></i> Parámetros", "${createLink(controller: 'tipo', action: 'parametros')}"],
                          "<i class=\"fa fa-bank\"></i> Marco Legal": ["<i class=\"fa fa-legal\"></i> Leyes","${createLink(controller: 'marcoLegal', action: 'arbolLegal')}"],
@@ -226,7 +226,7 @@ class MenuTagLib {
                 }
                 if(perfil?.codigo == 'AUDI'){
 
-                    items = ["<i class=\"fa fa-info\"></i> Inicio": ["Inicio", "${createLink(controller: 'inicio', action: 'index')}", "Manual de usuario", "linkTest"],
+                    items = ["<i class=\"fa fa-info\"></i> Inicio": ["Inicio", "${createLink(controller: 'inicio', action: 'index')}", "Manual de usuario", "${createLink(controller: 'inicio', action: 'descargarManual')}"],
                              "<i class=\"fa fa-bank\"></i> Marco Legal": ["<i class=\"fa fa-legal\"></i> Leyes","${createLink(controller: 'marcoLegal', action: 'arbolLegal')}"],
 //                             "<i class=\"fa fa-book\"></i> Metodología": ["Metodología","${createLink(controller: 'metodologia', action: 'list')}"],
                              "<i class=\"fa fa-leaf\"></i> Auditoría": ["<i class=\"fa fa-plus\"></i> Iniciar una Auditoría","${createLink(controller: 'preauditoria', action: 'crearAuditoria')}", " <i class=\"fa fa-history\"></i> Continuar una Auditoría", "${createLink(controller: 'preauditoria', action: 'list')}"

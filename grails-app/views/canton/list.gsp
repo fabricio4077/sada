@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta name="layout" content="mainSada">
-        <title>Lista de Canton</title>
+        <title>Lista de Cantones</title>
     </head>
     <body>
 
@@ -33,11 +33,12 @@
             <thead>
                 <tr>
                     
-                    <g:sortableColumn property="nombre" title="Cantón" />
+                    %{--<g:sortableColumn property="nombre" title="Cantón" />--}%
 
 
-                    <g:sortableColumn property="provincia" title="Provincia" />
-                    %{--<th>Provincia</th>--}%
+                    %{--<g:sortableColumn property="provincia" title="Provincia" />--}%
+                    <th>Cantón</th>
+                    <th>Provincia</th>
                     
                 </tr>
             </thead>

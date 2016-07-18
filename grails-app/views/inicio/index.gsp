@@ -268,7 +268,7 @@
 
 <div class="row">
     <div class="col-md-2 col-md-offset-10 text-right">
-        Versión ${message(code: 'version', default: '2.0.0x')}
+        Versión ${message(code: 'version', default: '3.0.0x')}
     </div>
 </div>
 
