@@ -85,7 +85,8 @@
 <body>
 
 
-<rep:headerFooterNuevo title="${"Ficha Técnica"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
+%{--<rep:headerFooterNuevo title="${"Ficha Técnica"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>--}%
+<rep:headerFooterNuevo title="${"Ficha Técnica"}" subtitulo="${''}" auditoria="${pre?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 
 <table class="table table-condensed table-bordered table-striped table-hover" style="width: 100%">

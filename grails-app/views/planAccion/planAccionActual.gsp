@@ -100,7 +100,7 @@
                     log("Objetivo registrado como completado!", "success");
                     setTimeout(function () {
                         location.reload(true)
-                    }, 1500);
+                    }, 1000);
                 }else{
                     log("Error al registar el objetivo como completado","error")
                 }

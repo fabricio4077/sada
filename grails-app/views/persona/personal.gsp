@@ -117,7 +117,7 @@
                             location.href = "${createLink(controller: "login", action: "logout" )}"
                         } else {
                         }
-                    }, 1500);
+                    }, 1000);
                     closeLoader();
                 }
             });

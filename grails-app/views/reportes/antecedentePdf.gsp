@@ -82,7 +82,8 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Antecedentes"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
+%{--<rep:headerFooterNuevo title="${"Antecedentes"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>--}%
+<rep:headerFooterNuevo title="${"Antecedentes"}" subtitulo="${''}" auditoria="${pre?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 <util:renderHTML html="${antecedente}"/>
 </body>
 </html>

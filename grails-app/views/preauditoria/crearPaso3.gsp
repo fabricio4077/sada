@@ -241,7 +241,7 @@
                                                 cargarTablaCoordenadas(${pre?.id});
                                                 setTimeout(function () {
                                                     location.reload(true)
-                                                }, 1500);
+                                                }, 1000);
                                             } else {
                                                 log("Error al guardar la información de las coordenadas","error");
                                             }

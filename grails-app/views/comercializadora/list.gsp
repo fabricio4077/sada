@@ -78,7 +78,7 @@
                             log("Comercializadora creada correctamente","success");
                             setTimeout(function () {
                                 location.reload(true);
-                            }, 1500);
+                            }, 1000);
                         } else {
                             log("Error al crear la Comercializadora","error");
                             return false;
@@ -117,7 +117,7 @@
                                             log("Comercializadora borrada correctamente","success");
                                             setTimeout(function () {
                                                     location.reload(true)
-                                            }, 1500);
+                                            }, 1000);
                                         }else{
                                             log("No se puede borrar la comercializadora","error")
                                         }

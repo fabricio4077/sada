@@ -163,7 +163,7 @@
                                                         log("Objetivo guardado correctamente","success");
                                                         setTimeout(function () {
                                                             location.href = "${createLink(controller:'objetivo',action:'list')}";
-                                                        }, 1500);
+                                                        }, 1000);
                                                     }else{
                                                         log("Error al guardar el objetivo","error")
                                                     }

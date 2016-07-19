@@ -74,7 +74,7 @@
                             log("Impacto ambiental creado correctamente","success");
                             setTimeout(function () {
                                 location.reload(true);
-                            }, 1500);
+                            }, 1000);
                         } else {
                             log("Error al crear el impacto ambiental","error");
                             return false;
@@ -113,7 +113,7 @@
                                             log("Borrado correctamente","success");
                                             setTimeout(function () {
                                                 location.reload(true);
-                                            }, 1500);
+                                            }, 1000);
                                         }else{
                                             log("Error al borrar","error");
                                         }

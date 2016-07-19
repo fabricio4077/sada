@@ -197,7 +197,7 @@
                     log("Datos de la estación guardados correctamente", "success");
                     setTimeout(function () {
                         location.href = "${createLink(controller:'preauditoria',action:'crearPaso3')}/" + parts[1];
-                    }, 1500);
+                    }, 1000);
                 }else{
                     log(parts[1], "error")
                 }

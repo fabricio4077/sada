@@ -85,7 +85,7 @@
                 log("Marco Legal asignado correctamente","success");
                 setTimeout(function () {
                     location.href = "${createLink(controller:'evaluacion',action:'evaluacionAmbiental')}/" + ${pre?.id};
-                }, 1500);
+                }, 1000);
             }else{
                 log("Error al asignar el Marco legal","error")
             }

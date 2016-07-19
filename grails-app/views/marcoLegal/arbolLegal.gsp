@@ -133,7 +133,7 @@
                         log("Marco Legal creado correctamente","success");
                         setTimeout(function () {
                             location.reload(true);
-                        }, 1500);
+                        }, 1000);
                     } else {
                         log("Error al crear el marco legal","error");
                         return false;
@@ -171,7 +171,7 @@
                                         log("Marco legal borrado correctamente","success");
                                         setTimeout(function () {
                                             location.reload(true)
-                                        }, 1500);
+                                        }, 1000);
                                     }else{
                                         log('Error al borrar el marco legal',"error");
                                     }
@@ -247,7 +247,7 @@
                         log("Artículo guardado correctamente","success");
                         setTimeout(function () {
                             location.reload(true)
-                        }, 1500);
+                        }, 1000);
                     } else {
                         log("Error al guardar el artículo","error");
 //                        return false;
@@ -279,7 +279,7 @@
                             log("Artículo borrado correctamente","success");
                             setTimeout(function () {
                                 location.reload(true)
-                            }, 1500);
+                            }, 1000);
                         }else{
                             log('Error al borrar el artículo',"error");
                         }
@@ -343,7 +343,7 @@
                         log("Norma Legal guardada correctamente","success");
                         setTimeout(function () {
                             location.reload(true);
-                        }, 1500);
+                        }, 1000);
                     } else {
                         log("Error al guardar la Norma Legal","error");
                         return false;
@@ -373,7 +373,7 @@
                             log("Norma borrada correctamente","success");
                             setTimeout(function () {
                                 location.reload(true)
-                            }, 1500);
+                            }, 1000);
                         }else{
                             log('Error al borrar la norma',"error");
                         }
@@ -551,7 +551,7 @@
                         log("Literal guardado correctamente","success");
                         setTimeout(function () {
                             location.reload(true)
-                        }, 1500);
+                        }, 1000);
                     }else{
                         log('Error al guardar el literal',"error");
                     }
@@ -619,7 +619,7 @@
                             log("Literal borrado correctamente","success");
                             setTimeout(function () {
                                 location.reload(true)
-                            }, 1500);
+                            }, 1000);
                         }else{
                             log('Error al borrar el literal',"error");
                         }

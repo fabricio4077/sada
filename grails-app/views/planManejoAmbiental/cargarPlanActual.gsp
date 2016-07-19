@@ -71,7 +71,7 @@
                             log(parts[1],'success');
                             setTimeout(function () {
                                 location.href="${createLink(controller: 'planManejoAmbiental', action: 'planManejoAmbiental')}?id=" + ${pre?.id} + "&band=" + false
-                            }, 1500);
+                            }, 1000);
                         }else{
                             log(parts[1],'error');
                         }

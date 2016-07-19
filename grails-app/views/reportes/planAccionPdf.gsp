@@ -87,7 +87,8 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Síntesis de No conformidades y Plan de Acción"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
+%{--<rep:headerFooterNuevo title="${"Síntesis de No conformidades y Plan de Acción"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>--}%
+<rep:headerFooterNuevo title="${"Síntesis de No conformidades y Plan de Acción"}" subtitulo="${''}" auditoria="${pre?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 <util:renderHTML html="${"<p style='text-align:justify'>" + "Una vez realizada la inspección de campo y documental se procede al desarrollo de la Síntesis de No Conformidades, misma que requiere del Plan de Acción respectivo para el cierre de No Conformidades." + "</p>"}"/>
 <util:renderHTML html="${"<p style='text-align:justify'>" + "En la estación de servicios '${pre?.estacion?.nombre}', se han determinado ${total} puntos auditables, estipulados en ${pre?.tipo?.codigo != 'LCM1' ? 'la Legislación Ambiental vigente, Plan de Manejo Ambiental y Licencia' : 'la Legislación Ambiental vigente y Plan de Manejo Ambiental'}  " + "</p>"}"/>

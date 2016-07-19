@@ -354,7 +354,17 @@ class SituacionAmbientalController extends Seguridad.Shield {
         def emisores = EmisorComponente.findAllBySituacionAmbiental(situacionSocial)
 
 //        println("emisores " + emisores)
-        return [emisores: emisores]
+        return [emisores: emisores, pre: pre, situacion: situacionSocial]
+    }
+
+    def borrarEmisor_ajax () {
+        def emisor = EmisorComponente.get(params.emisor)
+        try{
+            emisor.delete(flush: true)
+            render "ok"
+        }catch (e){
+            render "no"
+        }
     }
 
 

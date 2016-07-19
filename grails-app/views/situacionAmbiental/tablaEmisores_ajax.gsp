@@ -21,7 +21,7 @@
       <td>${e?.hora} </td>
       <td>${e?.mantenimiento == 1 ? 'SI' : 'NO'} </td>
       <td style="text-align: center">
-        <a href="#" class="btn btn-danger btn-sm btnBorrar" title="Borrar emisor" data-id="${e?.id}">
+        <a href="#" class="btn btn-danger btn-sm btnBorrar" id="bb" title="Borrar emisor" data-id="${e?.id}">
           <i class="fa fa-trash"></i>
         </a>
       </td>
@@ -29,3 +29,25 @@
   </g:each>
   </tbody>
 </table>
+
+<script>
+    $(".btnBorrar").click(function () {
+        var emi = $("#bb").data("id")
+        $.ajax({
+            type: 'POST',
+            url: '${createLink(controller: 'situacionAmbiental', action: 'borrarEmisor_ajax')}',
+            data:{
+                emisor: emi
+            },
+            success: function (msg){
+                if(msg == 'ok'){
+                    log("Emisor borrado correctamente","success")
+                    cargarTablaEmisores();
+                }else{
+                    log("Error al borrar el emisor","error")
+                }
+            }
+
+        })
+    });
+</script>

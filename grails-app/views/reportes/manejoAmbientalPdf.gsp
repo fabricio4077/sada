@@ -119,7 +119,8 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Actualización del Plan de Manejo Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
+%{--<rep:headerFooterNuevo title="${"Actualización del Plan de Manejo Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>--}%
+<rep:headerFooterNuevo title="${"Actualización del Plan de Manejo Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 <g:each in="${unicos}" var="uni" status="j">
 

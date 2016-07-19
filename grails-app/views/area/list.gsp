@@ -77,7 +77,7 @@
                             log("Nueva área agregada correctamente","success")
                             setTimeout(function () {
                                 location.reload(true);
-                            }, 1500);
+                            }, 1000);
                         } else {
                             spinner.replaceWith($btn);
                             log("Error al agregar una nueva área","error");

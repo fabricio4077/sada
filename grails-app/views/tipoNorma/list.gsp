@@ -69,7 +69,7 @@
                             log("Tipo de Norma Legal creada correctamente","success");
                             setTimeout(function () {
                                 location.reload(true);
-                            }, 1500);
+                            }, 1000);
                         } else {
                             log("Error al crear el Tipo de Norma Legal","error");
                             return false;
@@ -108,7 +108,7 @@
                                             log("Norma Legal borrada correctamente","success")
                                             setTimeout(function () {
                                                 location.reload(true);
-                                            }, 1500);
+                                            }, 1000);
                                         }else{
                                             log("Error al borrar la Norma Legal","error")
                                         }

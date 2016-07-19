@@ -68,7 +68,7 @@
                             log("Emisor de gases creado correctamente","success");
                             setTimeout(function () {
                                 location.reload(true);
-                            }, 1500);
+                            }, 1000);
                         } else {
                             log("Error al crear el emisor de gases","error");
                             return false;

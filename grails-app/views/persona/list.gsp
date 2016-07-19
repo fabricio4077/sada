@@ -98,7 +98,7 @@
                     if (parts[0] == "OK") {
                         setTimeout(function () {
                             location.reload(true);
-                        }, 1500);
+                        }, 1000);
                     } else {
                         spinner.replaceWith($btn);
                         return false;
@@ -137,7 +137,7 @@
                                     log(parts[1], "success");
                                     setTimeout(function () {
                                         location.reload(true);
-                                    }, 1500);
+                                    }, 1000);
                                 }else{
                                     log(parts[1], "error")
                                 }

@@ -210,13 +210,13 @@ class AsignadosController extends Seguridad.Shield {
 
     def tablaCoordinadores_ajax (){
         def pre = Preauditoria.get(params.id)
-        def listaCoordinadores = Persona.findAllByCargo("Coordinador")
+        def listaCoordinadores = Persona.findAllByCargoAndActivo("Coordinador",1)
         return [listaCoordinadores: listaCoordinadores, pre: pre]
     }
 
     def listaCoordinadores_ajax(){
         def pre = Preauditoria.get(params.id)
-        def listaCoordinadores = Persona.findAllByCargo("Coordinador")
+        def listaCoordinadores = Persona.findAllByCargoAndActivo("Coordinador",1)
         return [listaCoordinadores: listaCoordinadores, pre: pre]
     }
 
@@ -256,7 +256,7 @@ class AsignadosController extends Seguridad.Shield {
     def tablaEspecialistas_ajax() {
 
         def pre = Preauditoria.get(params.id)
-        def listaEspecialistas = Persona.findAllByCargo("Especialista")
+        def listaEspecialistas = Persona.findAllByCargoAndActivo("Especialista",1)
 
         return [listaEspe: listaEspecialistas, pre: pre]
     }

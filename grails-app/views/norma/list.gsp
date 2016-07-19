@@ -69,7 +69,7 @@
                             log("Norma Legal guardada correctamente","success");
                             setTimeout(function () {
                                 location.reload(true);
-                            }, 1500);
+                            }, 1000);
                         } else {
                             log("Error al guardar la Norma Legal","error");
                             return false;

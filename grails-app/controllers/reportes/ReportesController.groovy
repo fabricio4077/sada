@@ -98,12 +98,12 @@ class ReportesController{
 //        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
 
 
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
 
 
 
@@ -129,19 +129,19 @@ class ReportesController{
         text = text.replaceAll(~"\\?\\_debugResources=y\\&n=[0-9]*", "")
 
 
-        return[pre:pre, especialista: especialista?.persona, orden: params.orden, metodologia: metodologia, texto: text,  numero: params.numero, mes: params.mes, anio: params.anio]
+        return[pre:pre, orden: params.orden, metodologia: metodologia, texto: text,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def objetivosPdf () {
         def pre = Preauditoria.get(params.id)
         def auditoria = Auditoria.findByPreauditoria(pre)
 //        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
 
 
         def objetivoGeneral = ObjetivosAuditoria.withCriteria {
@@ -176,7 +176,7 @@ class ReportesController{
 
         }
 
-        return[pre: pre, especialista: especialista?.persona, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe,  numero: params.numero, lista: listaObjetivos, mes: params.mes, anio: params.anio]
+        return[pre: pre, general: gene, especificos: objetivosEspecificos, orden: params.orden, espe: espe,  numero: params.numero, lista: listaObjetivos, mes: params.mes, anio: params.anio]
 
     }
 
@@ -188,16 +188,16 @@ class ReportesController{
         def antecedente = Antecedente.findByDetalleAuditoria(detalle)
 //        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
 
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
 
         def ant = corregirTexto(antecedente?.descripcion)
 
-        return [antecedente: ant, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
+        return [antecedente: ant, pre: pre, orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def alcancePdf () {
@@ -206,15 +206,15 @@ class ReportesController{
         def auditoria = Auditoria.findByPreauditoria(pre)
         def alcance = Alcance.findByAuditoria(auditoria)
 //        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
         def alc = corregirTexto(alcance?.descripcion)
 
-        return [alcance: alc, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
+        return [alcance: alc, pre: pre, orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def situacionPdf () {
@@ -223,12 +223,12 @@ class ReportesController{
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
 //        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
         def componenteEmi = ComponenteAmbiental.get(1)
         def componenteDescargas = ComponenteAmbiental.get(2)
         def componenteResiduos = ComponenteAmbiental.get(3)
@@ -248,7 +248,7 @@ class ReportesController{
         def tablas = TablaLiquidas.findAllBySituacionAmbiental(descargas)
 
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, emi: textoEmi,
+        return [pre: pre, orden: params.orden, emi: textoEmi,
                 des: textoDes, res: textoRes, bio: textoBio, soc: textoSocial, tablas: tablas,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
@@ -257,16 +257,17 @@ class ReportesController{
         def auditoria = Auditoria.findByPreauditoria(pre)
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
 //        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
-        def ares = Ares.findAllByEstacion(pre?.estacion, [sort: 'area.nombre', order: 'asc'])
+        def especialista
+//        especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
+        def ares = Ares.findAllByEstacionAndPreauditoria(pre?.estacion,pre, [sort: 'area.nombre', order: 'asc'])
         def extintores = Extintor.findAllByAresInList(ares)
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, ares: ares, extintores: extintores,  numero: params.numero, mes: params.mes, anio: params.anio]
+        return [pre: pre, especialista: especialista, orden: params.orden, ares: ares, extintores: extintores,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def evaluacionPdf () {
@@ -279,12 +280,12 @@ class ReportesController{
 //        def licencias = Evaluacion.findAllByDetalleAuditoriaAndLicenciaIsNotNull(detalle, [sort: 'licencia.descripcion', order: 'asc'])
 
 
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
 
         def leyes = Evaluacion.withCriteria {
             eq("detalleAuditoria", detalle)
@@ -304,7 +305,7 @@ class ReportesController{
             order("orden","asc")
         }
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, leyes: leyes, planes: planes, licencias: licencias,  numero: params.numero, mes: params.mes, anio: params.anio]
+        return [pre: pre, orden: params.orden, leyes: leyes, planes: planes, licencias: licencias,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
     def planAccionPdf () {
@@ -313,12 +314,12 @@ class ReportesController{
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
 //        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
 
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
 
 //        def leyes = Evaluacion.findAllByDetalleAuditoriaAndMarcoNormaIsNotNull(detalle, [sort: 'marcoNorma.norma.nombre', order: 'asc'])
 //        def planes = Evaluacion.findAllByDetalleAuditoriaAndPlanAuditoriaIsNotNull(detalle, [sort: 'planAuditoria.aspectoAmbiental.planManejoAmbiental.nombre', order: "asc"])
@@ -375,7 +376,7 @@ class ReportesController{
 
         println("total " + totalCosto)
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo,  numero: params.numero, totalCosto: totalCosto, mes: params.mes, anio: params.anio]
+        return [pre: pre, orden: params.orden, total: eval, inclumplidas: incumplidas, porcentaje: por, listaNo: evaluacionesNo,  numero: params.numero, totalCosto: totalCosto, mes: params.mes, anio: params.anio]
     }
 
     def manejoAmbientalPdf () {
@@ -388,15 +389,15 @@ class ReportesController{
         def unicos = planAuditoria.aspectoAmbiental.planManejoAmbiental.unique()
 
 
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
 
 
-        return [pre: pre, especialista: especialista?.persona, orden: params.orden, unicos: unicos, planes: planAuditoria,  numero: params.numero, mes: params.mes, anio: params.anio]
+        return [pre: pre, orden: params.orden, unicos: unicos, planes: planAuditoria,  numero: params.numero, mes: params.mes, anio: params.anio]
 
     }
 
@@ -406,16 +407,16 @@ class ReportesController{
         def detalle = DetalleAuditoria.findByAuditoria(auditoria)
 //        def especialista = Asignados.findByPreauditoriaAndPersona(pre, Persona.findByCargo("Especialista"));
 
-        def especialista = Asignados.withCriteria {
-            eq("preauditoria",pre)
-            persona{
-                eq("cargo","Especialista")
-            }
-        }.first()
+//        def especialista = Asignados.withCriteria {
+//            eq("preauditoria",pre)
+//            persona{
+//                eq("cargo","Especialista")
+//            }
+//        }.first()
 
         def ant = corregirTexto(detalle?.recomendaciones)
 
-        return [det: ant, pre: pre, especialista: especialista?.persona, orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
+        return [det: ant, pre: pre,  orden: params.orden,  numero: params.numero, mes: params.mes, anio: params.anio]
     }
 
 

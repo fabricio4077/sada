@@ -96,7 +96,8 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Situación Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
+%{--<rep:headerFooterNuevo title="${"Situación Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>--}%
+<rep:headerFooterNuevo title="${"Situación Ambiental"}" subtitulo="${''}" auditoria="${pre?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 <util:renderHTML html="${"<b>Componente Físico</b><br></br>"}"/>
 <util:renderHTML html="${"<ul>"}"/>
 <util:renderHTML html="${"<b>Emisiones Gaseosas</b><br></br>"}"/>

@@ -72,7 +72,7 @@
                             log("Componente Ambiental creado correctamente","success");
                             setTimeout(function () {
                                 location.reload(true);
-                            }, 1500);
+                            }, 1000);
                         } else {
                             log("Error al crear el componente ambiental","error");
                             return false;

@@ -94,7 +94,8 @@
 </head>
 
 <body>
-<rep:headerFooterNuevo title="${"Conclusiones y Recomendaciones"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
+%{--<rep:headerFooterNuevo title="${"Conclusiones y Recomendaciones"}" subtitulo="${''}" auditoria="${pre?.id}" especialista="${especialista?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>--}%
+<rep:headerFooterNuevo title="${"Conclusiones y Recomendaciones"}" subtitulo="${''}" auditoria="${pre?.id}" orden="${orden}" mes="${mes}" anio="${anio}"/>
 
 <util:renderHTML html="${det}"/>
 
